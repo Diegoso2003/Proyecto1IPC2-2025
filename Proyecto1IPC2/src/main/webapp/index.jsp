@@ -12,15 +12,15 @@
         <div class="d-flex justify-content-center align-items-center vh-100">
             <div class="card">
             <div class="card-body">
-                <form class="mb-5">
+                <form class="mb-5" method="POST" action="${pageContext.servletContext.contextPath}/controllers/usuario/login">
                 <h1 class="h3 mb-3 fw-normal">Por favor ingrese sus datos</h1>
                 
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="nombre">
+                    <input type="email" class="form-control" id="nombre" placeholder="nombre">
                     <label for="floatingInput">Nombre de usuario</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="contraseña">
+                    <input type="password" class="form-control" id="contraseña" placeholder="contraseña">
                     <label for="floatingPassword">Contraseña</label>
                 </div>
                 
