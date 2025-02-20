@@ -14,6 +14,7 @@ public class Usuario {
     private String nombre;
     private String contraseña;
     private EnumRol rol;
+    private boolean activo;
 
     public String getNombre() {
         return nombre;
@@ -39,6 +40,14 @@ public class Usuario {
         this.rol = rol;
     }
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+    
     /**
      * valida que sus datos hayan sido ingresados correctamente
      * @return false si el nombre o la contraseña son nulos o estan compuestos

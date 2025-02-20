@@ -16,11 +16,11 @@
                 <h1 class="h3 mb-3 fw-normal">Por favor ingrese sus datos</h1>
                 
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="nombre" placeholder="nombre">
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre">
                     <label for="floatingInput">Nombre de usuario</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="contraseña" placeholder="contraseña">
+                    <input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="contraseña">
                     <label for="floatingPassword">Contraseña</label>
                 </div>
                 

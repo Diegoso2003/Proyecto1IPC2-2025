@@ -4,6 +4,7 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.usuario;
 
+import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.servicios.Login;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -46,8 +49,16 @@ public class ServletLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Login login = new Login();
-        String pagina = login.iniciarSesion(request);
+        try {
+            Login login = new Login();
+            String pagina = login.iniciarSesion(request);
+            request.getRequestDispatcher(pagina)
+                        .forward(request, response);
+        } catch (InvalidDataException ex) {
+            request.setAttribute("mensaje", ex.getMessage());
+            request.getRequestDispatcher("/index.jsp")
+                    .forward(request, response);
+        }
     }
 
     /**
