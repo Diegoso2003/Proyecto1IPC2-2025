@@ -50,11 +50,12 @@ public class Login {
     }
 
     /**
-     * busca un usuario en base con el nombre ingresado para verificar si existe 
+     * busca un usuario en base con el nombre ingresado para verificar si existe
      * o no
+     *
      * @return al usuario con todos sus datos
-     * @throws InvalidDataException en caso de que el usuario con el nombre ingresado
-     * no exista
+     * @throws InvalidDataException en caso de que el usuario con el nombre
+     * ingresado no exista
      */
     private Usuario verificarExistencia() throws InvalidDataException {
         UsuarioDAO user = new UsuarioDAO();
@@ -66,6 +67,7 @@ public class Login {
 
     /**
      * compara la contraseña ingresada con la guardada en la base de datos
+     *
      * @param usuario el usuario con la contraseña hasheada
      * @throws InvalidDataException en caso de que las contraseñas no coincidan
      */
@@ -78,12 +80,13 @@ public class Login {
     }
 
     /**
-     * dependiendo del rol del usuario asi es como se enviara a la pagina para 
+     * dependiendo del rol del usuario asi es como se enviara a la pagina para
      * que pueda cumplir con sus labores
-     * @return 
+     *
+     * @return
      */
     private String evaluarRol() {
-        switch(usuario.getRol()){
+        switch (usuario.getRol()) {
             case ADMINISTRADOR:
                 return "/vista_administrador";
             case ENSAMBLADOR:
@@ -95,6 +98,12 @@ public class Login {
         }
     }
 
+    /**
+     * metodo para verificar que el usuario no haya sido desactivado por algun 
+     * administrador
+     * @param usuario a evaluar estado
+     * @throws InvalidDataException en caso de que el usuario haya sido desactivado
+     */
     private void validarEstado(Usuario usuario) throws InvalidDataException {
         if (!usuario.isActivo()) {
             throw new InvalidDataException("Usuario desactivado");
