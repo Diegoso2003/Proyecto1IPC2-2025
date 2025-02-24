@@ -4,6 +4,8 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
+import com.mycompany.proyecto1ipc2.daos.ComponenteDAO;
+import com.mycompany.proyecto1ipc2.dtos.Componente;
 import com.mycompany.proyecto1ipc2.ensamblaje.CreadorComponente;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import java.io.IOException;
@@ -13,14 +15,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
 /**
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletComponente", urlPatterns = {"/controllers/ensamblador/crear_componente"})
+@WebServlet(name = "ServletComponente", urlPatterns = {"/controllers/ensamblador/componente"})
 public class ServletComponente extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -35,6 +36,11 @@ public class ServletComponente extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ComponenteDAO c = new ComponenteDAO();
+        List<Componente> componentes = c.listarComponentes();
+        request.setAttribute("componentes", componentes);
+        request.getRequestDispatcher("/vista_ensamblador/lista_componentes.jsp")
+                    .forward(request, response);
     }
 
     /**

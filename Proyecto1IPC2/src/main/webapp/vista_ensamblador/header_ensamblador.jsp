@@ -24,7 +24,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/mvc/ServletConsultarRevistas" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/componente" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ensamblaje/listaComponente.svg" width="24" height="24">
                             <br>
                             Administrar Componentes
@@ -45,7 +45,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/mvc/ServletLogout" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/usuario/sesion" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/box-arrow-in-right.svg" width="24" height="24">
                             <br>
                             Cerrar Sesion

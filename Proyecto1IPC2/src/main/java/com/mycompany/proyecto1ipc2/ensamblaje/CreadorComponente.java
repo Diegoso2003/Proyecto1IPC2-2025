@@ -22,6 +22,12 @@ public class CreadorComponente {
         crear();
     }
 
+    /**
+     * recupera y valida los datos ingresados por el usuario para poder crear
+     * el tipo de componente
+     * @param request los datos del componente
+     * @throws InvalidDataException si los datos son invalidos
+     */
     private void obtenerYValidarDatos(HttpServletRequest request) throws InvalidDataException {
         try {
             componente = new Componente();
@@ -36,6 +42,10 @@ public class CreadorComponente {
         }
     }
 
+    /**
+     * se conecta a la base de datos para crear al componente
+     * @throws InvalidDataException 
+     */
     private void crear() throws InvalidDataException {
         ComponenteDAO c = new ComponenteDAO();
         c.CrearComponente(componente);

@@ -12,7 +12,7 @@
         <div class="d-flex justify-content-center align-items-center m-5">
             <div class="card w-50">
             <div class="card-body">
-                <form class="mb-5" method="POST" action="${pageContext.servletContext.contextPath}/controllers/usuario/login">
+                <form class="mb-5" method="POST" action="${pageContext.servletContext.contextPath}/controllers/usuario/sesion">
                 <h1 class="h3 mb-3 fw-normal text-center">Por favor ingrese sus datos</h1>
                 
                 <div class="form-floating mb-3">

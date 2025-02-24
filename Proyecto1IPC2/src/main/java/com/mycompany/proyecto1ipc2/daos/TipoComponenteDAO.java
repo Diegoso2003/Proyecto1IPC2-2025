@@ -17,6 +17,12 @@ public class TipoComponenteDAO {
     
     private Coneccion coneccion;
     
+    /**
+     * recupera el id del tipo de componente en base al nombre que tenga
+     * @param nombre nombre del componente
+     * @return el id el tipo de componeten
+     * @throws SQLException 
+     */
     private int recuperarCodigoTipoComponente(String nombre) throws SQLException {
         String statement = "select idTipoComponente from TipoComponente where nombre = ?";
         try (PreparedStatement st = coneccion.getConeccion().prepareStatement(statement)) {
@@ -28,6 +34,13 @@ public class TipoComponenteDAO {
         }
     }
 
+    /**
+     * crea al tipo de componente con su nombre
+     * @param coneccion coneccion a la base de datos
+     * @param nombre nombre del tipo de componente 
+     * @return el id del tipo de componente
+     * @throws SQLException 
+     */
     public int crearTipoComponente(Coneccion coneccion, String nombre) throws SQLException {
         String statement = "insert ignore into TipoComponente(nombre) value (?)";
         this.coneccion = coneccion;

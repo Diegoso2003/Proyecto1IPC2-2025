@@ -12,6 +12,7 @@ public class Componente {
     private String nombre;
     private int cantidad;
     private double precio;
+    private int id;
 
     public String getNombre() {
         return nombre;
@@ -36,7 +37,19 @@ public class Componente {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     
+    /**
+     * metodo que valida si los datos del componente son validos
+     * @return true si es valido 
+     */
     public boolean esValido(){
         return nombre != null && !nombre.isBlank() && cantidad > 0 && precio > 0;
     }

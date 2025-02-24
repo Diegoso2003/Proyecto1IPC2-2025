@@ -4,14 +4,31 @@
     Author     : rafael-cayax
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="com.mycompany.proyecto1ipc2.dtos.Componente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <jsp:include page="/includes/resources.jsp"/>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <jsp:include page="/vista_ensamblador/header_ensamblador.jsp"/>
+
+        <h1 class="text-center">Lista de componentes</h1>        
+        <c:forEach items="${componentes}" var="componente">
+            <div class="d-flex justify-content-center m-3">
+                <div class="card w-50 m-3">
+                    <div class="card-body">
+                        <p>Nombre del componente: ${componente.nombre}</p>
+                        <p>Precio del componente: ${componente.precio}</p>
+                        <p>Existencia del componente: ${componente.cantidad}</p>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
     </body>
 </html>

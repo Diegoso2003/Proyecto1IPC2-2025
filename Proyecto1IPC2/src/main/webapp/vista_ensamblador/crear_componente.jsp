@@ -16,11 +16,11 @@
         <jsp:include page="/vista_ensamblador/header_ensamblador.jsp"/>
 
         <jsp:include page="/includes/informacion.jsp"/>
-        
+
         <div class="d-flex justify-content-center m-5">
             <div class="card w-50">
                 <div class="card-body">
-                    <form class="mb-5" method="POST" action="${pageContext.servletContext.contextPath}/controllers/ensamblador/crear_componente">
+                    <form class="mb-5" method="POST" action="${pageContext.servletContext.contextPath}/controllers/ensamblador/componente">
                         <h1 class="h3 mb-3 text-center">Crear Componente</h1>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre">

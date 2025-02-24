@@ -12,13 +12,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/controllers/usuario/login"})
-public class ServletLogin extends HttpServlet {
+@WebServlet(name = "ServletSesion", urlPatterns = {"/controllers/usuario/sesion"})
+public class ServletSesion extends HttpServlet {
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -33,7 +34,10 @@ public class ServletLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+        request.getRequestDispatcher("/index.jsp")
+                    .forward(request, response);
     }
 
     /**

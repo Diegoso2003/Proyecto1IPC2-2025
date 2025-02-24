@@ -11,6 +11,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,6 +23,11 @@ public class ComponenteDAO {
     
     private Coneccion coneccion;
 
+    /**
+     * metodo para crear un componente en la base de datos
+     * @param componente datos del componente
+     * @throws InvalidDataException si algun dato del componente no es valido
+     */
     public void CrearComponente(Componente componente) throws InvalidDataException {
         coneccion = new Coneccion();
         String statement = "insert into Componente(idTipo, cantidad, costo) values(?, ?, ?)";
@@ -37,6 +45,14 @@ public class ComponenteDAO {
         }
     }
 
+    /**
+     * verifica que no exista un componente con el mismo nombre y precio ya 
+     * guardado en la base de datos
+     * @param codigo id del tipo de componente
+     * @param precio precio del componente
+     * @throws SQLException
+     * @throws InvalidDataException 
+     */
     private void verificarExistencia(int codigo, double precio) throws SQLException, InvalidDataException {
         String st = "select * from Componente where idTipo = ? and costo = ?";
         try(PreparedStatement st2 = coneccion.getConeccion().prepareStatement(st)){
@@ -47,8 +63,32 @@ public class ComponenteDAO {
                     throw new InvalidDataException("el componente con este nombre y precio ya existe!!!");
                 }
             }
+        }       
+    }
+    
+    /**
+     * metodo para listar todos los componentes existentes en la base de datos
+     * junto con todos sus datos
+     * @return 
+     */
+    public List<Componente> listarComponentes(){
+        List<Componente> componentes = new ArrayList<>();
+        String stament = "select * from TipoComponente inner join Componente on idTipo = idTipoComponente";
+        coneccion = new Coneccion();
+        try (Connection c = coneccion.getConeccion();
+                Statement st = c.createStatement();
+                ResultSet result = st.executeQuery(stament)){
+            while(result.next()){
+                Componente componente = new Componente();
+                componente.setCantidad(result.getInt("cantidad"));
+                componente.setId(result.getInt("idComponente"));
+                componente.setPrecio(result.getDouble("costo"));
+                componente.setNombre(result.getString("nombre"));
+                componentes.add(componente);
+            }
+        } catch (SQLException e) {
         }
-            
+        return componentes;
     }
 
 }
