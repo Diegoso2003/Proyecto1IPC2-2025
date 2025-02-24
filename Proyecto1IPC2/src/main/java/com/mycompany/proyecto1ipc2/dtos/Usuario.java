@@ -48,13 +48,4 @@ public class Usuario {
         this.activo = activo;
     }
     
-    /**
-     * valida que sus datos hayan sido ingresados correctamente
-     * @return false si el nombre o la contraseña son nulos o estan compuestos
-     * de espacios en blanco, true para cualquier otra cosa
-     */
-    public boolean esValido() {
-        return nombre != null && !nombre.isBlank() && contraseña != null && !contraseña.isBlank();
-    }
-    
 }

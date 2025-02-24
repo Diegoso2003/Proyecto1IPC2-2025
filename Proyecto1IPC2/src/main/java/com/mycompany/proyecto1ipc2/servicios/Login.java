@@ -26,13 +26,11 @@ public class Login {
      * @throws InvalidDataException si los datos ingresados son incorrectos
      */
     public String iniciarSesion(HttpServletRequest request) throws InvalidDataException {
-        usuario = new Usuario();
-        usuario.setNombre(request.getParameter("nombre"));
-        usuario.setContraseña(request.getParameter("contraseña"));
-        validarNoNulos();
-        Usuario usuario = verificarExistencia();
-        validarEstado(usuario);
-        compararContraseñas(usuario);
+        String nombre = request.getParameter("nombre");
+        String contraseña = request.getParameter("contraseña");
+        validarNoNulos(nombre, contraseña);
+        usuario = verificarExistencia(nombre.trim());
+        compararContraseñas(contraseña);
         request.getSession().setAttribute("Usuario", usuario.getNombre());
         return evaluarRol();
     }
@@ -43,9 +41,9 @@ public class Login {
      *
      * @throws InvalidDataException
      */
-    private void validarNoNulos() throws InvalidDataException {
-        if (!usuario.esValido()) {
-            throw new InvalidDataException("Debe llenar todos los campos");
+    private void validarNoNulos(String nombre, String contraseña) throws InvalidDataException {
+        if (nombre == null || contraseña == null || nombre.isBlank() || contraseña.isBlank()) {
+            throw new InvalidDataException("Debe Ingresar ambos datos correctamente");
         }
     }
 
@@ -57,12 +55,12 @@ public class Login {
      * @throws InvalidDataException en caso de que el usuario con el nombre
      * ingresado no exista
      */
-    private Usuario verificarExistencia() throws InvalidDataException {
+    private Usuario verificarExistencia(String nombre) throws InvalidDataException {
         UsuarioDAO user = new UsuarioDAO();
-        Optional<Usuario> posibleUsuario = user.obtenerUsuarioPorNombre(this.usuario);
-        Usuario usuario = posibleUsuario.orElseThrow(
+        Optional<Usuario> posibleUsuario = user.obtenerUsuarioPorNombre(nombre);
+        Usuario usuario2 = posibleUsuario.orElseThrow(
                 () -> new InvalidDataException("nombre o contraseña incorrectos"));
-        return usuario;
+        return usuario2;
     }
 
     /**
@@ -71,12 +69,11 @@ public class Login {
      * @param usuario el usuario con la contraseña hasheada
      * @throws InvalidDataException en caso de que las contraseñas no coincidan
      */
-    private void compararContraseñas(Usuario usuario) throws InvalidDataException {
+    private void compararContraseñas(String contraseña) throws InvalidDataException {
         Encriptador e = new Encriptador();
-        if (!e.esValida(this.usuario.getContraseña(), usuario.getContraseña())) {
+        if (!e.esValida(contraseña, usuario.getContraseña())) {
             throw new InvalidDataException("Nombre o Contraseña incorrectos");
         }
-        this.usuario = usuario;
     }
 
     /**
@@ -98,15 +95,4 @@ public class Login {
         }
     }
 
-    /**
-     * metodo para verificar que el usuario no haya sido desactivado por algun 
-     * administrador
-     * @param usuario a evaluar estado
-     * @throws InvalidDataException en caso de que el usuario haya sido desactivado
-     */
-    private void validarEstado(Usuario usuario) throws InvalidDataException {
-        if (!usuario.isActivo()) {
-            throw new InvalidDataException("Usuario desactivado");
-        }
-    }
 }
