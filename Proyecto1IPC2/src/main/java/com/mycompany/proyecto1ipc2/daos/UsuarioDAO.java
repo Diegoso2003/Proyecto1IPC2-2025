@@ -36,12 +36,12 @@ public class UsuarioDAO {
             st.setBoolean(2, true);
             try (ResultSet result = st.executeQuery()) {
                 if (result.next()) {
-                    Usuario usuario2 = new Usuario();
-                    usuario2.setNombre(result.getString("nombre"));
-                    usuario2.setContraseña(result.getString("contraseña"));
-                    usuario2.setRol(EnumRol.valueOf(result.getString("rol")));
-                    usuario2.setActivo(result.getBoolean("estado"));
-                    Optional<Usuario> user = Optional.of(usuario2);
+                    Usuario usuario = new Usuario();
+                    usuario.setNombre(result.getString("nombre"));
+                    usuario.setContraseña(result.getString("contraseña"));
+                    usuario.setRol(EnumRol.valueOf(result.getString("rol")));
+                    usuario.setActivo(result.getBoolean("estado"));
+                    Optional<Usuario> user = Optional.of(usuario);
                     return user;
                 }
             }

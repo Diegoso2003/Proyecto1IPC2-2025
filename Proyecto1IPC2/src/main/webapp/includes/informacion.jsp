@@ -9,10 +9,12 @@
 <%
     if (request.getAttribute("mensaje") != null) {
 %>
-<div class="container mt-5">
-    <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Error!</h4>
-        <p>${mensaje}</p>
+<div class="d-flex justify-content-center m-5">
+    <div class="w-50">
+        <div class="alert alert-danger text-center" role="alert">
+            <h4 class="alert-heading">Error!</h4>
+            <p>${mensaje}</p>
+        </div>
     </div>
 </div>
 <%
@@ -21,10 +23,12 @@
 <%
     if (request.getAttribute("exito") != null) {
 %>
-<div class="container mt-5">
-    <div class="alert alert-info text-center" role="alert">
-        <h4 class="alert-heading">Información</h4>
-        <p>${exito}</p>
+<div class="d-flex justify-content-center m-5">
+    <div class="w-50">
+        <div class="alert alert-info text-center" role="alert">
+            <h4 class="alert-heading">Información</h4>
+            <p>${exito}</p>
+        </div>
     </div>
 </div>
 <%

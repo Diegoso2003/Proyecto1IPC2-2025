@@ -17,7 +17,7 @@
                 </a>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-end my-md-0 text-small text-center">
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/mvc/ServletConsultarCategorias" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/vista_ensamblador/crear_componente.jsp" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ensamblaje/cpu.svg" width="24" height="24">
                             <br>
                             Crear Componente

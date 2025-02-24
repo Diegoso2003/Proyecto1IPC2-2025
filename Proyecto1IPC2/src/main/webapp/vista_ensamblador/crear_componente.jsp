@@ -14,6 +14,9 @@
     </head>
     <body>
         <jsp:include page="/vista_ensamblador/header_ensamblador.jsp"/>
+
+        <jsp:include page="/includes/informacion.jsp"/>
+        
         <div class="d-flex justify-content-center m-5">
             <div class="card w-50">
                 <div class="card-body">
@@ -34,6 +37,9 @@
                         <div class="d-flex justify-content-center">
                             <button class="btn btn-primary w-25 py-2" type="submit">Crear Componente</button>
                         </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </body>
 </html>
