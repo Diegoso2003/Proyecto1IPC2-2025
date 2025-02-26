@@ -4,10 +4,13 @@
  */
 package com.mycompany.proyecto1ipc2.servicios;
 
+import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.daos.UsuarioDAO;
+import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
 import com.mycompany.proyecto1ipc2.dtos.Usuario;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,7 +35,7 @@ public class Login {
         usuario = verificarExistencia(nombre.trim());
         compararContraseñas(contraseña);
         request.getSession().setAttribute("Usuario", usuario.getNombre());
-        return evaluarRol();
+        return evaluarRol(request);
     }
 
     /**
@@ -57,7 +60,7 @@ public class Login {
      */
     private Usuario verificarExistencia(String nombre) throws InvalidDataException {
         UsuarioDAO user = new UsuarioDAO();
-        Optional<Usuario> posibleUsuario = user.obtenerUsuarioPorNombre(nombre);
+        Optional<Usuario> posibleUsuario = user.encontrarPorID(nombre);
         Usuario usuario2 = posibleUsuario.orElseThrow(
                 () -> new InvalidDataException("nombre o contraseña incorrectos"));
         return usuario2;
@@ -82,11 +85,14 @@ public class Login {
      *
      * @return
      */
-    private String evaluarRol() {
+    private String evaluarRol(HttpServletRequest request) {
         switch (usuario.getRol()) {
             case ADMINISTRADOR:
                 return "/vista_administrador";
             case ENSAMBLADOR:
+                TipoComponenteDAO tipo = new TipoComponenteDAO();
+                List<TipoComponente> tipos = tipo.obtenerTodo();
+                request.setAttribute("tipos", tipos);
                 return "/vista_ensamblador/crear_componente.jsp";
             case VENDEDOR:
                 return "/vista_vendedor";

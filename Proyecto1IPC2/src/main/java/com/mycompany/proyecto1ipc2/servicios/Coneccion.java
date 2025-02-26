@@ -17,22 +17,27 @@ public class Coneccion {
     private static final String URL_MYSQL = "jdbc:mysql://localhost:3306/laComputadoraFeliz";
     private static final String USER = "root";
     private static final String PASSWORD = "Programacion";
-    private Connection coneccion;
+    private static Connection coneccion;
 
-    public Coneccion() {
+    static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            coneccion = DriverManager.getConnection(URL_MYSQL, USER, PASSWORD);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("Error al connectar a la DB");
-            e.printStackTrace();
+            throw new RuntimeException("Error al cargar el driver JDBC", e);
         }
     }
-
-    public Connection getConeccion() {
-        return coneccion;
+    
+    private Coneccion() {}
+    
+    public static Connection getConeccion() throws SQLException{
+        if (coneccion == null || coneccion.isClosed()) {
+        synchronized (Coneccion.class) {
+            if (coneccion == null || coneccion.isClosed()) {
+                coneccion = DriverManager.getConnection(URL_MYSQL, USER, PASSWORD);
+            }
+        }
+    }
+    return coneccion;
     }
 
 }

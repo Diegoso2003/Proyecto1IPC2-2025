@@ -31,7 +31,7 @@ public class CreadorComponente {
     private void obtenerYValidarDatos(HttpServletRequest request) throws InvalidDataException {
         try {
             componente = new Componente();
-            componente.setNombre(request.getParameter("nombre").trim());
+            componente.setIdTipo(Integer.parseInt(request.getParameter("tipo")));
             componente.setCantidad(Integer.parseInt(request.getParameter("existencia")));
             componente.setPrecio(Double.parseDouble(request.getParameter("precio")));
             if (!componente.esValido()) {
@@ -48,7 +48,7 @@ public class CreadorComponente {
      */
     private void crear() throws InvalidDataException {
         ComponenteDAO c = new ComponenteDAO();
-        c.CrearComponente(componente);
+        c.insertar(componente);
     }
 
 }

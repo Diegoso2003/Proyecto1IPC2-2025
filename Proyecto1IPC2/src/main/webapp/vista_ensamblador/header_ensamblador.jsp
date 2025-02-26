@@ -17,17 +17,17 @@
                 </a>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-end my-md-0 text-small text-center">
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/vista_ensamblador/crear_componente.jsp" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/tipo_componente" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ensamblaje/cpu.svg" width="24" height="24">
                             <br>
-                            Crear Componente
+                            Gestion Componentes
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/componente" class="nav-link text-white">
-                            <img src="${pageContext.servletContext.contextPath}/svg/ensamblaje/listaComponente.svg" width="24" height="24">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/tipo_componente" class="nav-link text-white">
+                            <img src="${pageContext.servletContext.contextPath}/svg/ensamblaje/device-ssd.svg" width="24" height="24">
                             <br>
-                            Administrar Componentes
+                            Gestion Categorias
                         </a>
                     </li>
                     <li>
@@ -41,7 +41,7 @@
                         <a href="${pageContext.servletContext.contextPath}/vista_editor/perfil.jsp" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ensamblaje/pc-display.svg" width="24" height="24">
                             <br>
-                            Consultar Computadoras
+                            Computadoras ensambladas
                         </a>
                     </li>
                     <li>

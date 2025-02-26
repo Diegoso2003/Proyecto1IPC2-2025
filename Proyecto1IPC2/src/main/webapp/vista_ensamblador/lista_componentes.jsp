@@ -21,11 +21,14 @@
         <h1 class="text-center">Lista de componentes</h1>        
         <c:forEach items="${componentes}" var="componente">
             <div class="d-flex justify-content-center m-3">
-                <div class="card w-50 m-3">
+                <div class="card w-50 m-3 ${componente.cantidad < 10 ? 'alert alert-danger' : 'border-success'}">
                     <div class="card-body">
                         <p>Nombre del componente: ${componente.nombre}</p>
                         <p>Precio del componente: ${componente.precio}</p>
                         <p>Existencia del componente: ${componente.cantidad}</p>
+                        <div class="d-flex justify-content-center">
+                            <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/gestion_componente?id=${componente.id}" class="btn btn-primary w-25 py-2">Gestionar</a>
+                        </div>
                     </div>
                 </div>
             </div>

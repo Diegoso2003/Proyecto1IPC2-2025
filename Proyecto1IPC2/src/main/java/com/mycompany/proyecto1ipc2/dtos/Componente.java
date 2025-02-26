@@ -9,6 +9,7 @@ package com.mycompany.proyecto1ipc2.dtos;
  * @author rafael-cayax
  */
 public class Componente {
+    private int idTipo;
     private String nombre;
     private int cantidad;
     private double precio;
@@ -45,12 +46,20 @@ public class Componente {
     public void setId(int id) {
         this.id = id;
     }
+
+    public int getIdTipo() {
+        return idTipo;
+    }
+
+    public void setIdTipo(int idTipo) {
+        this.idTipo = idTipo;
+    }
     
     /**
      * metodo que valida si los datos del componente son validos
      * @return true si es valido 
      */
     public boolean esValido(){
-        return nombre != null && !nombre.isBlank() && cantidad > 0 && precio > 0;
+        return cantidad > 0 && precio > 0;
     }
 }

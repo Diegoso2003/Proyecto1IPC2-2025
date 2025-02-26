@@ -4,11 +4,8 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
-import com.mycompany.proyecto1ipc2.daos.ComponenteDAO;
-import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.dtos.Componente;
-import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
-import com.mycompany.proyecto1ipc2.ensamblaje.CreadorComponente;
+import com.mycompany.proyecto1ipc2.ensamblaje.AdminComponente;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -16,14 +13,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletComponente", urlPatterns = {"/controllers/ensamblador/componente"})
-public class ServletComponente extends HttpServlet {
+@WebServlet(name = "ServletGestionComponente", urlPatterns = {"/controllers/ensamblador/gestion_componente"})
+public class ServletGestionComponente extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -36,11 +32,16 @@ public class ServletComponente extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ComponenteDAO c = new ComponenteDAO();
-        List<Componente> componentes = c.obtenerTodo();
-        request.setAttribute("componentes", componentes);
-        request.getRequestDispatcher("/vista_ensamblador/lista_componentes.jsp")
+        try {
+            AdminComponente gestor = new AdminComponente();
+            Componente componente = gestor.obtenerDatosComponente(request);
+            request.setAttribute("componente", componente);
+        } catch (InvalidDataException ex) {
+            request.setAttribute("mensaje", ex.getMessage());
+        } finally {
+            request.getRequestDispatcher("/vista_ensamblador/componente_vista.jsp")
                     .forward(request, response);
+        }
     }
 
     /**
@@ -54,19 +55,6 @@ public class ServletComponente extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            CreadorComponente creador = new CreadorComponente();
-            creador.crearComponente(request);
-            request.setAttribute("exito", "componente creado con exito");
-        } catch (InvalidDataException ex) {
-            request.setAttribute("mensaje", ex.getMessage());
-        } finally {
-            TipoComponenteDAO tipo = new TipoComponenteDAO();
-            List<TipoComponente> tipos = tipo.obtenerTodo();
-            request.setAttribute("tipos", tipos);
-            request.getRequestDispatcher("/vista_ensamblador/crear_componente.jsp")
-                    .forward(request, response);
-        }
     }
 
     /**
