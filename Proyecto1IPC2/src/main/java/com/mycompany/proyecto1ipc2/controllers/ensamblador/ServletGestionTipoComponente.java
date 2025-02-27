@@ -4,27 +4,20 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
-import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
-import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
-import com.mycompany.proyecto1ipc2.ensamblaje.TipoComponenteCRUD;
-import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletTipoComponente", urlPatterns = {"/controllers/ensamblador/tipo_componente"})
-public class ServletTipoComponente extends HttpServlet {
-
+@WebServlet(name = "ServletGestionTipoComponente", urlPatterns = {"/ensamblador/gestion_tipo_componente"})
+public class ServletGestionTipoComponente extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -37,11 +30,7 @@ public class ServletTipoComponente extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        TipoComponenteDAO tipo = new TipoComponenteDAO();
-        List<TipoComponente> tipos = tipo.obtenerTodo();
-        request.setAttribute("tipos", tipos);
-        request.getRequestDispatcher("/vista_ensamblador/crear_componente.jsp")
-                .forward(request, response);
+
     }
 
     /**
@@ -55,18 +44,7 @@ public class ServletTipoComponente extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            TipoComponenteCRUD tipo = new TipoComponenteCRUD();
-            tipo.crearTipoComponente(request);
-            request.setAttribute("exito", "tipo de componente creado exitosamente");
-        } catch (InvalidDataException ex) {
-            request.setAttribute("mensaje", ex.getMessage());
-        } finally {
-            TipoComponenteDAO tipo = new TipoComponenteDAO();
-            request.setAttribute("tipos", tipo.obtenerTodo());
-            request.getRequestDispatcher("/vista_ensamblador/tipos_componente.jsp").
-                    forward(request, response);
-        }
+
     }
 
     /**

@@ -9,19 +9,10 @@ package com.mycompany.proyecto1ipc2.dtos;
  * @author rafael-cayax
  */
 public class Componente {
-    private int idTipo;
-    private String nombre;
     private int cantidad;
     private double precio;
     private int id;
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    private TipoComponente tipo;
 
     public int getCantidad() {
         return cantidad;
@@ -47,12 +38,12 @@ public class Componente {
         this.id = id;
     }
 
-    public int getIdTipo() {
-        return idTipo;
+    public TipoComponente getTipo() {
+        return tipo;
     }
 
-    public void setIdTipo(int idTipo) {
-        this.idTipo = idTipo;
+    public void setTipo(TipoComponente tipo) {
+        this.tipo = tipo;
     }
     
     /**
@@ -60,6 +51,6 @@ public class Componente {
      * @return true si es valido 
      */
     public boolean esValido(){
-        return cantidad > 0 && precio > 0;
+        return cantidad >= 0 && precio > 0;
     }
 }

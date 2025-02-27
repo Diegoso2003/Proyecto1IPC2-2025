@@ -7,8 +7,8 @@ package com.mycompany.proyecto1ipc2.ensamblaje;
 import com.mycompany.proyecto1ipc2.daos.ComponenteDAO;
 import com.mycompany.proyecto1ipc2.dtos.Componente;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
+import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -26,13 +26,14 @@ public class AdminComponente {
      * @throws InvalidDataException en caso de no encontrar el componente o enviar
      * un id invalido
      */
-    public Componente obtenerDatosComponente(HttpServletRequest request) throws InvalidDataException {
+    public Componente obtenerDatosComponente(HttpServletRequest request) throws InvalidDataException, NotFoundException {
         try {
             ComponenteDAO c = new ComponenteDAO();
             int codigo = Integer.parseInt(request.getParameter("id"));
             Optional<Componente> posibleComponente = c.encontrarPorID(codigo);
-            componente = posibleComponente.orElseThrow();
-        } catch (NumberFormatException | NullPointerException | NoSuchElementException e) {
+            componente = posibleComponente.orElseThrow(() -> new NotFoundException
+        ("componente con ID: '" + codigo + "' no encontrado"));
+        } catch (NumberFormatException | NullPointerException e) {
             throw new InvalidDataException("id no valido");
         }
         return componente;

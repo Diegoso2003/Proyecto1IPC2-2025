@@ -46,7 +46,7 @@
                         </div>
                     </form>
                     <div class="d-flex justify-content-center">
-                        <a class="btn btn-info w-25 py-2" href="${pageContext.servletContext.contextPath}/controllers/ensamblador/componentes">Ver Componentes</a>
+                        <a class="btn btn-info w-25 py-2" href="${pageContext.servletContext.contextPath}/controllers/ensamblador/componente">Ver Componentes</a>
                     </div>
                 </div>
             </div>

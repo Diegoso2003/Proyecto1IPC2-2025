@@ -4,9 +4,12 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
+import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.dtos.Componente;
 import com.mycompany.proyecto1ipc2.ensamblaje.AdminComponente;
+import com.mycompany.proyecto1ipc2.ensamblaje.CreadorComponente;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
+import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -36,7 +39,9 @@ public class ServletGestionComponente extends HttpServlet {
             AdminComponente gestor = new AdminComponente();
             Componente componente = gestor.obtenerDatosComponente(request);
             request.setAttribute("componente", componente);
-        } catch (InvalidDataException ex) {
+            TipoComponenteDAO tipo = new TipoComponenteDAO();
+            request.setAttribute("tipos", tipo.obtenerTodo());
+        } catch (InvalidDataException | NotFoundException ex) {
             request.setAttribute("mensaje", ex.getMessage());
         } finally {
             request.getRequestDispatcher("/vista_ensamblador/componente_vista.jsp")
@@ -55,6 +60,18 @@ public class ServletGestionComponente extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        CreadorComponente actu = new CreadorComponente();
+        try {
+            actu.actualizarComponente(request);
+            TipoComponenteDAO tipo = new TipoComponenteDAO();
+            request.setAttribute("tipos", tipo.obtenerTodo());
+            request.setAttribute("exito", "componente actualizado correctamente");
+        } catch (InvalidDataException | NotFoundException ex) {
+            request.setAttribute("mensaje", ex.getMessage());
+        } finally{
+            request.getRequestDispatcher("/vista_ensamblador/componente_vista.jsp")
+                    .forward(request, response);
+        }
     }
 
     /**

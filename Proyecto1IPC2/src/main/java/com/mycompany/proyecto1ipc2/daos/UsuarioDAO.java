@@ -7,6 +7,7 @@ package com.mycompany.proyecto1ipc2.daos;
 import com.mycompany.proyecto1ipc2.dtos.Usuario;
 import com.mycompany.proyecto1ipc2.enums.EnumRol;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
+import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import com.mycompany.proyecto1ipc2.servicios.Coneccion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -69,7 +70,7 @@ public class UsuarioDAO implements BDCRUD<Usuario, String>{
     }
 
     @Override
-    public void eliminar(String id) throws InvalidDataException {
+    public void eliminar(String id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

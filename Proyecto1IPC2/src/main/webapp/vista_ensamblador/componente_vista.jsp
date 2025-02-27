@@ -4,7 +4,8 @@
     Author     : rafael-cayax
 --%>
 
-<%@page import="com.mycompany.proyecto1ipc2.dtos.Componente"%>
+<%@page import="java.util.List"%>
+<%@page import="com.mycompany.proyecto1ipc2.dtos.TipoComponente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
@@ -23,11 +24,18 @@
             <div class="d-flex justify-content-center m-5">
                 <div class="card w-50">
                     <div class="card-body">
-                        <form class="mb-5" method="POST" action="${pageContext.servletContext.contextPath}/controllers/ensamblador/componente">
+                        <form class="mb-5" method="POST" action="${pageContext.servletContext.contextPath}/controllers/ensamblador/gestion_componente">
                             <h1 class="h3 mb-3 text-center">Actualizar Componente</h1>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" value="${componente.nombre}" id="nombre" name="nombre" placeholder="nombre">
-                                <label for="floatingInput">Nombre</label>
+                                <select class="form-select" id="validationCustom04" name="tipo">
+                                    <option value="${componente.tipo.id}">${componente.tipo.nombre}</option>
+                                    <c:forEach items="${tipos}" var="tipo">
+                                        <c:if test="${tipo.id != componente.tipo.id}">
+                                            <option value="${tipo.id}">${tipo.nombre}</option>
+                                        </c:if>
+                                    </c:forEach>
+                                </select>
+                                <label for="floatingInput">Categoria</label>
                             </div>
                             <div class="form-floating mb-3">
                                 <input type="number" class="form-control" value="${componente.precio}" id="precio" name="precio" placeholder="precio">
