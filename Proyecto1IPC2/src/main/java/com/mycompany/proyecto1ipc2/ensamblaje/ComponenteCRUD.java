@@ -4,6 +4,7 @@
  */
 package com.mycompany.proyecto1ipc2.ensamblaje;
 
+import com.mycompany.proyecto1ipc2.CRUD;
 import com.mycompany.proyecto1ipc2.daos.ComponenteDAO;
 import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.dtos.Componente;
@@ -11,21 +12,17 @@ import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Optional;
 
 /**
  *
  * @author rafael-cayax
  */
-public class CreadorComponente {
+public class ComponenteCRUD extends CRUD<Componente>{
 
-    private Componente componente;
-    private boolean actu = false;
-
-    public void crearComponente(HttpServletRequest request) throws InvalidDataException {
-        obtenerYValidarDatos(request);
-        crear();
+    public ComponenteCRUD() {
+        repositorio = new ComponenteDAO();
+        nombre = "Componente";
     }
 
     /**
@@ -34,18 +31,19 @@ public class CreadorComponente {
      * @param request los datos del componente
      * @throws InvalidDataException si los datos son invalidos
      */
-    private void obtenerYValidarDatos(HttpServletRequest request) throws InvalidDataException {
+    @Override
+    protected void obtenerYValidarDatos(HttpServletRequest request) throws InvalidDataException {
         try {
-            componente = new Componente();
+            entidad = new Componente();
             TipoComponente tipo = new TipoComponente();
             tipo.setId(Integer.parseInt(request.getParameter("tipo")));
-            componente.setTipo(tipo);
-            componente.setCantidad(Integer.parseInt(request.getParameter("existencia")));
-            componente.setPrecio(Double.parseDouble(request.getParameter("precio")));
+            entidad.setTipo(tipo);
+            entidad.setCantidad(Integer.parseInt(request.getParameter("existencia")));
+            entidad.setPrecio(Double.parseDouble(request.getParameter("precio")));
             if (actu) {
-                componente.setId(Integer.parseInt(request.getParameter("id")));
+                entidad.setId(Integer.parseInt(request.getParameter("id")));
             }
-            if (!componente.esValido()) {
+            if (!entidad.esValido()) {
                 throw new InvalidDataException();
             }
         } catch (NumberFormatException | NullPointerException | InvalidDataException e) {
@@ -53,24 +51,13 @@ public class CreadorComponente {
         }
     }
 
-    /**
-     * se conecta a la base de datos para crear al componente
-     * @throws InvalidDataException 
-     */
-    private void crear() throws InvalidDataException {
-        ComponenteDAO c = new ComponenteDAO();
-        c.insertar(componente);
-    }
-
-    public void actualizarComponente(HttpServletRequest request) throws InvalidDataException, NotFoundException {
-        actu = true;
-        obtenerYValidarDatos(request);
-        ComponenteDAO c = new ComponenteDAO();
-        c.actualizar(componente);
+    @Override
+    public Componente actualizarEntidad(HttpServletRequest request) throws InvalidDataException, NotFoundException {
+        super.actualizarEntidad(request);
         TipoComponenteDAO tipo = new TipoComponenteDAO();
-        Optional<TipoComponente> tipoC = tipo.encontrarPorID(componente.getTipo().getId());
-        componente.setTipo(tipoC.get());
-        request.setAttribute("componente", componente);
+        Optional<TipoComponente> tipoC = tipo.encontrarPorID(entidad.getTipo().getId());
+        entidad.setTipo(tipoC.get());
+        return entidad;
     }
-
+    
 }

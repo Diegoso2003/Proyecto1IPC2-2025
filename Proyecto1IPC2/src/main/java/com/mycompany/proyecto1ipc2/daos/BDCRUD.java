@@ -15,11 +15,22 @@ import java.util.Optional;
  * @param <T> clase de la entidad
  * @param <ID> tipo de dato para el id
  */
-public interface BDCRUD<T, ID> {
+public abstract class BDCRUD<T, ID> {
+
+    protected boolean ordenar = false;
+    protected String orden;
+    public abstract void insertar(T entidad) throws InvalidDataException;
+    public abstract Optional<T> encontrarPorID(ID id) throws InvalidDataException;
+    public abstract List<T> obtenerTodo();
+    public abstract void actualizar(T entidad) throws InvalidDataException, NotFoundException;
+    public abstract void eliminar(ID id) throws NotFoundException;
+
+    public void setOrdenar(boolean orden) {
+        this.ordenar = orden;
+    }
+
+    public void setOrden(String orden) {
+        this.orden = orden;
+    }
     
-    public void insertar(T entidad) throws InvalidDataException;
-    public Optional<T> encontrarPorID(ID id) throws InvalidDataException;
-    public List<T> obtenerTodo();
-    public void actualizar(T entidad) throws InvalidDataException, NotFoundException;
-    public void eliminar(ID id) throws NotFoundException;
 }

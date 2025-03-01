@@ -38,16 +38,17 @@
                                 <label for="floatingInput">Categoria</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="number" class="form-control" value="${componente.precio}" id="precio" name="precio" placeholder="precio">
+                                <input type="number" class="form-control" value="${componente.precio}" id="precio" name="precio" step="0.01" placeholder="precio">
                                 <label for="floatingInput">Precio</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="existencia" value="${componente.cantidad}" name="existencia" placeholder="existencia">
+                                <input type="number" class="form-control" id="existencia" value="${componente.cantidad}" name="existencia" placeholder="existencia">
                                 <label for="floatingInput">Existencia</label>
                             </div>
                             <input type="hidden" class="form-control" value="${componente.id}" id="id" name="id">
                             <div class="d-flex justify-content-center">
-                                <button class="btn btn-primary w-25 py-2" type="submit">Actualizar</button>
+                                <a class="btn btn-secondary w-25 py-2 m-3" href="${pageContext.servletContext.contextPath}/controllers/ensamblador/componente">Cancelar</a>
+                                <button class="btn btn-primary w-25 py-2 m-3" type="submit">Actualizar</button>
                             </div>
                         </form>
                     </div>

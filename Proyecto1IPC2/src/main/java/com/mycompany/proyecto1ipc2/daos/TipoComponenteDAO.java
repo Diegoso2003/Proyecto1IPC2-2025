@@ -21,20 +21,21 @@ import java.util.Optional;
  *
  * @author rafael-cayax
  */
-public class TipoComponenteDAO implements BDCRUD<TipoComponente, Integer>{
+public class TipoComponenteDAO extends BDCRUD<TipoComponente, Integer>{
     
     @Override
     public void insertar(TipoComponente entidad) throws InvalidDataException {
-        String statement = "INSERT ignore into TipoComponente(nombre) value(?)";
+        String statement = "INSERT INTO TipoComponente(nombre) value(?)";
         try (Connection coneccion = Coneccion.getConeccion();
                 PreparedStatement st = coneccion.prepareStatement(statement)){
-            st.setString(1, entidad.getNombre());
-            if (st.executeUpdate() <= 0) {
-                throw new InvalidDataException("el tipo de componente: '" + entidad.getNombre()
-                +"' ya esta registrado en el sistema");
-            }
+            st.setString(1, entidad.getNombre().trim().replaceAll("\\s+", " "));
+            st.executeUpdate();
         } catch (SQLException e) {
-            throw new InvalidDataException("el nombre: '" + entidad.getNombre() + "' no es valido");
+            if (e.getErrorCode() == 1062) {
+                throw new InvalidDataException("tipo de componente con nombre: '" + entidad.getNombre() + ""
+                        + "' ya esta registrado en el sistema");
+            }
+            throw new InvalidDataException("Ingrese un nombre valido");
         }
     }
 
@@ -78,12 +79,37 @@ public class TipoComponenteDAO implements BDCRUD<TipoComponente, Integer>{
 
     @Override
     public void actualizar(TipoComponente entidad) throws InvalidDataException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String statement = "UPDATE TipoComponente SET nombre = ? WHERE idTipoComponente = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement st = coneccion.prepareStatement(statement)){
+            st.setString(1, entidad.getNombre().trim().replaceAll("\\s+", " "));
+            st.setInt(2, entidad.getId());
+            if (st.executeUpdate() <= 0) {
+                throw new InvalidDataException("tipo de componente con id: '" +  entidad.getId() + "'"
+                        + " no encontrado");
+            }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                throw new InvalidDataException("tipo de componente con nombre: '" + entidad.getNombre() + ""
+                        + "' ya esta registrado en el sistema");
+            }
+            throw new InvalidDataException("Ingrese un nombre valido");
+        }
     }
 
     @Override
     public void eliminar(Integer id) throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String statement = "DELETE FROM TipoComponente WHERE idTipoComponente = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement st = coneccion.prepareStatement(statement)){
+            st.setInt(1, id);
+            if (st.executeUpdate() <= 0) {
+                throw new NotFoundException("No se encontro el componente con el id: "
+                        + "'" + id + "'");
+            }
+        } catch (SQLException e) {
+            throw new NotFoundException("error al conectar con la base de datos");
+        }
     }
     
 }

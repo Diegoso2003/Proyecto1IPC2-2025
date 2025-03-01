@@ -6,9 +6,7 @@ package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
 import com.mycompany.proyecto1ipc2.daos.ComponenteDAO;
 import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
-import com.mycompany.proyecto1ipc2.dtos.Componente;
-import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
-import com.mycompany.proyecto1ipc2.ensamblaje.CreadorComponente;
+import com.mycompany.proyecto1ipc2.ensamblaje.ComponenteCRUD;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -16,7 +14,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
@@ -36,12 +33,12 @@ public class ServletComponente extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ComponenteDAO c = new ComponenteDAO();
-        List<Componente> componentes = c.obtenerTodo();
-        request.setAttribute("componentes", componentes);
+        TipoComponenteDAO tipo = new TipoComponenteDAO();
+        ComponenteDAO componente = new ComponenteDAO();
+        request.setAttribute("tipos", tipo.obtenerTodo());
+        request.setAttribute("componentes", componente.obtenerTodo());
         request.getRequestDispatcher("/vista_ensamblador/lista_componentes.jsp")
-                    .forward(request, response);
-    }
+                .forward(request, response);}
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -55,16 +52,17 @@ public class ServletComponente extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            CreadorComponente creador = new CreadorComponente();
-            creador.crearComponente(request);
+            ComponenteCRUD creador = new ComponenteCRUD();
+            creador.crearEntidad(request);
             request.setAttribute("exito", "componente creado con exito");
         } catch (InvalidDataException ex) {
             request.setAttribute("mensaje", ex.getMessage());
         } finally {
             TipoComponenteDAO tipo = new TipoComponenteDAO();
-            List<TipoComponente> tipos = tipo.obtenerTodo();
-            request.setAttribute("tipos", tipos);
-            request.getRequestDispatcher("/vista_ensamblador/crear_componente.jsp")
+            ComponenteDAO componente = new ComponenteDAO();
+            request.setAttribute("tipos", tipo.obtenerTodo());
+            request.setAttribute("componentes", componente.obtenerTodo());
+            request.getRequestDispatcher("/vista_ensamblador/lista_componentes.jsp")
                     .forward(request, response);
         }
     }

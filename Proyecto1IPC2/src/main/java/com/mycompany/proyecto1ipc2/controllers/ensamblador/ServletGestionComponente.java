@@ -6,8 +6,7 @@ package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
 import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.dtos.Componente;
-import com.mycompany.proyecto1ipc2.ensamblaje.AdminComponente;
-import com.mycompany.proyecto1ipc2.ensamblaje.CreadorComponente;
+import com.mycompany.proyecto1ipc2.ensamblaje.ComponenteCRUD;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import java.io.IOException;
@@ -36,8 +35,8 @@ public class ServletGestionComponente extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            AdminComponente gestor = new AdminComponente();
-            Componente componente = gestor.obtenerDatosComponente(request);
+            ComponenteCRUD gestor = new ComponenteCRUD();
+            Componente componente = gestor.obtenerEntidad(request);
             request.setAttribute("componente", componente);
             TipoComponenteDAO tipo = new TipoComponenteDAO();
             request.setAttribute("tipos", tipo.obtenerTodo());
@@ -60,10 +59,11 @@ public class ServletGestionComponente extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CreadorComponente actu = new CreadorComponente();
+        ComponenteCRUD actu = new ComponenteCRUD();
         try {
-            actu.actualizarComponente(request);
+            Componente componente = actu.actualizarEntidad(request);
             TipoComponenteDAO tipo = new TipoComponenteDAO();
+             request.setAttribute("componente", componente);
             request.setAttribute("tipos", tipo.obtenerTodo());
             request.setAttribute("exito", "componente actualizado correctamente");
         } catch (InvalidDataException | NotFoundException ex) {

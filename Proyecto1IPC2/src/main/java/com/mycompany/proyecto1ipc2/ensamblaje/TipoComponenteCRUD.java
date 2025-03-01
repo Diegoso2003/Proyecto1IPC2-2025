@@ -4,6 +4,7 @@
  */
 package com.mycompany.proyecto1ipc2.ensamblaje;
 
+import com.mycompany.proyecto1ipc2.CRUD;
 import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
@@ -13,26 +14,23 @@ import jakarta.servlet.http.HttpServletRequest;
  *
  * @author rafael-cayax
  */
-public class TipoComponenteCRUD {
-    private TipoComponente tipo;
-    private TipoComponenteDAO repositorio;
-    
-    public void crearTipoComponente(HttpServletRequest request) throws InvalidDataException {
-        validarYObtenerDatos(request);
-        crear();
+public class TipoComponenteCRUD extends CRUD<TipoComponente>{
+
+    public TipoComponenteCRUD() {
+        nombre = "tipo de componente";
+        repositorio = new TipoComponenteDAO();
     }
 
-    private void validarYObtenerDatos(HttpServletRequest request) throws InvalidDataException {
-        tipo = new TipoComponente();
-        tipo.setNombre(request.getParameter("nombre"));
-        if (tipo.getNombre() == null) {
+    @Override
+    protected void obtenerYValidarDatos(HttpServletRequest request) throws InvalidDataException {
+        entidad = new TipoComponente();
+        entidad.setNombre(request.getParameter("nombre"));
+        if (!entidad.esValido()) {
             throw new InvalidDataException("ingrese un nombre valido");
+        }
+        if (actu) {
+            entidad.setId(obtenerID(request));
         }
     }
 
-    private void crear() throws InvalidDataException {
-        repositorio = new TipoComponenteDAO();
-        repositorio.insertar(tipo);
-    }
-    
 }

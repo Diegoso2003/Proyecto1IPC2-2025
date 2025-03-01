@@ -5,7 +5,6 @@
 package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
 import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
-import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
 import com.mycompany.proyecto1ipc2.ensamblaje.TipoComponenteCRUD;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import java.io.IOException;
@@ -14,9 +13,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -38,9 +34,8 @@ public class ServletTipoComponente extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         TipoComponenteDAO tipo = new TipoComponenteDAO();
-        List<TipoComponente> tipos = tipo.obtenerTodo();
-        request.setAttribute("tipos", tipos);
-        request.getRequestDispatcher("/vista_ensamblador/crear_componente.jsp")
+        request.setAttribute("tipos", tipo.obtenerTodo());
+        request.getRequestDispatcher("/vista_ensamblador/tipos_componente.jsp")
                 .forward(request, response);
     }
 
@@ -57,7 +52,7 @@ public class ServletTipoComponente extends HttpServlet {
             throws ServletException, IOException {
         try {
             TipoComponenteCRUD tipo = new TipoComponenteCRUD();
-            tipo.crearTipoComponente(request);
+            tipo.crearEntidad(request);
             request.setAttribute("exito", "tipo de componente creado exitosamente");
         } catch (InvalidDataException ex) {
             request.setAttribute("mensaje", ex.getMessage());

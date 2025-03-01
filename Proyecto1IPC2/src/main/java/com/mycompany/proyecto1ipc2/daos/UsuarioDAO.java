@@ -20,7 +20,7 @@ import java.util.Optional;
  *
  * @author rafael-cayax
  */
-public class UsuarioDAO implements BDCRUD<Usuario, String>{
+public class UsuarioDAO extends BDCRUD<Usuario, String>{
 
     /**
      * obtiene todos los datos del usuario usando el nombre del mismo, en caso 

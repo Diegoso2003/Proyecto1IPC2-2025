@@ -58,11 +58,34 @@
                         <p>Nombre del tipo componente: ${tipo.nombre}</p>
                         <p>ID del tipo de componente: ${tipo.id}</p>
                         <div class="d-flex justify-content-center">
-                            <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/gestion_componente?id=${tipo.id}" class="btn btn-primary w-25 py-2">Actualizar</a>
+                            <button type="button" class="btn btn-danger w-25 py-2 m-3" data-bs-toggle="modal" data-bs-target="#exampleModal${tipo.id}">
+                                Eliminar
+                            </button>
+                            <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/gestion_tipo_componente?id=${tipo.id}" class="btn btn-primary w-25 py-2 m-3">Actualizar</a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="exampleModal${tipo.id}" tabindex="-1" aria-labelledby="exampleModal${tipo.id}Label" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModal${tipo.id}Label">Confirmacion</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>¿Esta seguro de eleminar el tipo de componente? con: </p>
+                      <p>Nombre: ${tipo.nombre}</p>
+                        <p>ID: ${tipo.id}</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/delete_tipo?id=${tipo.id}" class="btn btn-warning">Confirmar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </c:forEach>
     </body>
 </html>

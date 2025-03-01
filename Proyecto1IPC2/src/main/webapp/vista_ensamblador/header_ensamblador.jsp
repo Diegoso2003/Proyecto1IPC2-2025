@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<header>
+<header class="sticky-top">
     <div class="px-3 py-2 bg-primary border-bottom">
         <div class="container">
 
@@ -17,21 +17,21 @@
                 </a>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-end my-md-0 text-small text-center">
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/tipo_componente" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/componente" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ensamblaje/cpu.svg" width="24" height="24">
                             <br>
                             Gestion Componentes
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/obtener_tipos" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/tipo_componente" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ensamblaje/device-ssd.svg" width="24" height="24">
                             <br>
                             Gestion Categorias
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/vista_editor/reportes.jsp" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/tipo_computadora?area=ensamblaje" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ensamblaje/motherboard.svg" width="24" height="24">
                             <br>
                             Ensamblar Computadora

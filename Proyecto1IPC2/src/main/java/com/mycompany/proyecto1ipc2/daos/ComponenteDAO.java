@@ -22,7 +22,7 @@ import java.util.Optional;
  *
  * @author rafael-cayax
  */
-public class ComponenteDAO implements BDCRUD<Componente, Integer>{
+public class ComponenteDAO extends BDCRUD<Componente, Integer>{
     private boolean actu = false;
 
     /**
@@ -85,10 +85,11 @@ public class ComponenteDAO implements BDCRUD<Componente, Integer>{
     @Override
     public List<Componente> obtenerTodo() {
         List<Componente> componentes = new ArrayList<>();
-        String stament = "select * from TipoComponente inner join Componente on idTipo = idTipoComponente";
+        String statement = "select * from TipoComponente inner join Componente on idTipo = idTipoComponente";
+        statement += ordenar ? " ORDER BY cantidad " + orden: "";
         try (Connection c = Coneccion.getConeccion(); 
                 Statement st = c.createStatement(); 
-                ResultSet result = st.executeQuery(stament)) {
+                ResultSet result = st.executeQuery(statement)) {
             while (result.next()) {
                 Componente componente = new Componente();
                 componente.setCantidad(result.getInt("cantidad"));
@@ -157,7 +158,16 @@ public class ComponenteDAO implements BDCRUD<Componente, Integer>{
 
     @Override
     public void eliminar(Integer id) throws NotFoundException{
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String statement = "DELETE FROM Componente WHERE idComponente = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement st = coneccion.prepareStatement(statement)){
+            st.setInt(1, id);
+            if (st.executeUpdate() <= 0) {
+                throw new NotFoundException("componente con el id: '" + id + "' no encontrado");
+            }
+        } catch (SQLException e) {
+            throw new NotFoundException("Ingrese correctamente los datos" + e);
+        }
     }
 
 }

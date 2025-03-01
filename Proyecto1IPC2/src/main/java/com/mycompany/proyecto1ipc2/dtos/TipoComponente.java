@@ -26,6 +26,10 @@ public class TipoComponente {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    } 
+    }
+    
+    public boolean esValido(){
+        return nombre != null && !nombre.isBlank();
+    }
     
 }

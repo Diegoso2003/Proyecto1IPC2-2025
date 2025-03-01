@@ -4,13 +4,12 @@
  */
 package com.mycompany.proyecto1ipc2.servicios;
 
+import com.mycompany.proyecto1ipc2.daos.ComponenteDAO;
 import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.daos.UsuarioDAO;
-import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
 import com.mycompany.proyecto1ipc2.dtos.Usuario;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -91,9 +90,10 @@ public class Login {
                 return "/vista_administrador";
             case ENSAMBLADOR:
                 TipoComponenteDAO tipo = new TipoComponenteDAO();
-                List<TipoComponente> tipos = tipo.obtenerTodo();
-                request.setAttribute("tipos", tipos);
-                return "/vista_ensamblador/crear_componente.jsp";
+                ComponenteDAO componentes = new ComponenteDAO();
+                request.setAttribute("tipos", tipo.obtenerTodo());
+                request.setAttribute("componentes", componentes.obtenerTodo());
+                return "/vista_ensamblador/lista_componentes.jsp";
             case VENDEDOR:
                 return "/vista_vendedor";
             default:
