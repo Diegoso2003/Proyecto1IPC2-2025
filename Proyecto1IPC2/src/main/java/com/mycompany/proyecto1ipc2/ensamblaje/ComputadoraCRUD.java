@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -155,4 +157,14 @@ public class ComputadoraCRUD extends CRUD<Computadora>{
             }
         }
     }
+
+    public List<Computadora> obtenerComputadoras(HttpServletRequest request) {
+        try {
+            return obtenerPorOrden(request);
+        } catch (InvalidDataException ex) {
+            return repositorio.obtenerTodo();
+        }
+    }
+    
+    
 }

@@ -38,7 +38,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/vista_editor/perfil.jsp" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/computadora" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ensamblaje/pc-display.svg" width="24" height="24">
                             <br>
                             Computadoras ensambladas

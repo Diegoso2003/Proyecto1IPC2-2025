@@ -6,6 +6,8 @@ package com.mycompany.proyecto1ipc2.daos.ensamblador;
 
 import com.mycompany.proyecto1ipc2.daos.BDCRUD;
 import com.mycompany.proyecto1ipc2.dtos.ensamblador.Computadora;
+import com.mycompany.proyecto1ipc2.dtos.ensamblador.TipoComputadora;
+import com.mycompany.proyecto1ipc2.enums.EnumEstadoCompu;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import com.mycompany.proyecto1ipc2.servicios.Coneccion;
@@ -15,7 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +55,28 @@ public class ComputadoraDAO extends BDCRUD<Computadora, Integer>{
 
     @Override
     public List<Computadora> obtenerTodo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Computadora> computadoras = new ArrayList<>();
+        String statement = "SELECT * FROM Computadora c INNER JOIN TipoComputadora t ON c.idTipo = t.idTipo";
+        statement += ordenar ? " ORDER BY fechaEnsamblaje " + orden: "";
+        try (Connection c = Coneccion.getConeccion(); 
+                Statement st = c.createStatement(); 
+                ResultSet result = st.executeQuery(statement)) {
+            while (result.next()) {
+                Computadora computadora = new Computadora();
+                computadora.setIdComputadora(result.getInt(1));
+                computadora.setFechaEnsamblaje(result.getDate(2).toLocalDate());
+                computadora.setEnsamblador(result.getString(3));
+                computadora.setPrecioFabricacion(result.getDouble(4));
+                TipoComputadora tipo = new TipoComputadora();
+                tipo.setIdTipo(6);
+                tipo.setNombre(result.getString(9));
+                computadora.setTipo(tipo);
+                computadora.setEstado(EnumEstadoCompu.valueOf(result.getString(7)));
+                computadoras.add(computadora);
+            }
+        } catch (SQLException e) {
+        }
+        return computadoras;
     }
 
     @Override
