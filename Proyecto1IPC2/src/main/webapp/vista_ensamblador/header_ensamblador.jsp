@@ -5,7 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <header class="sticky-top">
     <div class="px-3 py-2 bg-primary border-bottom">
         <div class="container">

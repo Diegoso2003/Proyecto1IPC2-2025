@@ -95,7 +95,7 @@ public class Login {
                 request.setAttribute("componentes", componentes.obtenerTodo());
                 return "/vista_ensamblador/lista_componentes.jsp";
             case VENDEDOR:
-                return "/vista_vendedor";
+                return "/vista_ventas/entrada_nit.jsp";
             default:
                 return null;
         }
