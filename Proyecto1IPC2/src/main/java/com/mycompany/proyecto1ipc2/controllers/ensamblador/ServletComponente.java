@@ -4,8 +4,8 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
-import com.mycompany.proyecto1ipc2.daos.ComponenteDAO;
-import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
+import com.mycompany.proyecto1ipc2.daos.ensamblador.ComponenteDAO;
+import com.mycompany.proyecto1ipc2.daos.ensamblador.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.ensamblaje.ComponenteCRUD;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import java.io.IOException;

@@ -4,7 +4,7 @@
     Author     : rafael-cayax
 --%>
 <%@page import="java.util.List"%>
-<%@page import="com.mycompany.proyecto1ipc2.dtos.TipoComponente"%>
+<%@page import="com.mycompany.proyecto1ipc2.dtos.ensamblador.TipoComponente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
@@ -53,7 +53,7 @@
 
         <c:forEach items="${tipos}" var="tipo">
             <div class="d-flex justify-content-center m-3">
-                <div class="card w-50 m-3 ${componente.cantidad < 10 ? 'alert alert-danger' : 'border-success'}">
+                <div class="card w-50 m-3 border-info">
                     <div class="card-body">
                         <p>Nombre del tipo componente: ${tipo.nombre}</p>
                         <p>ID del tipo de componente: ${tipo.id}</p>

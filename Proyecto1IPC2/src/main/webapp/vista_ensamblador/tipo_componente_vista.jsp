@@ -3,7 +3,7 @@
     Created on : 27 feb 2025, 21:18:24
     Author     : rafael-cayax
 --%>
-<%@page import="com.mycompany.proyecto1ipc2.dtos.TipoComponente"%>
+<%@page import="com.mycompany.proyecto1ipc2.dtos.ensamblador.TipoComponente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>

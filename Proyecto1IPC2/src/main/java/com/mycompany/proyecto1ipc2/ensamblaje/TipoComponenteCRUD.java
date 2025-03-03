@@ -5,8 +5,8 @@
 package com.mycompany.proyecto1ipc2.ensamblaje;
 
 import com.mycompany.proyecto1ipc2.CRUD;
-import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
-import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
+import com.mycompany.proyecto1ipc2.daos.ensamblador.TipoComponenteDAO;
+import com.mycompany.proyecto1ipc2.dtos.ensamblador.TipoComponente;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import jakarta.servlet.http.HttpServletRequest;
 

@@ -4,7 +4,7 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
-import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
+import com.mycompany.proyecto1ipc2.dtos.ensamblador.TipoComponente;
 import com.mycompany.proyecto1ipc2.ensamblaje.TipoComponenteCRUD;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;

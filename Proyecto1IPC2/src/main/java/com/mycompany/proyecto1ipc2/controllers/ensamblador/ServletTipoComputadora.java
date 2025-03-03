@@ -4,10 +4,8 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
-import com.mycompany.proyecto1ipc2.daos.ensamblador.ComponenteDAO;
-import com.mycompany.proyecto1ipc2.daos.ensamblador.TipoComponenteDAO;
-import com.mycompany.proyecto1ipc2.ensamblaje.ComponenteCRUD;
-import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
+import com.mycompany.proyecto1ipc2.daos.ensamblador.TipoComputadoraDAO;
+import com.mycompany.proyecto1ipc2.ensamblaje.TipoComputadoraLista;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,16 +13,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletOrdenComponente", urlPatterns = {"/controllers/ensamblador/orden_componente"})
-public class ServletOrdenComponente extends HttpServlet {
-
+@WebServlet(name = "ServletTipoComputadora", urlPatterns = {"/controllers/ensamblador/tipo_computadora"})
+public class ServletTipoComputadora extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -37,19 +32,12 @@ public class ServletOrdenComponente extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            ComponenteCRUD componente = new ComponenteCRUD();
-            request.setAttribute("componentes", componente.obtenerPorOrden(request));
-        } catch (InvalidDataException ex) {
-            request.setAttribute("mensaje", ex.getMessage());
-            ComponenteDAO componente = new ComponenteDAO();
-            request.setAttribute("componentes", componente.obtenerTodo());
-        } finally {
-            TipoComponenteDAO tipos = new TipoComponenteDAO();
-            request.setAttribute("tipos", tipos.obtenerTodo());
-            request.getRequestDispatcher("/vista_ensamblador/lista_componentes.jsp"). 
-                    forward(request, response);
-        }
+        TipoComputadoraLista lista = new TipoComputadoraLista();
+        String direccion = lista.obtenerDireccion(request);
+        TipoComputadoraDAO computadora = new TipoComputadoraDAO();
+        request.setAttribute("tiposComputadoras", computadora.obtenerTodo());
+        request.getRequestDispatcher(direccion).
+                forward(request, response);
     }
 
     /**

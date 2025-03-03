@@ -4,8 +4,8 @@
  */
 package com.mycompany.proyecto1ipc2.servicios;
 
-import com.mycompany.proyecto1ipc2.daos.ComponenteDAO;
-import com.mycompany.proyecto1ipc2.daos.TipoComponenteDAO;
+import com.mycompany.proyecto1ipc2.daos.ensamblador.ComponenteDAO;
+import com.mycompany.proyecto1ipc2.daos.ensamblador.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.daos.UsuarioDAO;
 import com.mycompany.proyecto1ipc2.dtos.Usuario;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;

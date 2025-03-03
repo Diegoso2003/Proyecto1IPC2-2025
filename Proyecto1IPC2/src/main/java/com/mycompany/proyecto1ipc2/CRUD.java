@@ -69,4 +69,9 @@ public abstract class CRUD<T> {
     }
 
     protected abstract void obtenerYValidarDatos(HttpServletRequest request) throws InvalidDataException;
+
+    public T getEntidad() {
+        return entidad;
+    }
+    
 }

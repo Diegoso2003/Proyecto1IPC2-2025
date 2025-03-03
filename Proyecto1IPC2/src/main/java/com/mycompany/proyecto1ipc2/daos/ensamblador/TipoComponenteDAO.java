@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.proyecto1ipc2.daos;
+package com.mycompany.proyecto1ipc2.daos.ensamblador;
 
-import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
+import com.mycompany.proyecto1ipc2.daos.BDCRUD;
+import com.mycompany.proyecto1ipc2.dtos.ensamblador.TipoComponente;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import com.mycompany.proyecto1ipc2.servicios.Coneccion;

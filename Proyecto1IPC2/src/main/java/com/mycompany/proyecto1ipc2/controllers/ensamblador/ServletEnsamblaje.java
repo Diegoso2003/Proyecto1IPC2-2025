@@ -4,9 +4,9 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 
-import com.mycompany.proyecto1ipc2.daos.ensamblador.TipoComponenteDAO;
-import com.mycompany.proyecto1ipc2.dtos.ensamblador.Componente;
-import com.mycompany.proyecto1ipc2.ensamblaje.ComponenteCRUD;
+import com.mycompany.proyecto1ipc2.dtos.ensamblador.Computadora;
+import com.mycompany.proyecto1ipc2.ensamblaje.ComputadoraCRUD;
+import com.mycompany.proyecto1ipc2.ensamblaje.TipoComputadoraCRUD;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import java.io.IOException;
@@ -20,8 +20,9 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletGestionComponente", urlPatterns = {"/controllers/ensamblador/gestion_componente"})
-public class ServletGestionComponente extends HttpServlet {
+@WebServlet(name = "ServletEnsamblaje", urlPatterns = {"/controllers/ensamblador/ensamblaje"})
+public class ServletEnsamblaje extends HttpServlet {
+
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -35,16 +36,13 @@ public class ServletGestionComponente extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ComponenteCRUD gestor = new ComponenteCRUD();
-            Componente componente = gestor.obtenerEntidad(request);
-            request.setAttribute("componente", componente);
-            TipoComponenteDAO tipo = new TipoComponenteDAO();
-            request.setAttribute("tipos", tipo.obtenerTodo());
+            TipoComputadoraCRUD compu = new TipoComputadoraCRUD();
+            request.setAttribute("tipo_computadora", compu.obtenerEntidad(request));
         } catch (InvalidDataException | NotFoundException ex) {
             request.setAttribute("mensaje", ex.getMessage());
         } finally {
-            request.getRequestDispatcher("/vista_ensamblador/componente_vista.jsp")
-                    .forward(request, response);
+            request.getRequestDispatcher("/vista_ensamblador/form_ensamblaje.jsp"). 
+                    forward(request, response);
         }
     }
 
@@ -59,18 +57,17 @@ public class ServletGestionComponente extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ComponenteCRUD actu = new ComponenteCRUD();
         try {
-            Componente componente = actu.actualizarEntidad(request);
-            TipoComponenteDAO tipo = new TipoComponenteDAO();
-             request.setAttribute("componente", componente);
-            request.setAttribute("tipos", tipo.obtenerTodo());
-            request.setAttribute("exito", "componente actualizado correctamente");
-        } catch (InvalidDataException | NotFoundException ex) {
+            ComputadoraCRUD computadora = new ComputadoraCRUD();
+            computadora.crearEntidad(request);
+            Computadora computadora2 = computadora.getEntidad();
+            request.setAttribute("exito", "computadora creada con id: '" + computadora2.getIdComputadora() + "' y precio"
+                    + " de ensamblaje de Q" + (Math.round(computadora2.getPrecioFabricacion() * 100.0) / 100.0));
+        } catch (InvalidDataException ex) {
             request.setAttribute("mensaje", ex.getMessage());
-        } finally{
-            request.getRequestDispatcher("/vista_ensamblador/componente_vista.jsp")
-                    .forward(request, response);
+        } finally {
+            request.getRequestDispatcher("/vista_ensamblador/form_ensamblaje.jsp"). 
+                    forward(request, response);
         }
     }
 

@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="java.util.List"%>
-<%@page import="com.mycompany.proyecto1ipc2.dtos.TipoComponente"%>
+<%@page import="com.mycompany.proyecto1ipc2.dtos.ensamblador.TipoComponente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>

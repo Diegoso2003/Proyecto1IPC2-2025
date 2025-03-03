@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.proyecto1ipc2.daos;
+package com.mycompany.proyecto1ipc2.daos.ensamblador;
 
-import com.mycompany.proyecto1ipc2.dtos.Componente;
-import com.mycompany.proyecto1ipc2.dtos.TipoComponente;
+import com.mycompany.proyecto1ipc2.daos.BDCRUD;
+import com.mycompany.proyecto1ipc2.dtos.ensamblador.Componente;
+import com.mycompany.proyecto1ipc2.dtos.ensamblador.TipoComponente;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import com.mycompany.proyecto1ipc2.servicios.Coneccion;
@@ -168,6 +169,29 @@ public class ComponenteDAO extends BDCRUD<Componente, Integer>{
         } catch (SQLException e) {
             throw new NotFoundException("Ingrese correctamente los datos" + e);
         }
+    }
+    
+    public List<Componente> obtenerStock(Integer idTipo) {
+        List<Componente> componentes = new ArrayList<>();
+        String statement = "SELECT * FROM Componente WHERE idTipo = ? ORDER BY(costo) ASC";
+        try (Connection c = Coneccion.getConeccion(); 
+                PreparedStatement st = c.prepareStatement(statement)) {
+            st.setInt(1, idTipo);
+            try (ResultSet result = st.executeQuery()) {
+                while (result.next()) {
+                    Componente componente = new Componente();
+                    componente.setCantidad(result.getInt("cantidad"));
+                    componente.setId(result.getInt("idComponente"));
+                    componente.setPrecio(result.getDouble("costo"));
+                    TipoComponente tipo = new TipoComponente();
+                    tipo.setId(idTipo);
+                    componente.setTipo(tipo);
+                    componentes.add(componente);
+                }
+            }
+        } catch (SQLException e) {
+        }
+        return componentes;
     }
 
 }
