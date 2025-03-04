@@ -17,7 +17,7 @@
                 </a>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-end my-md-0 text-small text-center">
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/componente" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/vista_ventas/entrada_nit.jsp" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ventas/receipt.svg" width="24" height="24">
                             <br>
                             Realizar Compra

@@ -2,13 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.proyecto1ipc2.controllers.ensamblador;
+package com.mycompany.proyecto1ipc2.controllers.ventas;
 
-import com.mycompany.proyecto1ipc2.daos.ensamblador.ComponenteDAO;
-import com.mycompany.proyecto1ipc2.daos.ensamblador.TipoComponenteDAO;
-import com.mycompany.proyecto1ipc2.ensamblaje.ComponenteCRUD;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
+import com.mycompany.proyecto1ipc2.ventas.ClienteCRUD;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,8 +18,9 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletComponente", urlPatterns = {"/controllers/ensamblador/componente"})
-public class ServletComponente extends HttpServlet {
+@WebServlet(name = "ServletCliente", urlPatterns = {"/controllers/ventas/cliente"})
+public class ServletCliente extends HttpServlet {
+
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -34,12 +33,8 @@ public class ServletComponente extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        TipoComponenteDAO tipo = new TipoComponenteDAO();
-        ComponenteDAO componente = new ComponenteDAO();
-        request.setAttribute("tipos", tipo.obtenerTodo());
-        request.setAttribute("componentes", componente.obtenerTodo());
-        request.getRequestDispatcher("/vista_ensamblador/lista_componentes.jsp")
-                .forward(request, response);}
+        
+    }
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -53,19 +48,16 @@ public class ServletComponente extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ComponenteCRUD creador = new ComponenteCRUD();
-            creador.crearEntidad(request);
-            request.setAttribute("exito", "componente creado con exito");
+            ClienteCRUD cliente = new ClienteCRUD();
+            cliente.crearEntidad(request);
+            request.setAttribute("exito", "cliente creado con nit: '" + cliente.getEntidad().getNit() + "'");
+            request.getRequestDispatcher("/vista_ventas/entrada_nit.jsp").
+                    forward(request, response);
         } catch (InvalidDataException | NotFoundException ex) {
             request.setAttribute("mensaje", ex.getMessage());
-        } finally {
-            TipoComponenteDAO tipo = new TipoComponenteDAO();
-            ComponenteDAO componente = new ComponenteDAO();
-            request.setAttribute("tipos", tipo.obtenerTodo());
-            request.setAttribute("componentes", componente.obtenerTodo());
-            request.getRequestDispatcher("/vista_ensamblador/lista_componentes.jsp")
-                    .forward(request, response);
-        }
+            request.getRequestDispatcher("/vista_ventas/crear_cliente.jsp").
+                    forward(request, response);
+        } 
     }
 
     /**

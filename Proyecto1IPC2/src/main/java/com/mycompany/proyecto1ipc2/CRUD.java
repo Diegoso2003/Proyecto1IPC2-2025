@@ -22,7 +22,7 @@ public abstract class CRUD<T> {
     protected String nombre;
     protected BDCRUD repositorio;
 
-    public void crearEntidad(HttpServletRequest request) throws InvalidDataException {
+    public void crearEntidad(HttpServletRequest request) throws InvalidDataException, NotFoundException {
         obtenerYValidarDatos(request);
         repositorio.insertar(entidad);
     }
@@ -68,7 +68,7 @@ public abstract class CRUD<T> {
         return repositorio.obtenerTodo();
     }
 
-    protected abstract void obtenerYValidarDatos(HttpServletRequest request) throws InvalidDataException;
+    protected abstract void obtenerYValidarDatos(HttpServletRequest request) throws InvalidDataException, NotFoundException;
 
     public T getEntidad() {
         return entidad;

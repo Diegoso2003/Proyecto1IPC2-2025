@@ -7,6 +7,7 @@ package com.mycompany.proyecto1ipc2.controllers.ensamblador;
 import com.mycompany.proyecto1ipc2.daos.ensamblador.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.ensamblaje.TipoComponenteCRUD;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
+import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -54,7 +55,7 @@ public class ServletTipoComponente extends HttpServlet {
             TipoComponenteCRUD tipo = new TipoComponenteCRUD();
             tipo.crearEntidad(request);
             request.setAttribute("exito", "tipo de componente creado exitosamente");
-        } catch (InvalidDataException ex) {
+        } catch (InvalidDataException | NotFoundException ex) {
             request.setAttribute("mensaje", ex.getMessage());
         } finally {
             TipoComponenteDAO tipo = new TipoComponenteDAO();
