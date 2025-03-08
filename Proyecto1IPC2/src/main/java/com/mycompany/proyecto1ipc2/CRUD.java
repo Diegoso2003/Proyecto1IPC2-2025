@@ -22,6 +22,11 @@ public abstract class CRUD<T> {
     protected String nombre;
     protected BDCRUD repositorio;
     protected String idNombre = "id";
+
+    public CRUD(String nombre, BDCRUD repositorio) {
+        this.nombre = nombre;
+        this.repositorio = repositorio;
+    }
   
     public void crearEntidad(HttpServletRequest request) throws InvalidDataException, NotFoundException {
         obtenerYValidarDatos(request);

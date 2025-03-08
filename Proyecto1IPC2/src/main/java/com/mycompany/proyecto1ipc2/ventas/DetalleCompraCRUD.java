@@ -22,8 +22,7 @@ public class DetalleCompraCRUD extends CRUD<DetalleCompra>{
     private Compra compra;
 
     public DetalleCompraCRUD() {
-        repositorio = new DetalleCompraDAO();
-        nombre = "detalle de la factura";
+        super("Detalle de la factura", new DetalleCompraDAO());
     }
     
     @Override

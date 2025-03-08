@@ -24,8 +24,7 @@ import java.util.Optional;
 public class CompraCRUD extends CRUD<Compra>{
 
     public CompraCRUD() {
-        repositorio = new CompraDAO();
-        nombre = "factura";
+        super("Factura", new CompraDAO());
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.mycompany.proyecto1ipc2.CRUD;
 import com.mycompany.proyecto1ipc2.daos.ventas.ClienteDAO;
 import com.mycompany.proyecto1ipc2.dtos.ventas.Cliente;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
-import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -18,8 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ClienteCRUD extends CRUD<Cliente> {
 
     public ClienteCRUD() {
-        repositorio = new ClienteDAO();
-        nombre = "cliente";
+        super("cliente", new ClienteDAO());
     }
 
     @Override

@@ -17,8 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class TipoComputadoraCRUD extends CRUD<TipoComputadora>{
 
     public TipoComputadoraCRUD() {
-        repositorio = new TipoComputadoraDAO();
-        nombre = "Tipo de computadora";
+        super("Tipo de computadora", new TipoComputadoraDAO());
     }
 
     @Override

@@ -17,8 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class TipoComponenteCRUD extends CRUD<TipoComponente>{
 
     public TipoComponenteCRUD() {
-        nombre = "tipo de componente";
-        repositorio = new TipoComponenteDAO();
+        super("tipo de componente", new TipoComponenteDAO());
     }
 
     @Override

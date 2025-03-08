@@ -21,8 +21,7 @@ import java.util.Optional;
 public class ComponenteCRUD extends CRUD<Componente>{
 
     public ComponenteCRUD() {
-        repositorio = new ComponenteDAO();
-        nombre = "Componente";
+        super("Componente", new ComponenteDAO());
     }
 
     /**

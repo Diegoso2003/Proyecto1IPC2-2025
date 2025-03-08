@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -39,8 +37,7 @@ public class ComputadoraCRUD extends CRUD<Computadora>{
     private TipoComputadora tipo;
 
     public ComputadoraCRUD() {
-        repositorio = new ComputadoraDAO();
-        nombre = "Computadora";
+        super("Computadora", new ComputadoraDAO());
     }
     
     @Override
