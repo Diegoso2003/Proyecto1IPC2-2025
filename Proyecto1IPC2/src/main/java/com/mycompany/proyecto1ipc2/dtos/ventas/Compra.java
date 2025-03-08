@@ -19,8 +19,8 @@ public class Compra {
     private Cliente cliente;
     private Usuario usuario;
     private double total;
-    private List<Computadora> computadoras;
-
+    private List<DetalleCompra> detalles;
+    
     public int getIdCompra() {
         return idCompra;
     }
@@ -53,20 +53,20 @@ public class Compra {
         this.usuario = usuario;
     }
 
-    public List<Computadora> getComputadoras() {
-        return computadoras;
-    }
-
-    public void setComputadoras(List<Computadora> computadoras) {
-        this.computadoras = computadoras;
-    }
-
     public double getTotal() {
         return total;
     }
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public List<DetalleCompra> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleCompra> detalles) {
+        this.detalles = detalles;
     }
     
 }

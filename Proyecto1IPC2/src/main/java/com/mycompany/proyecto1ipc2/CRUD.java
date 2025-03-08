@@ -21,7 +21,8 @@ public abstract class CRUD<T> {
     protected boolean actu = false;
     protected String nombre;
     protected BDCRUD repositorio;
-
+    protected String idNombre = "id";
+  
     public void crearEntidad(HttpServletRequest request) throws InvalidDataException, NotFoundException {
         obtenerYValidarDatos(request);
         repositorio.insertar(entidad);
@@ -48,10 +49,10 @@ public abstract class CRUD<T> {
 
     protected int obtenerID(HttpServletRequest request) throws InvalidDataException {
         try {
-            int codigo = Integer.parseInt(request.getParameter("id"));
+            int codigo = Integer.parseInt(request.getParameter(idNombre));
             return codigo;
         } catch (NumberFormatException | NullPointerException e) {
-            throw new InvalidDataException("ingresar un id valido");
+            throw new InvalidDataException("ingresar un id de " + nombre + " valido");
         }
     }
     
@@ -72,6 +73,10 @@ public abstract class CRUD<T> {
 
     public T getEntidad() {
         return entidad;
+    }
+
+    public void setIdNombre(String idNombre) {
+        this.idNombre = idNombre;
     }
     
 }

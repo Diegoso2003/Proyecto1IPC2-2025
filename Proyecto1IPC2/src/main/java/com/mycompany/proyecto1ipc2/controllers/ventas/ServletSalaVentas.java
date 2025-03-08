@@ -4,9 +4,12 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ventas;
 
+import com.mycompany.proyecto1ipc2.daos.ensamblador.ComputadoraDAO;
+import com.mycompany.proyecto1ipc2.dtos.ventas.Compra;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import com.mycompany.proyecto1ipc2.ventas.CompraCRUD;
+import com.mycompany.proyecto1ipc2.ventas.DetalleCompraCRUD;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -21,8 +24,9 @@ import java.util.logging.Logger;
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletCompra", urlPatterns = {"/controllers/ventas/compra"})
-public class ServletCompra extends HttpServlet {
+@WebServlet(name = "ServletSalaVentas", urlPatterns = {"/controllers/ventas/computadoras"})
+public class ServletSalaVentas extends HttpServlet {
+
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -35,16 +39,10 @@ public class ServletCompra extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            CompraCRUD compra = new CompraCRUD();
-            compra.eliminarEntidad(request);
-            request.getRequestDispatcher("/vista_ventas/entrada_nit.jsp"). 
-                    forward(request, response);
-        } catch (InvalidDataException | NotFoundException ex) {
-            request.setAttribute("mensaje", ex.getMessage());
-            request.getRequestDispatcher("/vista_ventas/factura.jsp"). 
-                    forward(request, response);
-        } 
+        ComputadoraDAO computadoras = new ComputadoraDAO();
+        request.setAttribute("computadoras", computadoras.obtenerComputadorasDisponibles());
+        request.getRequestDispatcher("/vista_ventas/sala_ventas.jsp").
+                forward(request, response);
     }
 
     /**
@@ -58,21 +56,7 @@ public class ServletCompra extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            CompraCRUD compra = new CompraCRUD();
-            compra.crearEntidad(request);
-            request.setAttribute("factura", compra.getEntidad());
-            request.getRequestDispatcher("/vista_ventas/factura.jsp"). 
-                    forward(request, response);
-        } catch (InvalidDataException ex) {
-            request.setAttribute("mensaje", ex.getMessage());
-            request.getRequestDispatcher("/vista_ventas/entrada_nit.jsp").
-                    forward(request, response);
-        } catch (NotFoundException ex) {
-            request.setAttribute("mensaje", ex.getMessage());
-            request.getRequestDispatcher("/vista_ventas/crear_cliente.jsp").
-                    forward(request, response);
-        }
+        
     }
 
     /**

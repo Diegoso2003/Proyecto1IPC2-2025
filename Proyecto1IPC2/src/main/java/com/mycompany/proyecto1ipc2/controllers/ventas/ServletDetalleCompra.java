@@ -4,9 +4,11 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ventas;
 
+import com.mycompany.proyecto1ipc2.dtos.ventas.Compra;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import com.mycompany.proyecto1ipc2.ventas.CompraCRUD;
+import com.mycompany.proyecto1ipc2.ventas.DetalleCompraCRUD;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -21,8 +23,9 @@ import java.util.logging.Logger;
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletCompra", urlPatterns = {"/controllers/ventas/compra"})
-public class ServletCompra extends HttpServlet {
+@WebServlet(name = "ServletDetalleCompra", urlPatterns = {"/controllers/ventas/detalle_venta"})
+public class ServletDetalleCompra extends HttpServlet {
+
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -36,15 +39,20 @@ public class ServletCompra extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            CompraCRUD compra = new CompraCRUD();
-            compra.eliminarEntidad(request);
-            request.getRequestDispatcher("/vista_ventas/entrada_nit.jsp"). 
-                    forward(request, response);
+            CompraCRUD compra2 = new CompraCRUD();
+            Compra compra = compra2.obtenerEntidad(request);
+            request.setAttribute("factura", compra);
+            DetalleCompraCRUD detalle = new DetalleCompraCRUD();
+            detalle.setCompra(compra);
+            detalle.eliminarEntidad(request);
+            request.setAttribute("factura", compra2.obtenerEntidad(request));
+            request.setAttribute("exito", "elemento eliminado");
         } catch (InvalidDataException | NotFoundException ex) {
             request.setAttribute("mensaje", ex.getMessage());
+        } finally {
             request.getRequestDispatcher("/vista_ventas/factura.jsp"). 
                     forward(request, response);
-        } 
+        }
     }
 
     /**
@@ -59,18 +67,16 @@ public class ServletCompra extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            CompraCRUD compra = new CompraCRUD();
-            compra.crearEntidad(request);
-            request.setAttribute("factura", compra.getEntidad());
+            CompraCRUD compra2 = new CompraCRUD();
+            DetalleCompraCRUD detalles = new DetalleCompraCRUD();
+            Compra compra = compra2.obtenerEntidad(request);
+            request.setAttribute("factura", compra);
+            detalles.setCompra(compra);
+            detalles.crearEntidad(request);
+        } catch (InvalidDataException | NotFoundException ex) {
+            request.setAttribute("mensaje", ex.getMessage());
+        } finally {
             request.getRequestDispatcher("/vista_ventas/factura.jsp"). 
-                    forward(request, response);
-        } catch (InvalidDataException ex) {
-            request.setAttribute("mensaje", ex.getMessage());
-            request.getRequestDispatcher("/vista_ventas/entrada_nit.jsp").
-                    forward(request, response);
-        } catch (NotFoundException ex) {
-            request.setAttribute("mensaje", ex.getMessage());
-            request.getRequestDispatcher("/vista_ventas/crear_cliente.jsp").
                     forward(request, response);
         }
     }

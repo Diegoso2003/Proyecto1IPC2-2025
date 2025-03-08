@@ -17,7 +17,6 @@ public class Computadora {
     private LocalDate fechaEnsamblaje;
     private String ensamblador;
     private double precioFabricacion;
-    private double precioVenta;
     private TipoComputadora tipo;
     private EnumEstadoCompu estado;
     private List<Componente> partes;
@@ -54,14 +53,6 @@ public class Computadora {
         this.precioFabricacion = precioFabricacion;
     }
 
-    public double getPrecioVenta() {
-        return precioVenta;
-    }
-
-    public void setPrecioVenta(double precioVenta) {
-        this.precioVenta = precioVenta;
-    }
-
     public TipoComputadora getTipo() {
         return tipo;
     }
@@ -84,6 +75,10 @@ public class Computadora {
 
     public void setPartes(List<Componente> partes) {
         this.partes = partes;
+    }
+    
+    public boolean estaALaVenta(){
+        return estado == EnumEstadoCompu.ENSAMBLADA;
     }
 
 }

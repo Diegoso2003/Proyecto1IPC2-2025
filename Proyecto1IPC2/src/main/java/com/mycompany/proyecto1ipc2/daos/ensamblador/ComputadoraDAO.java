@@ -50,7 +50,30 @@ public class ComputadoraDAO extends BDCRUD<Computadora, Integer>{
 
     @Override
     public Optional<Computadora> encontrarPorID(Integer id) throws InvalidDataException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String query = "SELECT * FROM Computadora c INNER JOIN TipoComputadora t ON c.idTipo = t.idTipo WHERE"
+                + " idComputadora = ?";
+        try (Connection c = Coneccion.getConeccion(); 
+                PreparedStatement st = c.prepareStatement(query)) {
+            st.setInt(1, id);
+            try(ResultSet result = st.executeQuery()){
+                if(result.next()) {
+                    Computadora computadora = new Computadora();
+                    computadora.setIdComputadora(result.getInt("idComputadora"));
+                    computadora.setFechaEnsamblaje(result.getDate("fechaEnsamblaje").toLocalDate());
+                    computadora.setEnsamblador(result.getString("ensamblador"));
+                    computadora.setPrecioFabricacion(result.getDouble("precioFabricacion"));
+                    TipoComputadora tipo = new TipoComputadora();
+                    tipo.setIdTipo(6);
+                    tipo.setNombre(result.getString("nombre"));
+                    tipo.setPrecio(result.getDouble("costoVenta"));
+                    computadora.setTipo(tipo);
+                    computadora.setEstado(EnumEstadoCompu.valueOf(result.getString("estado")));
+                    return Optional.of(computadora);
+                }
+            }
+        } catch (SQLException e) {
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -63,15 +86,15 @@ public class ComputadoraDAO extends BDCRUD<Computadora, Integer>{
                 ResultSet result = st.executeQuery(statement)) {
             while (result.next()) {
                 Computadora computadora = new Computadora();
-                computadora.setIdComputadora(result.getInt(1));
-                computadora.setFechaEnsamblaje(result.getDate(2).toLocalDate());
-                computadora.setEnsamblador(result.getString(3));
-                computadora.setPrecioFabricacion(result.getDouble(4));
+                computadora.setIdComputadora(result.getInt("idComputadora"));
+                computadora.setFechaEnsamblaje(result.getDate("fechaEnsamblaje").toLocalDate());
+                computadora.setEnsamblador(result.getString("ensamblador"));
+                computadora.setPrecioFabricacion(result.getDouble("precioFabricacion"));
                 TipoComputadora tipo = new TipoComputadora();
                 tipo.setIdTipo(6);
-                tipo.setNombre(result.getString(9));
+                tipo.setNombre(result.getString("nombre"));
                 computadora.setTipo(tipo);
-                computadora.setEstado(EnumEstadoCompu.valueOf(result.getString(7)));
+                computadora.setEstado(EnumEstadoCompu.valueOf(result.getString("estado")));
                 computadoras.add(computadora);
             }
         } catch (SQLException e) {
@@ -79,14 +102,58 @@ public class ComputadoraDAO extends BDCRUD<Computadora, Integer>{
         return computadoras;
     }
 
+    /**
+     * solamente actualiza el estado de la computadora a 'ENSAMBLADA', 'VENDIDA'
+     * 'DEVUELTA'
+     * @param entidad
+     * @throws InvalidDataException
+     * @throws NotFoundException 
+     */
     @Override
     public void actualizar(Computadora entidad) throws InvalidDataException, NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String query = "UPDATE Computadora SET estado = ? WHERE idComputadora = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setString(1, entidad.getEstado().toString());
+            statement.setInt(2, entidad.getIdComputadora());
+            if (statement.executeUpdate() <= 0) {
+                throw new NotFoundException("no se encontro la computadora con id: '"
+                + entidad.getIdComputadora() + "'");
+            }
+        } catch (SQLException e) {
+            throw new InvalidDataException("datos ingresados invalidos");
+        }
     }
 
     @Override
     public void eliminar(Integer id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public List<Computadora> obtenerComputadorasDisponibles() {
+        List<Computadora> computadoras = new ArrayList<>();
+        String statement = "SELECT * FROM Computadora c INNER JOIN TipoComputadora t ON c.idTipo = t.idTipo"
+                + " WHERE estado = 'ENSAMBLADA'";
+        try (Connection c = Coneccion.getConeccion(); 
+                Statement st = c.createStatement(); 
+                ResultSet result = st.executeQuery(statement)) {
+            while (result.next()) {
+                Computadora computadora = new Computadora();
+                computadora.setIdComputadora(result.getInt("idComputadora"));
+                computadora.setFechaEnsamblaje(result.getDate("fechaEnsamblaje").toLocalDate());
+                computadora.setEnsamblador(result.getString("ensamblador"));
+                computadora.setPrecioFabricacion(result.getDouble("precioFabricacion"));
+                TipoComputadora tipo = new TipoComputadora();
+                tipo.setIdTipo(6);
+                tipo.setNombre(result.getString("nombre"));
+                tipo.setPrecio(result.getDouble("costoVenta"));
+                computadora.setTipo(tipo);
+                computadora.setEstado(EnumEstadoCompu.valueOf(result.getString("estado")));
+                computadoras.add(computadora);
+            }
+        } catch (SQLException e) {
+        }
+        return computadoras;
     }
     
 }

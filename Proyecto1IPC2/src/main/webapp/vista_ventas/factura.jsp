@@ -34,11 +34,10 @@
 
                         <h5 class="card-title
                         text-center">Ingresar Computadora</h5>
-                        <form class="mb-5" action="${pageContext.servletContext.contextPath}/controllers/ventas/ingresar_computadora" method="post">
-                            <input type="hidden" name="idCompra" id="idCompra" value="${factura.idCompra}">
-                            <input type="hidden" class="form-control" id="idCompra" name="idCompra" value="${factura.idCompra}">
+                        <form class="mb-5" action="${pageContext.servletContext.contextPath}/controllers/ventas/detalle_venta" method="post">
+                            <input type="hidden" class="form-control" id="idCompra" name="id" value="${factura.idCompra}">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="idCompu" name="idCompu" placeholder="Codigo de la computadora">
+                                <input type="number" class="form-control" id="idCompu" name="idComputadora" placeholder="Codigo de la computadora">
                                 <label for="idCompu">Codigo de la Computadora</label>
                             </div>
                             <div class="d-flex justify-content-center">
@@ -48,6 +47,34 @@
 
                         <h5 class="card-title
                         text-center">Detalles de la factura</h5>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Codigo</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${factura.detalles}" var="detalle">
+                                    <tr>
+                                        <td>${detalle.computadora.idComputadora}</td>
+                                        <td>${detalle.computadora.tipo.nombre}</td>
+                                        <td>${detalle.subtotal}</td>
+                                        <td>
+                                            <a href="${pageContext.servletContext.contextPath}/controllers/ventas/detalle_venta?idComputadora=${detalle.computadora.idComputadora}&id=${factura.idCompra}" class="btn btn-danger">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center">
+                            <a href="${pageContext.servletContext.contextPath}/controllers/ventas/compra?id=${factura.idCompra}" class="btn btn-primary w-25 py-2 m-3">Cancelar compra</a>
+                            <c:if test="${factura.detalles.size() > 0}">
+                                <a target="_blank" href="${pageContext.servletContext.contextPath}/controllers/ventas/facturacion?id=${factura.idCompra}" class="btn btn-primary w-25 py-2 m-3">Confirmar compra</a>
+                            </c:if>"
+                        </div>
                     </div>
                 </div>
             </div>

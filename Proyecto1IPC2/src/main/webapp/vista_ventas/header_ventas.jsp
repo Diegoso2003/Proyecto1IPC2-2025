@@ -24,7 +24,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/tipo_componente" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/ventas/computadoras" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ventas/shop.svg" width="24" height="24">
                             <br>
                             Sala de ventas
