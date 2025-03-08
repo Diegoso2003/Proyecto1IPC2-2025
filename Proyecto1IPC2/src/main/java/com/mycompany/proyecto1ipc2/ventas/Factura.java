@@ -72,7 +72,7 @@ public class Factura {
             Computadora computadora = detalle.getComputadora();
             tabla.addCell(computadora.getIdComputadora() + "");
             tabla.addCell(computadora.getTipo().getNombre());
-            tabla.addCell(detalle.getSubtotal() + "");
+            tabla.addCell("Q" + detalle.getSubtotal());
         }
         documento.add(tabla);
     }
