@@ -11,6 +11,7 @@ import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import com.mycompany.proyecto1ipc2.servicios.Coneccion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,21 @@ public class DetalleCompraDAO extends BDCRUD<DetalleCompra, DetalleCompra>{
 
     @Override
     public Optional<DetalleCompra> encontrarPorID(DetalleCompra id) throws InvalidDataException {
+        String query = "SELECT subtotal FROM DetalleCompra WHERE idCompra = ? AND idComputadora = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setInt(1, id.getCompra().getIdCompra());
+            statement.setInt(2, id.getComputadora().getIdComputadora());
+            try(ResultSet result = statement.executeQuery()){
+                if (result.next()) {
+                    DetalleCompra detalle = new DetalleCompra();
+                    detalle.setSubtotal(result.getDouble("subtotal"));
+                    return Optional.of(detalle);
+                }
+            }
+        } catch (SQLException e) {
+            throw new InvalidDataException("ingresar valores validos");
+        }
         return Optional.empty();
     }
 

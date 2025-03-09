@@ -38,7 +38,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/tipo_computadora?area=ensamblaje" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/vista_ventas/devolucion.jsp" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ventas/refund-svgrepo-com.svg" width="24" height="24">
                             <br>
                             Realizar devolucion

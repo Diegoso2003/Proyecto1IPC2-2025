@@ -8,6 +8,11 @@ import com.mycompany.proyecto1ipc2.daos.BDCRUD;
 import com.mycompany.proyecto1ipc2.dtos.ventas.Devolucion;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
+import com.mycompany.proyecto1ipc2.servicios.Coneccion;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +24,17 @@ public class DevolucionDAO extends BDCRUD<Devolucion, Integer>{
 
     @Override
     public void insertar(Devolucion entidad) throws InvalidDataException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String query = "INSERT INTO Devolucion(idComputadora, fechaDevolucion, idCompra) "
+                + "VALUES(?, ?, ?)";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setInt(1, entidad.getComputadora().getIdComputadora());
+            statement.setDate(2, Date.valueOf(entidad.getFechaDevolucion()));
+            statement.setInt(3, entidad.getCompra().getIdCompra());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new InvalidDataException("ingrese valores validos");
+        }
     }
 
     @Override

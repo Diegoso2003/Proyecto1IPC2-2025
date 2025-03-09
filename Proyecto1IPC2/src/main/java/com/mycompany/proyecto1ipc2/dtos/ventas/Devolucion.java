@@ -16,8 +16,8 @@ public class Devolucion {
     private LocalDate fechaDevolucion;
     private double perdida;
     private Computadora computadora;
-    private Cliente cliente;
-
+    private Compra compra;
+    
     public int getIdDevolucion() {
         return idDevolucion;
     }
@@ -50,12 +50,12 @@ public class Devolucion {
         this.computadora = computadora;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Compra getCompra() {
+        return compra;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setCompra(Compra compra) {
+        this.compra = compra;
     }
-    
+
 }

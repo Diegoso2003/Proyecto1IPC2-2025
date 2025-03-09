@@ -129,4 +129,21 @@ public class CompraDAO extends BDCRUD<Compra, Integer>{
         }
     }
 
+    public Optional<Compra> obtenerFechaCompra(int idCompra) {
+        String query = "SELECT fechaCompra FROM Compra WHERE idCompra = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setInt(1, idCompra);
+            try(ResultSet result = statement.executeQuery()){
+                if (result.next()) {
+                    Compra compra = new Compra();
+                    compra.setFechaCompra(result.getDate("fechaCompra").toLocalDate());
+                    return Optional.of(compra);
+                }
+            }
+        } catch (Exception e) {
+        }
+        return Optional.empty();
+    }
+
 }
