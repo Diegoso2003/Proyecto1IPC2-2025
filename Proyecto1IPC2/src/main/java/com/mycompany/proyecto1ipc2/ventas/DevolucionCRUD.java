@@ -69,6 +69,7 @@ public class DevolucionCRUD extends CRUD<Devolucion>{
             obtenerNumeroFactura();
             validarDevolucion();
             actualizarRepositorio();
+            desensamblar();
         } catch (DateTimeParseException | NullPointerException e) {
             throw new InvalidDataException("ingresar valores validos");
         } catch (IOException | ServletException ex) {
@@ -153,6 +154,11 @@ public class DevolucionCRUD extends CRUD<Devolucion>{
         ComputadoraDAO repositorioComputadora = new ComputadoraDAO();
         repositorioComputadora.actualizar(detalle.getComputadora());
         repositorioDetalle.eliminar(detalle);
+    }
+
+    private void desensamblar() throws InvalidDataException, NotFoundException {
+        Desensamblador desensamblaje = new Desensamblador();
+        desensamblaje.desensamblar(detalle.getComputadora());
     }
     
 }

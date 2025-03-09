@@ -25,7 +25,7 @@ import java.util.Optional;
  */
 public class ComponenteDAO extends BDCRUD<Componente, Integer>{
     private boolean actu = false;
-
+    private boolean desensamblaje = false;
     /**
      * metodo para crear un componente en la base de datos
      *
@@ -76,7 +76,7 @@ public class ComponenteDAO extends BDCRUD<Componente, Integer>{
             throw new InvalidDataException("datos no validos");
         }
     }
-
+  
     /**
      * metodo para listar todos los componentes existentes en la base de datos
      * junto con todos sus datos
@@ -171,9 +171,15 @@ public class ComponenteDAO extends BDCRUD<Componente, Integer>{
         }
     }
     
+    public List<Componente> obtenerStockComponentes(Integer idTipo){
+        desensamblaje = true;
+        return obtenerStock(idTipo);
+    }
+    
     public List<Componente> obtenerStock(Integer idTipo) {
         List<Componente> componentes = new ArrayList<>();
         String statement = "SELECT * FROM Componente WHERE idTipo = ? ORDER BY(costo) ASC";
+        statement += desensamblaje ? " LIMIT 1" : "";
         try (Connection c = Coneccion.getConeccion(); 
                 PreparedStatement st = c.prepareStatement(statement)) {
             st.setInt(1, idTipo);
