@@ -43,6 +43,7 @@
                             Computadoras ensambladas
                         </a>
                     </li>
+                    <jsp:include page="/includes/cambio_de_area.jsp"/>
                     <li>
                         <a href="${pageContext.servletContext.contextPath}/controllers/usuario/sesion" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/box-arrow-in-right.svg" width="24" height="24">
