@@ -4,7 +4,7 @@
     Author     : rafael-cayax
 --%>
 
-<%@page import="com.mycompany.proyecto1ipc2.ventas.consultas.ConsultaCompraCliente"%>
+<%@page import="com.mycompany.proyecto1ipc2.ventas.consultas.ConsultaCliente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
@@ -34,33 +34,36 @@
                         </c:if>
                         <p>Compras:</p>
                     </div>
+                    <c:if test="${consulta.consulta.size() == 0}">
+                        <div class="alert alert-warning" role="alert">
+                            No hay compras registradas para este cliente en el periodo de tiempo seleccionado  
+                        </div>
+                    </c:if>
                     <c:forEach items="${consulta.consulta}" var="compra">
-                        <c:if test="${compra.detalles.size() > 0}">
-                            <div class="card-body">
-                                <p>Fecha de compra: ${compra.fechaCompra}</p>
-                                <p>Numero de factura: ${compra.idCompra}</p>
-                                <p>Total: ${compra.total}</p>
-                                <p>Productos:</p>
-                                <table class="table">
-                                    <thead>
+                        <div class="card-body">
+                            <p>Fecha de compra: ${compra.fechaCompra}</p>
+                            <p>Numero de factura: ${compra.idCompra}</p>
+                            <p>Total: ${compra.total}</p>
+                            <p>Productos:</p>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${compra.detalles}" var="detalle">
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Nombre</th>
-                                            <th>Subtotal</th>
+                                            <td>${detalle.computadora.idComputadora}</td>
+                                            <td>${detalle.computadora.tipo.nombre}</td>
+                                            <td>Q${detalle.subtotal}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${compra.detalles}" var="detalle">
-                                            <tr>
-                                                <td>${detalle.computadora.idComputadora}</td>
-                                                <td>${detalle.computadora.tipo.nombre}</td>
-                                                <td>Q${detalle.subtotal}</td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </c:if>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
                     </c:forEach>
                 </div>
             </div>

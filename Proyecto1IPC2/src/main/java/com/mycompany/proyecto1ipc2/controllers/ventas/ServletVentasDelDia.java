@@ -4,22 +4,26 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ventas;
 
+import com.mycompany.proyecto1ipc2.Reporte;
+import com.mycompany.proyecto1ipc2.daos.ventas.consulta.VentasDelDiaDAO;
+import com.mycompany.proyecto1ipc2.dtos.ventas.Compra;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
-import com.mycompany.proyecto1ipc2.exception.NotFoundException;
-import com.mycompany.proyecto1ipc2.ventas.consultas.ConsultaCliente;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletConsultaCompra", urlPatterns = {"/controllers/ventas/consulta_compra"})
-public class ServletConsultaCompra extends HttpServlet {
+@WebServlet(name = "ServletVentasDelDia", urlPatterns = {"/controllers/ventas/ventas_del_dia"})
+public class ServletVentasDelDia extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -47,13 +51,13 @@ public class ServletConsultaCompra extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ConsultaCliente consulta = new ConsultaCliente();
-            request.setAttribute("consulta", consulta.ComprasDeCliente(request));
-            request.getRequestDispatcher("/vista_ventas/consulta_cliente.jsp"). 
+            Reporte<List<Compra>> reporte = new Reporte<>(new VentasDelDiaDAO());
+            request.setAttribute("compras", reporte.obtenerDatosConsulta(request));
+            request.getRequestDispatcher("/vista_ventas/compras_del_dia.jsp"). 
                     forward(request, response);
-        } catch (InvalidDataException | NotFoundException ex) {
+        } catch (InvalidDataException ex) {
             request.setAttribute("mensaje", ex.getMessage());
-            request.getRequestDispatcher("/vista_ventas/consulta_compra.jsp"). 
+            request.getRequestDispatcher("/vista_ventas/form_compras_del_dia.jsp"). 
                     forward(request, response);
         }
     }

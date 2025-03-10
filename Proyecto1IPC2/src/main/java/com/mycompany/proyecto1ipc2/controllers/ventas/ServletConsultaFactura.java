@@ -4,22 +4,26 @@
  */
 package com.mycompany.proyecto1ipc2.controllers.ventas;
 
+import com.mycompany.proyecto1ipc2.daos.ventas.CompraDAO;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
-import com.mycompany.proyecto1ipc2.ventas.consultas.ConsultaCliente;
+import com.mycompany.proyecto1ipc2.ventas.CompraCRUD;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletConsultaCompra", urlPatterns = {"/controllers/ventas/consulta_compra"})
-public class ServletConsultaCompra extends HttpServlet {
+@WebServlet(name = "ServletConsultaFactura", urlPatterns = {"/controllers/ventas/consulta_factura"})
+public class ServletConsultaFactura extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -47,15 +51,16 @@ public class ServletConsultaCompra extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ConsultaCliente consulta = new ConsultaCliente();
-            request.setAttribute("consulta", consulta.ComprasDeCliente(request));
-            request.getRequestDispatcher("/vista_ventas/consulta_cliente.jsp"). 
+            CompraCRUD compra = new CompraCRUD();
+            compra.eliminarEntidad(request);
+            request.setAttribute("factura", compra.obtenerEntidad(request));
+            request.getRequestDispatcher("/vista_ventas/consulta_factura.jsp"). 
                     forward(request, response);
         } catch (InvalidDataException | NotFoundException ex) {
             request.setAttribute("mensaje", ex.getMessage());
-            request.getRequestDispatcher("/vista_ventas/consulta_compra.jsp"). 
+            request.getRequestDispatcher("/vista_ventas/form_factura.jsp"). 
                     forward(request, response);
-        }
+        } 
     }
 
     /**

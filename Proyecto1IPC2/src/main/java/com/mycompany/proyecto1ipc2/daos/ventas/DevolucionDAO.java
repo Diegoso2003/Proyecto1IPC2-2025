@@ -24,13 +24,14 @@ public class DevolucionDAO extends BDCRUD<Devolucion, Integer>{
 
     @Override
     public void insertar(Devolucion entidad) throws InvalidDataException {
-        String query = "INSERT INTO Devolucion(idComputadora, fechaDevolucion, idCompra) "
-                + "VALUES(?, ?, ?)";
+        String query = "INSERT INTO Devolucion(idComputadora, fechaDevolucion, idCompra, costoVenta) "
+                + "VALUES(?, ?, ?, ?)";
         try (Connection coneccion = Coneccion.getConeccion();
                 PreparedStatement statement = coneccion.prepareStatement(query)){
             statement.setInt(1, entidad.getComputadora().getIdComputadora());
             statement.setDate(2, Date.valueOf(entidad.getFechaDevolucion()));
             statement.setInt(3, entidad.getCompra().getIdCompra());
+            statement.setDouble(4, entidad.getCostoVenta());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new InvalidDataException("ingrese valores validos");

@@ -120,6 +120,7 @@ public class DevolucionCRUD extends CRUD<Devolucion>{
         NotFoundException("No se encontró la computadora con el ID: '" + detalle.getComputadora().getIdComputadora()
                 + "' en los detalles de la factura. Por favor, verifique el ID e intente nuevamente.\""));
         detalle.setSubtotal(detalle2.getSubtotal());
+        entidad.setCostoVenta(detalle2.getSubtotal());
         detalle.getComputadora().setEstado(EnumEstadoCompu.DEVUELTA);
     }
 

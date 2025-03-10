@@ -8,18 +8,21 @@ import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import com.mycompany.proyecto1ipc2.ventas.consultas.ConsultaCliente;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletConsultaCompra", urlPatterns = {"/controllers/ventas/consulta_compra"})
-public class ServletConsultaCompra extends HttpServlet {
+@WebServlet(name = "ServletConsultaDevolucion", urlPatterns = {"/controllers/ventas/consulta_devolucion"})
+public class ServletConsultaDevolucion extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -32,7 +35,7 @@ public class ServletConsultaCompra extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
     }
 
     /**
@@ -48,14 +51,14 @@ public class ServletConsultaCompra extends HttpServlet {
             throws ServletException, IOException {
         try {
             ConsultaCliente consulta = new ConsultaCliente();
-            request.setAttribute("consulta", consulta.ComprasDeCliente(request));
-            request.getRequestDispatcher("/vista_ventas/consulta_cliente.jsp"). 
+            request.setAttribute("consulta", consulta.DevolucionesDeCliente(request));
+            request.getRequestDispatcher("/vista_ventas/consulta_devolucion.jsp"). 
                     forward(request, response);
         } catch (InvalidDataException | NotFoundException ex) {
             request.setAttribute("mensaje", ex.getMessage());
-            request.getRequestDispatcher("/vista_ventas/consulta_compra.jsp"). 
+            request.getRequestDispatcher("/vista_ventas/form_devolucion.jsp"). 
                     forward(request, response);
-        }
+        } 
     }
 
     /**

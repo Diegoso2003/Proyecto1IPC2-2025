@@ -74,7 +74,9 @@ public class ConsultaClienteDAO extends ConsultaDAO<List<Compra>>{
                         compra.setDetalles(detalles);
                         compra.setTotal((Math.round(total * 100.0) / 100.0));
                     }
-                    compras.add(compra);
+                    if (!compra.getDetalles().isEmpty()) {
+                        compras.add(compra);
+                    }
                 }
             }
         } catch (SQLException e) {

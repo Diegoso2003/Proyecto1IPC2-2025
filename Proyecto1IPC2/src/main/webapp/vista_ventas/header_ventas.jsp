@@ -31,7 +31,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/tipo_componente" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/vista_ventas/form_compras_del_dia.jsp" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/ventas/graph-up-arrow.svg" width="24" height="24">
                             <br>
                             Ventas del dia
@@ -53,8 +53,10 @@
                         <ul class="dropdown-menu bg-primary">
                           <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_ventas/consulta_compra.jsp">
                             Consulta de compras</a></li>
-                          <li><a class="dropdown-item" href="#">Consulta de devoluciones</a></li>
-                          <li><a class="dropdown-item" href="#">Consultar facturas</a></li>
+                          <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_ventas/form_devolucion.jsp">
+                            Consulta de devoluciones</a></li>
+                          <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_ventas/form_factura.jsp">
+                            Consultar facturas</a></li>
                         </ul>
                     </li>
                     <li>

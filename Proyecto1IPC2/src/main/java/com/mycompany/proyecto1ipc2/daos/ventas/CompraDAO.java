@@ -104,7 +104,7 @@ public class CompraDAO extends BDCRUD<Compra, Integer>{
     @Override
     public void actualizar(Compra entidad) throws InvalidDataException, NotFoundException {
         String query = "UPDATE Compra set estado = 1 WHERE idCompra = ?";
-        try (Connection coneccion = Coneccion.getConeccion();
+        try (Connection coneccion = Coneccion.getConeccion(); 
                 PreparedStatement statement = coneccion.prepareStatement(query)){
             statement.setInt(1, entidad.getIdCompra());
             if (statement.executeUpdate() <= 0) {
@@ -118,12 +118,9 @@ public class CompraDAO extends BDCRUD<Compra, Integer>{
     @Override
     public void eliminar(Integer id) throws NotFoundException {
         String query = "DELETE FROM Compra WHERE idCompra = ? AND estado = 0";
-        try (Connection coneccion = Coneccion.getConeccion();
+        try (Connection coneccion = Coneccion.getConeccion(); 
                 PreparedStatement statement = coneccion.prepareStatement(query)){
             statement.setInt(1, id);
-            if (statement.executeUpdate() <= 0) {
-                throw new NotFoundException("no se encontro una factura con este id");
-            }
         } catch (SQLException e) {
             throw new NotFoundException("se ingreso un id invalido");
         }
