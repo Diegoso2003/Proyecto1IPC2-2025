@@ -45,7 +45,7 @@ public class ExtractorFactura {
     }
 
     public int obtenerCodigo(String texto) {
-        boolean cambio = false;
+        boolean cambio;
         char[] caracteres = texto.toCharArray();
         for (char caracter : caracteres) {
             cambio = evaluarEstados(caracter);

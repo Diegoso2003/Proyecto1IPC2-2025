@@ -29,8 +29,8 @@ public class ComputadoraDAO extends BDCRUD<Computadora, Integer>{
 
     @Override
     public void insertar(Computadora entidad) throws InvalidDataException {
-        String query = "INSERT INTO Computadora(fechaEnsamblaje, ensamblador, precioFabricacion, precioVenta, "
-                + "idTipo, estado) VALUES(?, ?, ?, 0.00, ?, 'ENSAMBLADA')";
+        String query = "INSERT INTO Computadora(fechaEnsamblaje, ensamblador, precioFabricacion, "
+                + "idTipo, estado) VALUES(?, ?, ?, ?, 'ENSAMBLADA')";
         try (Connection coneccion = Coneccion.getConeccion();
                 PreparedStatement statement = coneccion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setDate(1, Date.valueOf(entidad.getFechaEnsamblaje()));

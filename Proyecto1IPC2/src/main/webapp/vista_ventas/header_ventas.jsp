@@ -51,7 +51,8 @@
                             Realizar consulta
                         </a>
                         <ul class="dropdown-menu bg-primary">
-                          <li><a class="dropdown-item" href="#">Consulta de compras</a></li>
+                          <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_ventas/consulta_compra.jsp">
+                            Consulta de compras</a></li>
                           <li><a class="dropdown-item" href="#">Consulta de devoluciones</a></li>
                           <li><a class="dropdown-item" href="#">Consultar facturas</a></li>
                         </ul>
