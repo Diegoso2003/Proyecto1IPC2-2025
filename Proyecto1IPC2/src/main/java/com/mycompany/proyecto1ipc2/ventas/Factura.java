@@ -23,8 +23,8 @@ import java.util.List;
  * @author rafael-cayax
  */
 public class Factura {
-    private Document documento;
-    private Compra compra;
+    private final Document documento;
+    private final Compra compra;
 
     public Factura(Document documento, Compra compra) {
         this.documento = documento;
@@ -33,6 +33,10 @@ public class Factura {
     
     public void crearFactura() throws InvalidDataException, NotFoundException, DocumentException {
         CompraDAO repositorio = new CompraDAO();
+        if (!compra.tieneDatealles()) {
+            throw new InvalidDataException("la compra con id: '" + compra.getIdCompra() + "' no tiene"
+                    + " agregado ninguna computadora, agregar por lo menos una para llevar a cabo la compra");
+        }
         repositorio.actualizar(compra);
         actualizarComputadoras();
         escribirDocumento();

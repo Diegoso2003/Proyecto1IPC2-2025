@@ -26,6 +26,7 @@
                     <div class="card-body">
                         <p>Compras de cliente: ${consulta.cliente.nombre}</p>
                         <p>NIT: ${consulta.cliente.nit}</p>
+                        <p>Direccion: ${consulta.cliente.direccion}</p>
                         <c:if test="${fechaInicio != null}">
                             <p>Fecha de inicio: ${fechaInicio}</p>
                         </c:if>
@@ -34,39 +35,46 @@
                         </c:if>
                         <p>Compras:</p>
                     </div>
-                    <c:if test="${consulta.consulta.size() == 0}">
-                        <div class="alert alert-warning" role="alert">
-                            No hay compras registradas para este cliente en el periodo de tiempo seleccionado  
-                        </div>
-                    </c:if>
-                    <c:forEach items="${consulta.consulta}" var="compra">
-                        <div class="card-body">
-                            <p>Fecha de compra: ${compra.fechaCompra}</p>
-                            <p>Numero de factura: ${compra.idCompra}</p>
-                            <p>Total: ${compra.total}</p>
-                            <p>Productos:</p>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Subtotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach items="${compra.detalles}" var="detalle">
-                                        <tr>
-                                            <td>${detalle.computadora.idComputadora}</td>
-                                            <td>${detalle.computadora.tipo.nombre}</td>
-                                            <td>Q${detalle.subtotal}</td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </c:forEach>
                 </div>
             </div>
         </div>
+        <c:if test="${consulta.consulta.size() == 0}">
+            <div class="alert alert-warning" role="alert">
+                No hay compras registradas para este cliente en el periodo de tiempo seleccionado  
+            </div>
+        </c:if>
+        <c:forEach items="${consulta.consulta}" var="compra">
+            <div class="d-flex justify-content-center">
+                <div class="card w-50 m-3 border-info">
+                    <div class="card-body">
+                        <p>Fecha de compra: ${compra.fechaCompra}</p>
+                        <p>Numero de factura: ${compra.idCompra}</p>
+                        <p>Total: ${compra.total}</p>
+                        <p>Vendedor: ${compra.usuario.nombre}</p>
+                        <p>Productos:</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Subtotal</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${compra.detalles}" var="detalle">
+                                    <tr>
+                                        <td>${detalle.computadora.idComputadora}</td>
+                                        <td>${detalle.computadora.tipo.nombre}</td>
+                                        <td>Q${detalle.subtotal}</td>
+                                        <td>${detalle.computadora.estado.descripcion}</td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
     </body>
 </html>

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.proyecto1ipc2.daos.ventas.consulta;
+package com.mycompany.proyecto1ipc2.financiero.reportes;
 
 import com.mycompany.proyecto1ipc2.Consulta;
 import com.mycompany.proyecto1ipc2.daos.ConsultaDAO;
@@ -26,42 +26,40 @@ import java.util.List;
  *
  * @author rafael-cayax
  */
-public class ConsultaClienteDAO extends ConsultaDAO<List<Compra>> {
-
-    private final Cliente cliente;
-
-    public ConsultaClienteDAO(Cliente cliente) {
-        this.cliente = cliente;
-    }
+public class ReporteCompra extends ConsultaDAO<List<Compra>>{
 
     @Override
     public List<Compra> realizarConsulta(Consulta consulta) throws InvalidDataException {
         List<Compra> compras = new ArrayList<>();
-        String query = "SELECT * FROM Compra WHERE nit = ? AND estado = 1 ";
-        query += consulta.tieneFechaInicio() ? "AND fechaCompra >= ? " : "";
-        query += consulta.tieneFechaFin() ? "AND fechaCompra <= ? " : "";
+        String query = "SELECT * FROM Compra f INNER JOIN Cliente c ON f.nit = c.nit WHERE estado = 1 ";
+        query += consulta.tieneFechaInicio() ? "AND fechaCompra >= ? ": "";
+        query += consulta.tieneFechaFin() ? "AND fechaCompra <= ? ": "";
         String query2 = "SELECT c.idComputadora, subtotal, nombre, c.estado FROM DetalleCompra d "
                 + "INNER JOIN Computadora c ON c.idComputadora = d.idComputadora "
                 + "INNER JOIN TipoComputadora t on t.idTipo = c.idTipo "
                 + "WHERE idCompra = ?";
-        try (Connection coneccion = Coneccion.getConeccion(); 
-                PreparedStatement statement = coneccion.prepareStatement(query); 
-                PreparedStatement statement2 = coneccion.prepareStatement(query2)) {
-            statement.setInt(1, cliente.getNit());
-            agregarFechaConCliente(statement, consulta);
-            try (ResultSet result = statement.executeQuery()) {
-                while (result.next()) {
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query);
+                PreparedStatement statement2 = coneccion.prepareStatement(query2)){
+            agregarFecha(statement, consulta);
+            try(ResultSet result = statement.executeQuery()){
+                while(result.next()){
                     Compra compra = new Compra();
                     compra.setIdCompra(result.getInt("idCompra"));
                     compra.setFechaCompra(result.getDate("fechaCompra").toLocalDate());
                     Usuario usuario = new Usuario();
                     usuario.setNombre(result.getString("usuario"));
                     compra.setUsuario(usuario);
+                    Cliente cliente = new Cliente();
+                    cliente.setNit(result.getInt(3));
+                    cliente.setDireccion(result.getString("direccion"));
+                    cliente.setNombre(result.getString("nombre"));
+                    compra.setCliente(cliente);
                     statement2.setInt(1, compra.getIdCompra());
-                    try (ResultSet result2 = statement2.executeQuery()) {
+                    try(ResultSet result2 = statement2.executeQuery()){
                         List<DetalleCompra> detalles = new ArrayList<>();
                         double total = 0.0;
-                        while (result2.next()) {
+                        while(result2.next()){
                             DetalleCompra detalle = new DetalleCompra();
                             Computadora computadora = new Computadora();
                             computadora.setEstado(EnumEstadoCompu.valueOf(result2.getString("estado")));
@@ -71,17 +69,15 @@ public class ConsultaClienteDAO extends ConsultaDAO<List<Compra>> {
                             computadora.setTipo(tipo);
                             detalle.setComputadora(computadora);
                             detalle.setSubtotal(result2.getDouble("subtotal"));
-                            detalles.add(detalle);
                             if (computadora.getEstado() == EnumEstadoCompu.VENDIDA) {
                                 total += detalle.getSubtotal();
                             }
+                            detalles.add(detalle);
                         }
                         compra.setDetalles(detalles);
                         compra.setTotal((Math.round(total * 100.0) / 100.0));
                     }
-                    if (!compra.getDetalles().isEmpty()) {
-                        compras.add(compra);
-                    }
+                    compras.add(compra);
                 }
             }
         } catch (SQLException e) {
@@ -89,5 +85,5 @@ public class ConsultaClienteDAO extends ConsultaDAO<List<Compra>> {
         }
         return compras;
     }
-
+    
 }

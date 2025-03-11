@@ -5,7 +5,6 @@
 package com.mycompany.proyecto1ipc2.dtos.ventas;
 
 import com.mycompany.proyecto1ipc2.dtos.Usuario;
-import com.mycompany.proyecto1ipc2.dtos.ensamblador.Computadora;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -69,4 +68,7 @@ public class Compra {
         this.detalles = detalles;
     }
     
+    public boolean tieneDatealles(){
+        return !detalles.isEmpty();
+    }
 }

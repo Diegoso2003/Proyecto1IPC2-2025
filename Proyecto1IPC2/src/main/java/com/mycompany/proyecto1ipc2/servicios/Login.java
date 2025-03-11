@@ -87,7 +87,8 @@ public class Login {
     private String evaluarRol(HttpServletRequest request) {
         switch (usuario.getRol()) {
             case ADMINISTRADOR:
-                return "/vista_administrador";
+                request.getSession().setAttribute("rol", usuario.getRol());
+                return "/vista_financiera/cargar_archivo.jsp";
             case ENSAMBLADOR:
                 TipoComponenteDAO tipo = new TipoComponenteDAO();
                 ComponenteDAO componentes = new ComponenteDAO();

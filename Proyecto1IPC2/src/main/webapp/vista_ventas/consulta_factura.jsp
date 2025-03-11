@@ -28,6 +28,7 @@
                         <p class="card-text"><strong>Direccion:</strong> ${factura.cliente.direccion}</p>
                         <p class="card-text"><strong>Fecha:</strong> ${factura.fechaCompra}</p>
                         <p class="card-text"><strong>Total:</strong> ${factura.total}</p>
+                        <p class="card-text"><strong>Vendedor:</strong> ${factura.usuario.nombre}</p>
                     </div>
 
                     <c:if test="${factura.detalles.size() == 0}">
@@ -45,6 +46,7 @@
                                 <th scope="col">Codigo</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Subtotal</th>
+                                <th scope="col">Estado</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,6 +55,7 @@
                                     <td>${detalle.computadora.idComputadora}</td>
                                     <td>${detalle.computadora.tipo.nombre}</td>
                                     <td>${detalle.subtotal}</td>
+                                    <td>${detalle.computadora.estado.descripcion}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>

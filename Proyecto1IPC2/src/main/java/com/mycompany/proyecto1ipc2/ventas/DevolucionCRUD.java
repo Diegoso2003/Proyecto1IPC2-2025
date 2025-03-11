@@ -154,7 +154,6 @@ public class DevolucionCRUD extends CRUD<Devolucion>{
     private void actualizarRepositorio() throws InvalidDataException, NotFoundException {
         ComputadoraDAO repositorioComputadora = new ComputadoraDAO();
         repositorioComputadora.actualizar(detalle.getComputadora());
-        repositorioDetalle.eliminar(detalle);
     }
 
     private void desensamblar() throws InvalidDataException, NotFoundException {

@@ -5,11 +5,13 @@
 package com.mycompany.proyecto1ipc2.daos.ventas;
 
 import com.mycompany.proyecto1ipc2.daos.BDCRUD;
+import com.mycompany.proyecto1ipc2.dtos.Usuario;
 import com.mycompany.proyecto1ipc2.dtos.ensamblador.Computadora;
 import com.mycompany.proyecto1ipc2.dtos.ensamblador.TipoComputadora;
 import com.mycompany.proyecto1ipc2.dtos.ventas.Cliente;
 import com.mycompany.proyecto1ipc2.dtos.ventas.Compra;
 import com.mycompany.proyecto1ipc2.dtos.ventas.DetalleCompra;
+import com.mycompany.proyecto1ipc2.enums.EnumEstadoCompu;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import com.mycompany.proyecto1ipc2.servicios.Coneccion;
@@ -51,7 +53,7 @@ public class CompraDAO extends BDCRUD<Compra, Integer>{
     @Override
     public Optional<Compra> encontrarPorID(Integer id) throws InvalidDataException {
         String query = "SELECT * FROM Compra c INNER JOIN Cliente l ON c.nit = l.nit WHERE idCompra = ?";
-        String query2 = "SELECT d.idComputadora, subtotal, nombre FROM DetalleCompra d INNER JOIN Computadora "
+        String query2 = "SELECT d.idComputadora, subtotal, nombre, c.estado FROM DetalleCompra d INNER JOIN Computadora "
                 + "c ON d.idComputadora = c.idComputadora INNER JOIN TipoComputadora t ON t.idTipo = c.idTipo"
                 + " WHERE idCompra = ?";
         try (Connection coneccion = Coneccion.getConeccion();
@@ -63,6 +65,9 @@ public class CompraDAO extends BDCRUD<Compra, Integer>{
                     ResultSet result2 = statement2.executeQuery()){
                 if (result.next()) {
                     Compra compra = new Compra();
+                    Usuario usuario = new Usuario();
+                    usuario.setNombre(result.getString("usuario"));
+                    compra.setUsuario(usuario);
                     compra.setIdCompra(result.getInt("idCompra"));
                     compra.setFechaCompra(result.getDate("fechaCompra").toLocalDate());
                     Cliente cliente = new Cliente();
@@ -75,6 +80,7 @@ public class CompraDAO extends BDCRUD<Compra, Integer>{
                     while(result2.next()){
                         DetalleCompra detalle = new DetalleCompra();
                         Computadora computadora = new Computadora();
+                        computadora.setEstado(EnumEstadoCompu.valueOf(result2.getString("estado")));
                         TipoComputadora tipo = new TipoComputadora();
                         tipo.setNombre(result2.getString("nombre"));
                         computadora.setTipo(tipo);
@@ -83,7 +89,9 @@ public class CompraDAO extends BDCRUD<Compra, Integer>{
                         detalle.setCompra(compra);
                         detalle.setSubtotal(result2.getDouble("subtotal"));
                         detalles.add(detalle);
-                        total += detalle.getSubtotal();
+                        if (computadora.getEstado() != EnumEstadoCompu.DEVUELTA) {
+                            total += detalle.getSubtotal();
+                        }
                     }
                     compra.setTotal((Math.round(total * 100.00)/100.00));
                     compra.setDetalles(detalles);

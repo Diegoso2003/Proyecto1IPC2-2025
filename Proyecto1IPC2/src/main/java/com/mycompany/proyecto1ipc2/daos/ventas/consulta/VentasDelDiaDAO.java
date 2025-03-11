@@ -6,11 +6,13 @@ package com.mycompany.proyecto1ipc2.daos.ventas.consulta;
 
 import com.mycompany.proyecto1ipc2.Consulta;
 import com.mycompany.proyecto1ipc2.daos.ConsultaDAO;
+import com.mycompany.proyecto1ipc2.dtos.Usuario;
 import com.mycompany.proyecto1ipc2.dtos.ensamblador.Computadora;
 import com.mycompany.proyecto1ipc2.dtos.ensamblador.TipoComputadora;
 import com.mycompany.proyecto1ipc2.dtos.ventas.Cliente;
 import com.mycompany.proyecto1ipc2.dtos.ventas.Compra;
 import com.mycompany.proyecto1ipc2.dtos.ventas.DetalleCompra;
+import com.mycompany.proyecto1ipc2.enums.EnumEstadoCompu;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.servicios.Coneccion;
 import java.sql.Connection;
@@ -34,7 +36,7 @@ public class VentasDelDiaDAO extends ConsultaDAO<List<Compra>>{
             throw new InvalidDataException("Ingresar una fecha valida");
         }
         String query = "SELECT * FROM Compra c INNER JOIN Cliente l ON c.nit = l.nit WHERE fechaCompra = ? AND estado = 1";
-        String query2 = "SELECT d.idComputadora, subtotal, nombre FROM DetalleCompra d INNER JOIN Computadora "
+        String query2 = "SELECT d.idComputadora, subtotal, nombre, c.estado FROM DetalleCompra d INNER JOIN Computadora "
                 + "c ON d.idComputadora = c.idComputadora INNER JOIN TipoComputadora t ON t.idTipo = c.idTipo"
                 + " WHERE idCompra = ?";
         try (Connection coneccion = Coneccion.getConeccion();
@@ -45,6 +47,9 @@ public class VentasDelDiaDAO extends ConsultaDAO<List<Compra>>{
                     Compra compra = new Compra();
                     compra.setIdCompra(result.getInt("idCompra"));
                     compra.setFechaCompra(result.getDate("fechaCompra").toLocalDate());
+                    Usuario usuario = new Usuario();
+                    usuario.setNombre(result.getString("usuario"));
+                    compra.setUsuario(usuario);
                     Cliente cliente = new Cliente();
                     cliente.setNit(result.getInt(3));
                     cliente.setDireccion(result.getString("direccion"));
@@ -58,6 +63,7 @@ public class VentasDelDiaDAO extends ConsultaDAO<List<Compra>>{
                             while (result2.next()) {
                                 DetalleCompra detalle = new DetalleCompra();
                                 Computadora computadora = new Computadora();
+                                computadora.setEstado(EnumEstadoCompu.valueOf(result2.getString("estado")));
                                 TipoComputadora tipo = new TipoComputadora();
                                 tipo.setNombre(result2.getString("nombre"));
                                 computadora.setTipo(tipo);
@@ -66,7 +72,9 @@ public class VentasDelDiaDAO extends ConsultaDAO<List<Compra>>{
                                 detalle.setCompra(compra);
                                 detalle.setSubtotal(result2.getDouble("subtotal"));
                                 detalles.add(detalle);
-                                total += detalle.getSubtotal();
+                                if (computadora.getEstado() == EnumEstadoCompu.VENDIDA) {
+                                    total += detalle.getSubtotal();
+                                }
                             }
                         }
                     }

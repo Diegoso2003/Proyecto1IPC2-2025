@@ -1,6 +1,6 @@
 <%-- 
-    Document   : compras_del_dia
-    Created on : 9 mar 2025, 23:36:04
+    Document   : reporte_compras
+    Created on : 10 mar 2025, 11:50:50
     Author     : rafael-cayax
 --%>
 
@@ -15,17 +15,28 @@
         <jsp:include page="/includes/resources.jsp"/>
     </head>
     <body>
-        <jsp:include page="/vista_ventas/header_ventas.jsp"/>
+        <jsp:include page="/vista_financiera/header_financiero.jsp"/>
 
         <jsp:include page="/includes/informacion.jsp"/>
-        <c:if test="${compras.size() == 0}">
+        <h3 class="text-center">Reporte de compras</h3>
+        <jsp:include page="/includes/fechas.jsp"/>
+        <c:if test="${facturas.size() == 0}">
             <div class="d-flex justify-content-center m-3">
                 <div class="alert alert-warning w-50" role="alert">
-                    No hay compras registradas en el dia: ${fechaInicio}
+                    No hay compras registradas en el rango de fechas seleccionado
                 </div>
             </div>
         </c:if>
-        <c:forEach items="${compras}" var="factura">
+        <c:if test="${facturas.size() > 0}">
+            <form class="mb-5" action="${pageContext.servletContext.contextPath}/controllers/financiero/reporte_compras" method="post">
+                <input type="hidden" name="fechaInicio" value="${fechaInicio}">
+                <input type="hidden" name="fechaFin" value="${fechaFin}">
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary w-25 py-2 m-3">Exportar Reporte</button>
+                </div>
+            </form>
+        </c:if>
+        <c:forEach items="${facturas}" var="factura">
             <div class="d-flex justify-content-center m-3">
                 <div class="card w-50 m-3 border-info">
                     <div class="card-body">
