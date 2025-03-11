@@ -26,15 +26,16 @@ import java.util.List;
  *
  * @author rafael-cayax
  */
-public class ReporteCompra extends ConsultaDAO<List<Compra>>{
+public class ReporteCompra extends ConsultaDAO{
 
+    private List<Compra> compras;
     @Override
-    public List<Compra> realizarConsulta(Consulta consulta) throws InvalidDataException {
-        List<Compra> compras = new ArrayList<>();
+    public void realizarConsulta(Consulta consulta) throws InvalidDataException {
+        compras = new ArrayList<>();
         String query = "SELECT * FROM Compra f INNER JOIN Cliente c ON f.nit = c.nit WHERE estado = 1 ";
         query += consulta.tieneFechaInicio() ? "AND fechaCompra >= ? ": "";
         query += consulta.tieneFechaFin() ? "AND fechaCompra <= ? ": "";
-        String query2 = "SELECT c.idComputadora, subtotal, nombre, c.estado FROM DetalleCompra d "
+        String query2 = "SELECT c.idComputadora, subtotal, nombre, c.estado, precioFabricacion FROM DetalleCompra d "
                 + "INNER JOIN Computadora c ON c.idComputadora = d.idComputadora "
                 + "INNER JOIN TipoComputadora t on t.idTipo = c.idTipo "
                 + "WHERE idCompra = ?";
@@ -63,7 +64,8 @@ public class ReporteCompra extends ConsultaDAO<List<Compra>>{
                             DetalleCompra detalle = new DetalleCompra();
                             Computadora computadora = new Computadora();
                             computadora.setEstado(EnumEstadoCompu.valueOf(result2.getString("estado")));
-                            computadora.setIdComputadora(result2.getInt(2));
+                            computadora.setIdComputadora(result2.getInt("idComputadora"));
+                            computadora.setPrecioFabricacion(result2.getDouble("precioFabricacion"));
                             TipoComputadora tipo = new TipoComputadora();
                             tipo.setNombre(result2.getString("nombre"));
                             computadora.setTipo(tipo);
@@ -72,6 +74,8 @@ public class ReporteCompra extends ConsultaDAO<List<Compra>>{
                             if (computadora.getEstado() == EnumEstadoCompu.VENDIDA) {
                                 total += detalle.getSubtotal();
                             }
+                            computadora.setGanancia(detalle.getSubtotal() - computadora.getPrecioFabricacion());
+                            computadora.setGanancia(Math.round(computadora.getGanancia() * 100.0)/100.0);
                             detalles.add(detalle);
                         }
                         compra.setDetalles(detalles);
@@ -83,6 +87,9 @@ public class ReporteCompra extends ConsultaDAO<List<Compra>>{
         } catch (SQLException e) {
             throw new InvalidDataException("Ingresar valores validos");
         }
+    }
+
+    public List<Compra> getCompras() {
         return compras;
     }
     

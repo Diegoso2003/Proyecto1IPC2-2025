@@ -51,8 +51,10 @@ public class ServletVentasDelDia extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            Reporte<List<Compra>> reporte = new Reporte<>(new VentasDelDiaDAO());
-            request.setAttribute("compras", reporte.obtenerDatosConsulta(request));
+            VentasDelDiaDAO ventas = new VentasDelDiaDAO();
+            Reporte reporte = new Reporte(ventas);
+            reporte.obtenerDatosConsulta(request);
+            request.setAttribute("compras", ventas);
             request.getRequestDispatcher("/vista_ventas/compras_del_dia.jsp"). 
                     forward(request, response);
         } catch (InvalidDataException ex) {

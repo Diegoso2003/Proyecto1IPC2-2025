@@ -5,6 +5,7 @@
 package com.mycompany.proyecto1ipc2.ventas.consultas;
 
 import com.mycompany.proyecto1ipc2.Reporte;
+import com.mycompany.proyecto1ipc2.daos.ConsultaDAO;
 import com.mycompany.proyecto1ipc2.daos.ventas.consulta.ConsultaClienteDAO;
 import com.mycompany.proyecto1ipc2.daos.ventas.consulta.ConsultaDevolucionesDAO;
 import com.mycompany.proyecto1ipc2.dtos.ventas.Cliente;
@@ -23,33 +24,25 @@ import java.util.List;
 public class ConsultaCliente{
 
     private Cliente cliente;
-    private List<Compra> consulta;
-    private List<Devolucion> devoluciones;
     
-    public ConsultaCliente ComprasDeCliente(HttpServletRequest request) throws InvalidDataException, NotFoundException {
+    public ConsultaDAO ComprasDeCliente(HttpServletRequest request) throws InvalidDataException, NotFoundException {
         encontrarCliente(request);
-        Reporte<List<Compra>> reporte = new Reporte<>(new ConsultaClienteDAO(cliente));
-        consulta = reporte.obtenerDatosConsulta(request);
-        return this;
+        ConsultaClienteDAO reporte1 = new ConsultaClienteDAO(cliente);
+        Reporte reporte = new Reporte(reporte1);
+        reporte.obtenerDatosConsulta(request);
+        return reporte1;
     }
     
-    public ConsultaCliente DevolucionesDeCliente(HttpServletRequest request) throws InvalidDataException, NotFoundException{
+    public ConsultaDAO DevolucionesDeCliente(HttpServletRequest request) throws InvalidDataException, NotFoundException{
         encontrarCliente(request);
-        Reporte<List<Devolucion>> reporte = new Reporte<>(new ConsultaDevolucionesDAO(cliente));
-        devoluciones = reporte.obtenerDatosConsulta(request);
-        return this;
+        ConsultaClienteDAO reporte1 = new ConsultaClienteDAO(cliente);
+        Reporte reporte = new Reporte(reporte1);
+        reporte.obtenerDatosConsulta(request);
+        return reporte1;
     }
 
     public Cliente getCliente() {
         return cliente;
-    }
-
-    public List<Compra> getConsulta() {
-        return consulta;
-    }
-
-    public List<Devolucion> getDevoluciones() {
-        return devoluciones;
     }
 
     private void encontrarCliente(HttpServletRequest request) throws InvalidDataException, NotFoundException {

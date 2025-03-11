@@ -5,9 +5,8 @@
 package com.mycompany.proyecto1ipc2.controllers.financiero;
 
 import com.mycompany.proyecto1ipc2.Reporte;
-import com.mycompany.proyecto1ipc2.dtos.ventas.Compra;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
-import com.mycompany.proyecto1ipc2.financiero.reportes.ReporteCompra;
+import com.mycompany.proyecto1ipc2.financiero.reportes.ReporteGanancias;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,7 +14,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,8 +21,8 @@ import java.util.logging.Logger;
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletReporteCompra", urlPatterns = {"/controllers/financiero/reporte_compras"})
-public class ServletReporteCompra extends HttpServlet {
+@WebServlet(name = "ServletReporteGanancias", urlPatterns = {"/controllers/financiero/reporte_ganancias"})
+public class ServletReporteGanancias extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -37,7 +35,7 @@ public class ServletReporteCompra extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
     }
 
     /**
@@ -52,15 +50,15 @@ public class ServletReporteCompra extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ReporteCompra reporte1 = new ReporteCompra();
-            Reporte reporte = new Reporte(reporte1);
+            ReporteGanancias reporteGanancias = new ReporteGanancias();
+            Reporte reporte = new Reporte(reporteGanancias);
             reporte.obtenerDatosConsulta(request);
-            request.setAttribute("facturas", reporte1);
-            request.getRequestDispatcher("/vista_financiera/reporte_compras.jsp"). 
+            request.setAttribute("reporte", reporteGanancias);
+            request.getRequestDispatcher("/vista_financiera/reporte_ganancias.jsp"). 
                     forward(request, response);
         } catch (InvalidDataException ex) {
-            request.setAttribute("mensaje", ex.getMessage());
-            request.getRequestDispatcher("/vista_financiera/form_reporte_compras.jsp"). 
+            request.setAttribute("mensaja", ex.getMessage());
+            request.getRequestDispatcher("/vista_financiera/form_reporte_ganancias.jsp"). 
                     forward(request, response);
         }
     }

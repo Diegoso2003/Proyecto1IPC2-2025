@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,12 +58,55 @@ public class UsuarioDAO extends BDCRUD<Usuario, String>{
 
     @Override
     public void insertar(Usuario entidad) throws InvalidDataException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String query = "INSERT INTO Usuario(nombre, rol, contraseña) VALUES(?, ?, ?)";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setString(1, entidad.getNombre().trim().replaceAll("\\s+", " "));
+            statement.setInt(2, entidad.getRol().getCodigo());
+            statement.setString(3, entidad.getContraseña());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                throw new InvalidDataException("usuario con nombre: '" + entidad.getNombre() + ""
+                        + "' ya esta registrado en el sistema");
+            }
+            throw new InvalidDataException("Ingrese valores validos");
+        }
     }
 
     @Override
     public List<Usuario> obtenerTodo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Usuario> usuarios = new ArrayList<>();
+        String query = "SELECT u.nombre, r.nombre AS rol, idRol, estado FROM Usuario u "
+                + "INNER JOIN Rol r ON idRol = rol";
+        try (Connection coneccion = Coneccion.getConeccion();
+                Statement statement = coneccion.createStatement();
+                ResultSet result = statement.executeQuery(query)){
+            while(result.next()){
+                Usuario usuario = new Usuario();
+                usuario.setNombre(result.getString("nombre"));
+                usuario.setRol(EnumRol.valueOf(result.getString("rol")));
+                usuario.setActivo(result.getBoolean("estado"));
+                usuarios.add(usuario);
+            }
+        } catch (Exception e) {
+        }
+        return usuarios;
+    }
+    
+    public List<EnumRol> obtenerRoles(){
+        List<EnumRol> roles = new ArrayList<>();
+        String query = "SELECT * FROM Rol";
+        try (Connection coneccion = Coneccion.getConeccion();
+                Statement statement = coneccion.prepareStatement(query);
+                ResultSet result = statement.executeQuery(query)){
+            while(result.next()){
+                EnumRol rol = EnumRol.valueOf(result.getString("nombre"));
+                roles.add(rol);
+            }
+        } catch (SQLException e) {
+        }
+        return roles;
     }
 
     @Override
@@ -71,6 +116,16 @@ public class UsuarioDAO extends BDCRUD<Usuario, String>{
 
     @Override
     public void eliminar(String id) throws NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String query = "UPDATE Usuario SET estado = !estado WHERE nombre = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setString(1, id);
+            if (statement.executeUpdate() <= 0) {
+                throw new NotFoundException("no se encontro al usuario con el nombre '" + 
+                        id + "'");
+            }
+        } catch (SQLException e) {
+            throw new NotFoundException("ingresar un nombre valido");
+        }
     }
 }

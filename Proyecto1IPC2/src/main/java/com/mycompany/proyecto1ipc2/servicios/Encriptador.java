@@ -21,4 +21,8 @@ public class Encriptador {
     public boolean esValida(String entrada, String hasheada){
         return BCrypt.checkpw(entrada, hasheada);
     }
+    
+    public String encriptar(String contraseña){
+        return BCrypt.hashpw(contraseña, BCrypt.gensalt());
+    }
 }

@@ -14,9 +14,9 @@ import java.sql.SQLException;
  *
  * @author rafael-cayax
  */
-public abstract class ConsultaDAO<T> {
+public abstract class ConsultaDAO {
 
-    public abstract T realizarConsulta(Consulta consulta) throws InvalidDataException;
+    public abstract void realizarConsulta(Consulta consulta) throws InvalidDataException;
 
     protected void agregarFechaConCliente(PreparedStatement statement, Consulta consulta) throws SQLException {
         if (consulta.tieneFechaInicio()) {

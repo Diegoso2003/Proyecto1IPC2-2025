@@ -27,11 +27,12 @@ import java.util.List;
  *
  * @author rafael-cayax
  */
-public class ReporteComprasUsuario extends ConsultaDAO<ReporteMasVentas> {
-
+public class ReporteComprasUsuario extends ConsultaDAO {
+    private ReporteMasVentas reporte;
+    
     @Override
-    public ReporteMasVentas realizarConsulta(Consulta consulta) throws InvalidDataException {
-        ReporteMasVentas reporte = new ReporteMasVentas();
+    public void realizarConsulta(Consulta consulta) throws InvalidDataException {
+        reporte = new ReporteMasVentas();
         String query = "SELECT usuario, COUNT(*) AS totalVentas FROM Compra WHERE estado = 1 ";
         query += consulta.tieneFechaInicio() ? " AND fechaCompra >= ? " : "";
         query += consulta.tieneFechaFin() ? " AND fechaCompra <= ? " : "";
@@ -103,7 +104,6 @@ public class ReporteComprasUsuario extends ConsultaDAO<ReporteMasVentas> {
         } catch (SQLException e) {
             throw new InvalidDataException(e.toString());
         }
-        return reporte;
     }
 
 }

@@ -15,20 +15,20 @@ import java.time.format.DateTimeParseException;
  *
  * @author rafael-cayax
  */
-public class Reporte<T> {
+public class Reporte{
     private Consulta consulta;
-    protected ConsultaDAO<T> repositorio;
+    protected ConsultaDAO repositorio;
 
-    public Reporte(ConsultaDAO<T> repositorio) {
+    public Reporte(ConsultaDAO repositorio) {
         this.repositorio = repositorio;
     }
 
     
-    public T obtenerDatosConsulta(HttpServletRequest request) throws InvalidDataException{
+    public void obtenerDatosConsulta(HttpServletRequest request) throws InvalidDataException{
         consulta = new Consulta();
         consulta.setFechaInicio(obtenerFechaInicio(request));
         consulta.setFechaFin(obtenerFechaFin(request));
-        return repositorio.realizarConsulta(consulta);
+        repositorio.realizarConsulta(consulta);
     }
     
     private LocalDate obtenerFecha(HttpServletRequest request, String tipo){

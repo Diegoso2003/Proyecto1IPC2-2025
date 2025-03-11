@@ -51,8 +51,10 @@ public class ServletReporteComprasUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            Reporte<ReporteMasVentas> reporte = new Reporte(new ReporteComprasUsuario());
-            request.setAttribute("reporte", reporte.obtenerDatosConsulta(request));
+            ReporteComprasUsuario reporte1 = new ReporteComprasUsuario();
+            Reporte reporte = new Reporte(reporte1);
+            reporte.obtenerDatosConsulta(request);
+            request.setAttribute("reporte", reporte1);
             request.getRequestDispatcher("/vista_financiera/reporte_compras_usuario.jsp"). 
                     forward(request, response);
         } catch (InvalidDataException ex) {

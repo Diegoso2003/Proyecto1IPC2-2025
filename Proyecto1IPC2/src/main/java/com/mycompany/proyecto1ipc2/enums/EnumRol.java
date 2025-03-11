@@ -9,18 +9,24 @@ package com.mycompany.proyecto1ipc2.enums;
  * @author rafael-cayax
  */
 public enum EnumRol {
-    ENSAMBLADOR(3),
-    VENDEDOR(2),
-    ADMINISTRADOR(1);
+    ENSAMBLADOR(3, "Encargado de ensamblaje"),
+    VENDEDOR(2, "Encargado de ventas"),
+    ADMINISTRADOR(1, "Administrador");
     
     private final int codigo;
+    private final String descripcion;
     
-    private EnumRol(int codigo){
+    private EnumRol(int codigo, String descripcion){
         this.codigo = codigo;
+        this.descripcion = descripcion;
     }
 
     public int getCodigo() {
         return codigo;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+    
 }

@@ -25,11 +25,12 @@ import java.util.List;
  *
  * @author rafael-cayax
  */
-public class ReporteDevolucion extends ConsultaDAO<List<Devolucion>>{
+public class ReporteDevolucion extends ConsultaDAO{
 
+    private List<Devolucion> devoluciones;
     @Override
-    public List<Devolucion> realizarConsulta(Consulta consulta) throws InvalidDataException {
-        List<Devolucion> devoluciones = new ArrayList<>();
+    public void realizarConsulta(Consulta consulta) throws InvalidDataException {
+        devoluciones = new ArrayList<>();
         String query = "SELECT fechaDevolucion, d.idCompra, d.costoVenta, t.nombre as nombreTipo, l.nombre as cliente, f.nit, fechaCompra,"
                 + "ROUND((precioFabricacion / 3),2 ) as perdida, c.idComputadora, idDevolucion, usuario FROM Devolucion d "
                 + "INNER JOIN Compra f ON d.idCompra = f.idCompra "
@@ -71,6 +72,9 @@ public class ReporteDevolucion extends ConsultaDAO<List<Devolucion>>{
         } catch (SQLException e) {
             throw new InvalidDataException("ingresar valores validos");
         }
+    }
+
+    public List<Devolucion> getDevoluciones() {
         return devoluciones;
     }
     

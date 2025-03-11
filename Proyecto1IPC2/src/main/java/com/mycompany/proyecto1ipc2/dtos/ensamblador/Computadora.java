@@ -17,6 +17,7 @@ public class Computadora {
     private LocalDate fechaEnsamblaje;
     private String ensamblador;
     private double precioFabricacion;
+    private double ganancia;
     private TipoComputadora tipo;
     private EnumEstadoCompu estado;
     private List<Componente> partes;
@@ -81,4 +82,12 @@ public class Computadora {
         return estado == EnumEstadoCompu.ENSAMBLADA;
     }
 
+    public double getGanancia() {
+        return ganancia;
+    }
+
+    public void setGanancia(double ganancia) {
+        this.ganancia = ganancia;
+    }
+    
 }

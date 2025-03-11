@@ -13,6 +13,7 @@ import com.mycompany.proyecto1ipc2.enums.EnumRol;
 public class Usuario {
     private String nombre;
     private String contraseña;
+    private String confirmacionContraseña;
     private EnumRol rol;
     private boolean activo;
 
@@ -47,5 +48,30 @@ public class Usuario {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
+
+    public String getConfirmacionContraseña() {
+        return confirmacionContraseña;
+    }
+
+    public void setConfirmacionContraseña(String confirmacionContraseña) {
+        this.confirmacionContraseña = confirmacionContraseña;
+    }
     
+    private boolean sonContraseñasIguales(){
+        return confirmacionContraseña != null && contraseña.equals(confirmacionContraseña);
+    }
+    
+    private boolean esContraseñaValida(){
+        return contraseña != null && contraseña.length() >= 6 && !contraseña.isBlank();
+    }
+    
+    private boolean esNombreValido(){
+        nombre = nombre.trim().replaceAll("\\s+", " ");
+        return nombre != null && !nombre.isEmpty() && nombre.length() >= 6;
+    }
+    
+    public boolean esCreacionValida(){
+        return esNombreValido() && esContraseñaValida() && sonContraseñasIguales();
+    }
+
 }

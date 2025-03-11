@@ -2,29 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.proyecto1ipc2.controllers.financiero;
+package com.mycompany.proyecto1ipc2.controllers.usuario;
 
-import com.mycompany.proyecto1ipc2.Reporte;
-import com.mycompany.proyecto1ipc2.dtos.ventas.Compra;
+import com.mycompany.proyecto1ipc2.daos.UsuarioDAO;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
-import com.mycompany.proyecto1ipc2.financiero.reportes.ReporteCompra;
+import com.mycompany.proyecto1ipc2.exception.NotFoundException;
+import com.mycompany.proyecto1ipc2.financiero.UsuarioCRUD;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletReporteCompra", urlPatterns = {"/controllers/financiero/reporte_compras"})
-public class ServletReporteCompra extends HttpServlet {
+@WebServlet(name = "ServletUsuario", urlPatterns = {"/controllers/financiero/usuario"})
+public class ServletUsuario extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -37,7 +33,11 @@ public class ServletReporteCompra extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        UsuarioDAO usuario = new UsuarioDAO();
+        request.setAttribute("usuarios", usuario.obtenerTodo());
+        request.setAttribute("roles", usuario.obtenerRoles());
+        request.getRequestDispatcher("/vista_financiera/gestion_usuarios.jsp").
+                forward(request, response);
     }
 
     /**
@@ -52,15 +52,16 @@ public class ServletReporteCompra extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ReporteCompra reporte1 = new ReporteCompra();
-            Reporte reporte = new Reporte(reporte1);
-            reporte.obtenerDatosConsulta(request);
-            request.setAttribute("facturas", reporte1);
-            request.getRequestDispatcher("/vista_financiera/reporte_compras.jsp"). 
-                    forward(request, response);
-        } catch (InvalidDataException ex) {
+            UsuarioCRUD usuario = new UsuarioCRUD();
+            usuario.crearEntidad(request);
+            request.setAttribute("exito", "usuario creado");
+        } catch (InvalidDataException | NotFoundException ex) {
             request.setAttribute("mensaje", ex.getMessage());
-            request.getRequestDispatcher("/vista_financiera/form_reporte_compras.jsp"). 
+        } finally {
+            UsuarioDAO usuario = new UsuarioDAO();
+            request.setAttribute("usuarios", usuario.obtenerTodo());
+            request.setAttribute("roles", usuario.obtenerRoles());
+            request.getRequestDispatcher("/vista_financiera/gestion_usuarios.jsp").
                     forward(request, response);
         }
     }

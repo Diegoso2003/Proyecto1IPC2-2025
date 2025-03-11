@@ -27,11 +27,13 @@ import java.util.List;
  *
  * @author rafael-cayax
  */
-public class VentasDelDiaDAO extends ConsultaDAO<List<Compra>>{
+public class VentasDelDiaDAO extends ConsultaDAO{
+    
+    private List<Compra> compras;
 
     @Override
-    public List<Compra> realizarConsulta(Consulta consulta) throws InvalidDataException {
-        List<Compra> compras = new ArrayList<>();
+    public void realizarConsulta(Consulta consulta) throws InvalidDataException {
+        compras = new ArrayList<>();
         if (!consulta.tieneFechaInicio()) {
             throw new InvalidDataException("Ingresar una fecha valida");
         }
@@ -88,7 +90,6 @@ public class VentasDelDiaDAO extends ConsultaDAO<List<Compra>>{
         } catch (SQLException e) {
             throw new InvalidDataException("ingresar fecha valida");
         }
-        return compras;
     }
     
 }

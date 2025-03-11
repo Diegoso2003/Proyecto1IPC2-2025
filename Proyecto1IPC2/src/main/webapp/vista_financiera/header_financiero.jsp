@@ -24,7 +24,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/controllers/ventas/computadoras" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/financiero/usuario" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/financiera/person-gear.svg" width="24" height="24">
                             <br>
                             Gestion Usuarios
@@ -48,7 +48,7 @@
                                 Reporte de ventas</a></li>
                             <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_financiera/form_reporte_devoluciones.jsp">
                                 Reporte de devoluciones</a></li>
-                            <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_ventas/form_factura.jsp">
+                            <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_financiera/form_reporte_ganancias.jsp">
                                 Reporte de ganancias</a></li>
                             <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_financiera/form_reporte_compras_usuario.jsp">
                                 Reporte de usuario con mas ventas</a></li>

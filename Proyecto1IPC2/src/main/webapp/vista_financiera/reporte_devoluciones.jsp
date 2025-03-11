@@ -4,6 +4,7 @@
     Author     : rafael-cayax
 --%>
 <%@page import="java.util.List"%>
+<%@page import="com.mycompany.proyecto1ipc2.financiero.reportes.ReporteDevolucion"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
@@ -19,14 +20,15 @@
         <jsp:include page="/includes/informacion.jsp"/>
         <h3 class="text-center">Reporte de devoluciones</h3>
         <jsp:include page="/includes/fechas.jsp"/>
-        <c:if test="${devoluciones.size() == 0}">
+
+        <c:if test="${reporte.devoluciones.size() == 0}">
             <div class="d-flex justify-content-center m-3">
                 <div class="alert alert-warning w-50" role="alert">
                     No hay devoluciones registradas en el rango de fechas seleccionado
                 </div>
             </div>
         </c:if>
-        <c:if test="${devoluciones.size() > 0}">
+        <c:if test="${reporte.devoluciones.size() > 0}">
             <form class="mb-5" action="${pageContext.servletContext.contextPath}/controllers/financiero/reporte_compras" method="post">
                 <input type="hidden" name="fechaInicio" value="${fechaInicio}">
                 <input type="hidden" name="fechaFin" value="${fechaFin}">
@@ -35,30 +37,44 @@
                 </div>
             </form>
         </c:if>
-        <c:forEach items="${devoluciones}" var="devolucion">
-            <div class="d-flex justify-content-center m-3">
-                <div class="card w-50 m-3 border-info">
-                    <div class="card-body">
-                        <h5 class="card-title
-                        text-center">Devolucion NO. ${devolucion.idDevolucion}</h5>
-                        <div class="m-5">
-                            <p class="card-title text-center">Datos de la factura</p>
-                            <p class="card-text"><strong>Cliente:</strong> ${devolucion.compra.cliente.nombre}</p>
-                            <p class="card-text"><strong>NIT:</strong> ${devolucion.compra.cliente.nit}</p>
-                            <p class="card-text"><strong>Fecha:</strong> ${devolucion.compra.fechaCompra}</p>
-                            <p class="card-text"><strong>Precio de compra:</strong> ${devolucion.costoVenta}</p>
-                            <p class="card-text"><strong>No de factura: </strong> ${devolucion.compra.idCompra}</p>
-                            <p class="card-text"><strong>Vendedor:</strong> ${devolucion.compra.usuario.nombre}</p>
-                            <p class="card-title text-center">Datos de la computadora</p>
-                            <p class="card-text"><strong>ID:</strong> ${devolucion.computadora.idComputadora}</p>
-                            <p class="card-text"><strong>Tipo de computadora:</strong> ${devolucion.computadora.tipo.nombre}</p>
-                            <p class="card-title text-center">Datos de la devolucion</p>
-                            <p class="card-text"><strong>Fecha:</strong> ${devolucion.fechaDevolucion}</p>
-                            <p class="card-text"><strong>perdida:</strong> ${devolucion.perdida}</p>
-                        </div>
-                    </div>
+        <div class="d-flex justify-content-center m-3">
+            <div class="card w-75 m-3 border-info">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Devoluciones</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">NIT</th>
+                                <th scope="col">Fecha Compra</th>
+                                <th scope="col">Precio Compra</th>
+                                <th scope="col">Factura NO.</th>
+                                <th scope="col">Vendedor</th>
+                                <th scope="col">ID Comp.</th>
+                                <th scope="col">Tipo Comp.</th>
+                                <th scope="col">Fecha Devol.</th>
+                                <th scope="col">Perdida</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${reporte.devoluciones}" var="devolucion">
+                                <tr>
+                                    <td>${devolucion.compra.cliente.nombre}</td>
+                                    <td>${devolucion.compra.cliente.nit}</td>
+                                    <td>${devolucion.compra.fechaCompra}</td>
+                                    <td>${devolucion.costoVenta}</td>
+                                    <td>${devolucion.compra.idCompra}</td>
+                                    <td>${devolucion.compra.usuario.nombre}</td>
+                                    <td>${devolucion.computadora.idComputadora}</td>
+                                    <td>${devolucion.computadora.tipo.nombre}</td>
+                                    <td>${devolucion.fechaDevolucion}</td>
+                                    <td>${devolucion.perdida}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </c:forEach>
+        </div>
     </body>
 </html>

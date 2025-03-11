@@ -26,17 +26,18 @@ import java.util.List;
  *
  * @author rafael-cayax
  */
-public class ConsultaClienteDAO extends ConsultaDAO<List<Compra>> {
+public class ConsultaClienteDAO extends ConsultaDAO {
 
     private final Cliente cliente;
+    private List<Compra> compras;
 
     public ConsultaClienteDAO(Cliente cliente) {
         this.cliente = cliente;
     }
 
     @Override
-    public List<Compra> realizarConsulta(Consulta consulta) throws InvalidDataException {
-        List<Compra> compras = new ArrayList<>();
+    public void realizarConsulta(Consulta consulta) throws InvalidDataException {
+        compras = new ArrayList<>();
         String query = "SELECT * FROM Compra WHERE nit = ? AND estado = 1 ";
         query += consulta.tieneFechaInicio() ? "AND fechaCompra >= ? " : "";
         query += consulta.tieneFechaFin() ? "AND fechaCompra <= ? " : "";
@@ -87,6 +88,9 @@ public class ConsultaClienteDAO extends ConsultaDAO<List<Compra>> {
         } catch (SQLException e) {
             throw new InvalidDataException("Ingresar valores validos");
         }
+    }
+
+    public List<Compra> getCompras() {
         return compras;
     }
 
