@@ -38,12 +38,12 @@
                 </div>
             </div>
         </div>
-        <c:if test="${consulta.consulta.size() == 0}">
+        <c:if test="${consulta.compras.size() == 0}">
             <div class="alert alert-warning" role="alert">
                 No hay compras registradas para este cliente en el periodo de tiempo seleccionado  
             </div>
         </c:if>
-        <c:forEach items="${consulta.consulta}" var="compra">
+        <c:forEach items="${consulta.compras}" var="compra">
             <div class="d-flex justify-content-center">
                 <div class="card w-50 m-3 border-info">
                     <div class="card-body">

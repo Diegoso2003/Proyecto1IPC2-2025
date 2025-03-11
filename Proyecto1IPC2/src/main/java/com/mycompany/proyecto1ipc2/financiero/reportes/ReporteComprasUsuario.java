@@ -51,7 +51,7 @@ public class ReporteComprasUsuario extends ConsultaDAO {
                     String query2 = "SELECT * FROM Compra f INNER JOIN Cliente c ON f.nit = c.nit WHERE estado = 1 AND usuario = ? ";
                     query2 += consulta.tieneFechaInicio() ? "AND fechaCompra >= ? " : "";
                     query2 += consulta.tieneFechaFin() ? "AND fechaCompra <= ? " : "";
-                    String query3 = "SELECT c.idComputadora, subtotal, nombre, c.estado FROM DetalleCompra d "
+                    String query3 = "SELECT c.idComputadora, subtotal, nombre, c.estado, precioFabricacion FROM DetalleCompra d "
                             + "INNER JOIN Computadora c ON c.idComputadora = d.idComputadora "
                             + "INNER JOIN TipoComputadora t on t.idTipo = c.idTipo "
                             + "WHERE idCompra = ?";
@@ -78,6 +78,7 @@ public class ReporteComprasUsuario extends ConsultaDAO {
                                         DetalleCompra detalle = new DetalleCompra();
                                         Computadora computadora = new Computadora();
                                         computadora.setIdComputadora(result3.getInt(2));
+                                        computadora.setPrecioFabricacion(result3.getDouble("precioFabricacion"));
                                         TipoComputadora tipo = new TipoComputadora();
                                         tipo.setNombre(result3.getString("nombre"));
                                         computadora.setTipo(tipo);
@@ -87,6 +88,8 @@ public class ReporteComprasUsuario extends ConsultaDAO {
                                         if (computadora.getEstado() == EnumEstadoCompu.VENDIDA) {
                                             total += detalle.getSubtotal();
                                         }
+                                        computadora.setGanancia(detalle.getSubtotal() - computadora.getPrecioFabricacion());
+                                        computadora.setGanancia(Math.round(computadora.getGanancia() * 100.0)/100.0);
                                         detalles.add(detalle);
                                     }
                                     compra.setDetalles(detalles);
@@ -104,6 +107,10 @@ public class ReporteComprasUsuario extends ConsultaDAO {
         } catch (SQLException e) {
             throw new InvalidDataException(e.toString());
         }
+    }
+
+    public ReporteMasVentas getReporte() {
+        return reporte;
     }
 
 }

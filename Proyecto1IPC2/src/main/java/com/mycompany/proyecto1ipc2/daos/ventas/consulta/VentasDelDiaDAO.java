@@ -91,5 +91,9 @@ public class VentasDelDiaDAO extends ConsultaDAO{
             throw new InvalidDataException("ingresar fecha valida");
         }
     }
+
+    public List<Compra> getCompras() {
+        return compras;
+    }
     
 }

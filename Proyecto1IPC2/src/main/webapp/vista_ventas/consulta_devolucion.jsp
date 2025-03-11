@@ -42,27 +42,42 @@
                 No hay devoluciones registradas para este cliente en el periodo de tiempo seleccionado   
             </div>
         </c:if>
-        <c:forEach items="${consulta.devoluciones}" var="devolucion">
+        <c:if test="${consulta.devoluciones.size() > 0}">
             <div class="d-flex justify-content-center m-3">
-                <div class="card w-50 m-3 border-info">
+                <div class="card w-75 m-3 border-info">
                     <div class="card-body">
-                        <h5 class="card-title text-center">Devolución NO. ${devolucion.idDevolucion}</h5>
-                        <div class="m-5">
-                            <p class="card-title text-center">Datos de la factura</p>
-                            <p class="card-text"><strong>Fecha:</strong> ${devolucion.compra.fechaCompra}</p>
-                            <p class="card-text"><strong>Precio de compra:</strong> Q${devolucion.costoVenta}</p>
-                            <p class="card-text"><strong>No de factura:</strong> ${devolucion.compra.idCompra}</p>
-                            <p class="card-text"><strong>Vendedor:</strong> ${devolucion.compra.usuario.nombre}</p>
-                            <p class="card-title text-center">Datos de la computadora</p>
-                            <p class="card-text"><strong>ID:</strong> ${devolucion.computadora.idComputadora}</p>
-                            <p class="card-text"><strong>Tipo de computadora:</strong> ${devolucion.computadora.tipo.nombre}</p>
-                            <p class="card-title text-center">Datos de la devolución</p>
-                            <p class="card-text"><strong>Fecha:</strong> ${devolucion.fechaDevolucion}</p>
-                            <p class="card-text"><strong>Pérdida:</strong> Q${devolucion.perdida}</p>
-                        </div>
+                        <h5 class="card-title text-center">Devoluciones</h5>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Fecha Compra</th>
+                                    <th scope="col">Precio Compra</th>
+                                    <th scope="col">Factura NO.</th>
+                                    <th scope="col">Vendedor</th>
+                                    <th scope="col">ID Comp.</th>
+                                    <th scope="col">Tipo Comp.</th>
+                                    <th scope="col">Fecha Devol.</th>
+                                    <th scope="col">Perdida</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${consulta.devoluciones}" var="devolucion">
+                                    <tr>
+                                        <td>${devolucion.compra.fechaCompra}</td>
+                                        <td>${devolucion.costoVenta}</td>
+                                        <td>${devolucion.compra.idCompra}</td>
+                                        <td>${devolucion.compra.usuario.nombre}</td>
+                                        <td>${devolucion.computadora.idComputadora}</td>
+                                        <td>${devolucion.computadora.tipo.nombre}</td>
+                                        <td>${devolucion.fechaDevolucion}</td>
+                                        <td>${devolucion.perdida}</td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </c:forEach>
+        </c:if>
     </body>
 </html>

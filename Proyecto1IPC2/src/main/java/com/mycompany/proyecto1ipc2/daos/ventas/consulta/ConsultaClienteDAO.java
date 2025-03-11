@@ -94,4 +94,8 @@ public class ConsultaClienteDAO extends ConsultaDAO {
         return compras;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+    
 }

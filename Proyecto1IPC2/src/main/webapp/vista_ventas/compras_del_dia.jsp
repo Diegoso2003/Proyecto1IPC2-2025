@@ -18,14 +18,14 @@
         <jsp:include page="/vista_ventas/header_ventas.jsp"/>
 
         <jsp:include page="/includes/informacion.jsp"/>
-        <c:if test="${compras.size() == 0}">
+        <c:if test="${reporte.compras.size() == 0}">
             <div class="d-flex justify-content-center m-3">
                 <div class="alert alert-warning w-50" role="alert">
                     No hay compras registradas en el dia: ${fechaInicio}
                 </div>
             </div>
         </c:if>
-        <c:forEach items="${compras}" var="factura">
+        <c:forEach items="${reporte.compras}" var="factura">
             <div class="d-flex justify-content-center m-3">
                 <div class="card w-50 m-3 border-info">
                     <div class="card-body">

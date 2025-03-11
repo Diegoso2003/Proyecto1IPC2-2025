@@ -28,6 +28,7 @@ import java.util.List;
 public class ReporteDevolucion extends ConsultaDAO{
 
     private List<Devolucion> devoluciones;
+    
     @Override
     public void realizarConsulta(Consulta consulta) throws InvalidDataException {
         devoluciones = new ArrayList<>();

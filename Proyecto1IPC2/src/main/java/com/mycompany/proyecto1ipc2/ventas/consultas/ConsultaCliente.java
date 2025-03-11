@@ -35,7 +35,7 @@ public class ConsultaCliente{
     
     public ConsultaDAO DevolucionesDeCliente(HttpServletRequest request) throws InvalidDataException, NotFoundException{
         encontrarCliente(request);
-        ConsultaClienteDAO reporte1 = new ConsultaClienteDAO(cliente);
+        ConsultaDevolucionesDAO reporte1 = new ConsultaDevolucionesDAO(cliente);
         Reporte reporte = new Reporte(reporte1);
         reporte.obtenerDatosConsulta(request);
         return reporte1;

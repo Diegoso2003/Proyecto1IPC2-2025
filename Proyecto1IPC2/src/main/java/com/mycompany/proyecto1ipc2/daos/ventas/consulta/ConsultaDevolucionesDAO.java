@@ -36,7 +36,7 @@ public class ConsultaDevolucionesDAO extends ConsultaDAO{
     
     @Override
     public void realizarConsulta(Consulta consulta) throws InvalidDataException {
-        List<Devolucion> devoluciones = new ArrayList<>();
+        devoluciones = new ArrayList<>();
         String query = "SELECT fechaDevolucion, d.idCompra, d.costoVenta, nombre, idDevolucion, usuario, "
                 + "ROUND((precioFabricacion / 3),2 ) as perdida, fechaCompra, c.idComputadora FROM Devolucion d "
                 + "INNER JOIN Compra f ON d.idCompra = f.idCompra "
@@ -75,7 +75,13 @@ public class ConsultaDevolucionesDAO extends ConsultaDAO{
             throw new InvalidDataException("ingresar valores validos");
         }
     }
-    
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public List<Devolucion> getDevoluciones() {
+        return devoluciones;
+    }
     
 }

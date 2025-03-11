@@ -53,7 +53,7 @@ public class ServletReporteDevolucion extends HttpServlet {
             throws ServletException, IOException {
         try {
             ReporteDevolucion devolucion = new ReporteDevolucion();
-            Reporte reporte = new Reporte(new ReporteDevolucion());
+            Reporte reporte = new Reporte(devolucion);
             reporte.obtenerDatosConsulta(request);
             request.setAttribute("reporte", devolucion);
             request.getRequestDispatcher("/vista_financiera/reporte_devoluciones.jsp"). 
