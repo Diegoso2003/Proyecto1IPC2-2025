@@ -54,9 +54,9 @@
                                 Reporte de usuario con mas ventas</a></li>
                             <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_ventas/form_factura.jsp">
                                 Reporte de usuario con mas ganancias</a></li>
-                            <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_ventas/form_factura.jsp">
+                            <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_financiera/form_computadora_mas_vendida.jsp">
                                 Reporte de computadora mas vendida</a></li>
-                            <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_ventas/form_factura.jsp">
+                            <li><a class="dropdown-item" href="${pageContext.servletContext.contextPath}/vista_financiera/form_computadora_menos_vendida.jsp">
                                 Reporte de computadora menos vendida</a></li>
                         </ul>
                     </li>
