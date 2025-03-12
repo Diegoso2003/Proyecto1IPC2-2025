@@ -37,7 +37,7 @@ public class CompraDAO extends BDCRUD<Compra, Integer>{
         try (Connection coneccion = Coneccion.getConeccion();
                 PreparedStatement statement = coneccion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
             statement.setDate(1, Date.valueOf(entidad.getFechaCompra()));
-            statement.setInt(2, entidad.getCliente().getNit());
+            statement.setLong(2, entidad.getCliente().getNit());
             statement.setString(3, entidad.getUsuario().getNombre());
             statement.executeUpdate();
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {

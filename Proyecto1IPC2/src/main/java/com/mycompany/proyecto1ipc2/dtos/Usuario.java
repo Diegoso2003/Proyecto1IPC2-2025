@@ -67,7 +67,7 @@ public class Usuario {
     
     private boolean esNombreValido(){
         nombre = nombre.trim().replaceAll("\\s+", " ");
-        return nombre != null && !nombre.isEmpty() && nombre.length() >= 6;
+        return nombre != null && !nombre.isEmpty() && nombre.length() >= 6 && nombre.length() <= 200;
     }
     
     public boolean esCreacionValida(){

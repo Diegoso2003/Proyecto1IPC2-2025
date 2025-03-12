@@ -46,7 +46,7 @@ public class ConsultaDevolucionesDAO extends ConsultaDAO{
         query += consulta.tieneFechaFin() ? "AND fechaDevolucion <= ? ": "";
         try (Connection coneccion = Coneccion.getConeccion();
                 PreparedStatement statement = coneccion.prepareStatement(query)){
-            statement.setInt(1, cliente.getNit());
+            statement.setLong(1, cliente.getNit());
             agregarFechaConCliente(statement, consulta);
             try(ResultSet result = statement.executeQuery()){
                 while(result.next()){

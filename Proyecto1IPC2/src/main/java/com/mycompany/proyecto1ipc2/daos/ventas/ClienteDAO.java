@@ -71,5 +71,5 @@ public class ClienteDAO extends BDCRUD<Cliente, Integer>{
     public void eliminar(Integer id) throws NotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }

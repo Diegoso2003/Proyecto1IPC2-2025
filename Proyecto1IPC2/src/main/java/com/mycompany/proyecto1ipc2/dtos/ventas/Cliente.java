@@ -37,4 +37,19 @@ public class Cliente {
         this.direccion = direccion;
     }
     
+    public boolean esValido(){
+        return esNombreValido() && esDireccionValida() && esNitValido();
+    }
+    
+    private boolean esNombreValido(){
+        return nombre != null && !nombre.isBlank() && nombre.length() <= 200;
+    }
+    
+    private boolean esDireccionValida(){
+        return direccion != null && !direccion.isBlank() && direccion.length() <= 250;
+    }
+    
+    private boolean esNitValido(){
+        return nit >= 100000000 && nit <= 999999999;
+    }
 }

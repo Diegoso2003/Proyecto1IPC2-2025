@@ -34,7 +34,9 @@ public class ComponenteDAO extends BDCRUD<Componente, Integer>{
      */
     @Override
     public void insertar(Componente entidad) throws InvalidDataException {
-        verificarExistencia(entidad);
+        if (verificarExistencia(entidad)) {
+            throw new InvalidDataException("ya existe este tipo de componente registrado con este precio");
+        }
         String statement = "insert into Componente(idTipo, cantidad, costo) values(?, ?, ?)";
         try (Connection c = Coneccion.getConeccion(); 
                 PreparedStatement st = c.prepareStatement(statement)) {
@@ -43,20 +45,17 @@ public class ComponenteDAO extends BDCRUD<Componente, Integer>{
             st.setDouble(3, entidad.getPrecio());
             st.executeUpdate();
         } catch (SQLException e) {
-            throw new InvalidDataException("datos no validos");
+            throw new InvalidDataException("datos no validos" + e);
         }
     }
 
     /**
-     * verifica que no exista un componente con el mismo nombre y precio ya
-     * guardado en la base de datos
-     *
-     * @param codigo id del tipo de componente
-     * @param precio precio del componente
-     * @throws SQLException
-     * @throws InvalidDataException
+     * 
+     * @param componente
+     * @return
+     * @throws InvalidDataException 
      */
-    private void verificarExistencia(Componente componente) throws InvalidDataException {
+    public boolean verificarExistencia(Componente componente) throws InvalidDataException {
         double precio = componente.getPrecio();
         precio = Math.round(precio * 100.0)/100.0;
         String st = "select * from Componente where idTipo = ? and costo = ?";
@@ -67,14 +66,15 @@ public class ComponenteDAO extends BDCRUD<Componente, Integer>{
             try (ResultSet result = st2.executeQuery()) {
                 if (result.next()) {
                     if (actu && componente.getId() == result.getInt("idComponente")) {
-                        return;
+                        return false;
                     }
-                    throw new InvalidDataException("el componente con este nombre y precio ya existe!!!");
+                    return true;
                 }
             }
         } catch(SQLException ex){
-            throw new InvalidDataException("datos no validos");
+            throw new InvalidDataException("datos no validos" + ex);
         }
+        return false;
     }
   
     /**
@@ -198,6 +198,18 @@ public class ComponenteDAO extends BDCRUD<Componente, Integer>{
         } catch (SQLException e) {
         }
         return componentes;
+    }
+
+    public void actualizarEnUno(Componente componente) {
+        String query = "UPDATE Componente SET cantidad = cantidad + 1 WHERE idTipo = ? AND costo = ? ";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setInt(1, componente.getTipo().getId());
+            statement.setDouble(2, componente.getPrecio());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
 }

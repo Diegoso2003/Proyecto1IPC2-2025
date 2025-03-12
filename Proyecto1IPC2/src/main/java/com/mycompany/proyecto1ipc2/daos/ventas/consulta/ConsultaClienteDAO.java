@@ -48,7 +48,7 @@ public class ConsultaClienteDAO extends ConsultaDAO {
         try (Connection coneccion = Coneccion.getConeccion(); 
                 PreparedStatement statement = coneccion.prepareStatement(query); 
                 PreparedStatement statement2 = coneccion.prepareStatement(query2)) {
-            statement.setInt(1, cliente.getNit());
+            statement.setLong(1, cliente.getNit());
             agregarFechaConCliente(statement, consulta);
             try (ResultSet result = statement.executeQuery()) {
                 while (result.next()) {

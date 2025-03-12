@@ -113,4 +113,23 @@ public class TipoComponenteDAO extends BDCRUD<TipoComponente, Integer>{
         }
     }
     
+    public Optional<TipoComponente> encontrarPorNombre(String nombre) throws InvalidDataException{
+        String query = "SELECT * FROM TipoComponente WHERE nombre = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setString(1, nombre);
+            try(ResultSet result = statement.executeQuery()){
+                if (result.next()) {
+                    TipoComponente tipo = new TipoComponente();
+                    tipo.setNombre(result.getString("nombre"));
+                    tipo.setId(result.getInt("idTipoComponente"));
+                    return Optional.of(tipo);
+                }
+            }
+        } catch (SQLException e) {
+            throw new InvalidDataException("nombre ingresado invalido");
+        }
+        return Optional.empty();
+    }
+
 }

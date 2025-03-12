@@ -26,7 +26,13 @@ public class ClienteCRUD extends CRUD<Cliente> {
             entidad = new Cliente();
             entidad.setNombre(request.getParameter("nombre"));
             entidad.setDireccion(request.getParameter("direccion"));
+            if (request.getParameter("nit").length() != 9) {
+                throw new InvalidDataException("el nit ingresado no es valido");
+            }
             entidad.setNit(Integer.parseInt(request.getParameter("nit")));
+            if (!entidad.esValido()) {
+                throw new InvalidDataException("ingresar correctamente los datos");
+            }
         } catch (NumberFormatException | NullPointerException e) {
             throw new InvalidDataException("Ingresar correctament los datos solicitados");
         }

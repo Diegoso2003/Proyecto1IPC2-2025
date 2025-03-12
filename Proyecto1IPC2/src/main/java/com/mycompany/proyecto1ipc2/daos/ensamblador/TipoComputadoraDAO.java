@@ -27,7 +27,19 @@ public class TipoComputadoraDAO extends BDCRUD<TipoComputadora, Integer>{
 
     @Override
     public void insertar(TipoComputadora entidad) throws InvalidDataException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String query = "INSERT INTO TipoComputadora(nombre, costoVenta) VALUES (?, ?)";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setString(1, entidad.getNombre());
+            statement.setDouble(2, entidad.getPrecio());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                throw new InvalidDataException("tipo de computadora con nombre: '" + entidad.getNombre() + ""
+                        + "' ya esta registrada en el sistema");
+            }
+            throw new InvalidDataException("Ingrese un nombre valido");
+        }
     }
 
     @Override
@@ -95,4 +107,42 @@ public class TipoComputadoraDAO extends BDCRUD<TipoComputadora, Integer>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
+    public Optional<TipoComputadora> obtenerPorNombre(String nombre) throws InvalidDataException{
+        String query = "SELECT * FROM TipoComputadora WHERE nombre = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setString(1, nombre);
+            try(ResultSet result = statement.executeQuery()){
+                if (result.next()) {
+                    TipoComputadora tipo = new TipoComputadora();
+                    tipo.setIdTipo(result.getInt("idTipo"));
+                    tipo.setNombre(result.getString("nombre"));
+                    tipo.setPrecio(result.getDouble("costoVenta"));
+                    return Optional.of(tipo);
+                }
+            }
+        } catch (SQLException e) {
+            throw new InvalidDataException("nombre ingresado invalido");
+        }
+        return Optional.empty();
+    }
+    
+    public void insertarIndicacion(TipoComputadora tipo, TipoComponente indicacion) throws InvalidDataException{
+        String query = "INSERT INTO Indicacion(idTipoComputadora, idTipoComponente, cantidad) "
+                + "VALUES (?, ?, ?)";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setInt(1, tipo.getIdTipo());
+            statement.setInt(2, indicacion.getId());
+            statement.setInt(3, indicacion.getCantidad());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                throw new InvalidDataException("la computadora ya tiene añadida este componente, modifique la cantidad "
+                        + "en el apartado de gestion de tipos de computadoras");
+            }
+            throw new InvalidDataException("valores ingresados invalidos");
+        }
+    }
+ 
 }

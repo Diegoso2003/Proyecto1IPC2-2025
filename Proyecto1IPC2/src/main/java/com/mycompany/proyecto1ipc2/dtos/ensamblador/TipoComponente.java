@@ -38,7 +38,7 @@ public class TipoComponente {
     }
     
     public boolean esValido(){
-        return nombre != null && !nombre.isBlank();
+        return nombre != null && !nombre.isBlank() && nombre.length() <= 150;
     }
     
 }

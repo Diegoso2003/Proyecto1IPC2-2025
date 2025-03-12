@@ -33,13 +33,9 @@ public class CompraCRUD extends CRUD<Compra>{
             entidad = new Compra();
             Usuario usuario = new Usuario();
             usuario.setNombre((String)request.getSession().getAttribute("Usuario"));
-            ClienteDAO repositorioCliente = new ClienteDAO();
-            if (request.getParameter("nit").length() != 9) {
-                throw new InvalidDataException("el nit ingresado no es valido");
-            }
-            int id = Integer.parseInt(request.getParameter("nit"));
-            Optional<Cliente> posibleCliente = repositorioCliente.encontrarPorID(id);
-            Cliente cliente = posibleCliente.orElseThrow(() -> new NotFoundException("cliente con nit: '" + id + "' no encontrado"));
+            ClienteCRUD repositorioCliente = new ClienteCRUD();
+            repositorioCliente.setIdNombre("nit");
+            Cliente cliente = repositorioCliente.obtenerEntidad(request);
             entidad.setCliente(cliente);
             entidad.setUsuario(usuario);
             entidad.setFechaCompra(LocalDate.parse(request.getParameter("fecha")));

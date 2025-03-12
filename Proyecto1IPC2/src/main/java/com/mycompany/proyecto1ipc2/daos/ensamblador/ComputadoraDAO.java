@@ -44,6 +44,10 @@ public class ComputadoraDAO extends BDCRUD<Computadora, Integer>{
                 }
             }
         } catch (SQLException e) {
+            if (e.getErrorCode() == 1452) { 
+                throw new InvalidDataException("el usuario con nombre: '" + entidad.getEnsamblador() 
+                + "' no existe");
+            }
             throw new InvalidDataException("datos ingresado no validos" + e);
         }
     }
@@ -155,5 +159,6 @@ public class ComputadoraDAO extends BDCRUD<Computadora, Integer>{
         }
         return computadoras;
     }
-    
+
+ 
 }
