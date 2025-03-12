@@ -5,19 +5,16 @@
 package com.mycompany.proyecto1ipc2.controllers.financiero;
 
 import com.mycompany.proyecto1ipc2.Reporte;
-import com.mycompany.proyecto1ipc2.dtos.ventas.Devolucion;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.financiero.reportes.ReporteDevolucion;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -37,7 +34,27 @@ public class ServletReporteDevolucion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        try {
+            String fileName = "reporte_devoluciones.csv";
+            
+            response.setContentType("text/plain");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            
+            PrintWriter out = response.getWriter();
+            ReporteDevolucion reporte = new ReporteDevolucion();
+            Reporte archivo = new Reporte(reporte);
+            archivo.obtenerDatosConsulta(request);
+            List<String> texto = reporte.exportarContenido();
+            for(String fila: texto){
+                out.println(fila);
+            }
+            out.close();
+        } catch (InvalidDataException ex) {
+            request.setAttribute("mensaje", ex.getMessage());
+            request.getRequestDispatcher("/vista_financiera/form_reporte_devoluciones.jsp"). 
+                    forward(request, response);
+        }
     }
 
     /**

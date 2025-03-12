@@ -11,24 +11,29 @@ import com.mycompany.proyecto1ipc2.dtos.ventas.DetalleCompra;
 import com.mycompany.proyecto1ipc2.dtos.ventas.Devolucion;
 import com.mycompany.proyecto1ipc2.enums.EnumEstadoCompu;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author rafael-cayax
  */
-public class ReporteGanancias extends ConsultaDAO{
+public class ReporteGanancias extends ConsultaDAO implements Exportacion{
     private List<Compra> compras;
     private List<Devolucion> devoluciones;
     private double perdida = 0.0;
     private double ganancia = 0.0;
+    private Consulta consulta;
+    private ReporteDevolucion reporte1;
+    private ReporteCompra reporte2;
     
     @Override
     public void realizarConsulta(Consulta consulta) throws InvalidDataException {
-        ReporteDevolucion reporte1 = new ReporteDevolucion();
+        this.consulta = consulta;
+        reporte1 = new ReporteDevolucion();
         reporte1.realizarConsulta(consulta);
         devoluciones = reporte1.getDevoluciones();
-        ReporteCompra reporte2 = new ReporteCompra();
+        reporte2 = new ReporteCompra();
         reporte2.realizarConsulta(consulta);
         compras = reporte2.getCompras();
         calcularGanancias();
@@ -75,6 +80,17 @@ public class ReporteGanancias extends ConsultaDAO{
 
     public double getGanancia() {
         return ganancia;
+    }
+
+    @Override
+    public List<String> exportarContenido() {
+        List<String> contenido = new ArrayList<>();
+        contenido.add("Reporte de ganancias");
+        contenido.add("ganancias: " + ganancia);
+        contenido.add("perdidas: " + perdida);
+        contenido.addAll(reporte2.exportarContenido());
+        contenido.addAll(reporte1.exportarContenido());
+        return contenido;
     }
     
 }

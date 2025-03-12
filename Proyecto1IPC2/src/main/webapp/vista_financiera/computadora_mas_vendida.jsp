@@ -42,7 +42,7 @@
         </c:if>
 
         <c:if test="${reporte.detalles.size() > 0}">
-            <form class="mb-5" action="${pageContext.servletContext.contextPath}/controllers/financiero/reporte_compras" method="post">
+            <form class="mb-5" action="${pageContext.servletContext.contextPath}/controllers/financiero/compu_mas_ventas" method="GET">
                 <input type="hidden" name="fechaInicio" value="${fechaInicio}">
                 <input type="hidden" name="fechaFin" value="${fechaFin}">
                 <div class="d-flex justify-content-center">

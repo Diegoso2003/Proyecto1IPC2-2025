@@ -25,12 +25,13 @@ import java.util.List;
  *
  * @author rafael-cayax
  */
-public class ReporteCompuVentas extends ConsultaDAO{
+public class ReporteCompuVentas extends ConsultaDAO implements Exportacion{
     
     private TipoComputadora tipo;
     private int cantidad;
     private List<DetalleCompra> detalles;
     private final boolean mayor;
+    private Consulta consulta;
 
     public ReporteCompuVentas(boolean mayor) {
         this.mayor = mayor;
@@ -38,6 +39,7 @@ public class ReporteCompuVentas extends ConsultaDAO{
     
     @Override
     public void realizarConsulta(Consulta consulta) throws InvalidDataException {
+        this.consulta = consulta;
         detalles = new ArrayList<>();
         String query = "select c.idTipo, t.nombre ,Count(*) as total from Compra f "
                 + "INNER JOIN DetalleCompra d on f.idCompra = d.idCompra RIGHT JOIN Computadora c on c.idComputadora = d.idComputadora "
@@ -105,6 +107,41 @@ public class ReporteCompuVentas extends ConsultaDAO{
 
     public List<DetalleCompra> getDetalles() {
         return detalles;
+    }
+
+    @Override
+    public List<String> exportarContenido() {
+        List<String> contenido = new ArrayList<>();
+        if (mayor) {
+            contenido.add("Reporte de computadora mas vendida");
+        } else {
+            contenido.add("Reporte de computadora menos vendida");
+        }
+        StringBuilder fila = new StringBuilder();
+        if (consulta.tieneFechaInicio()) {
+            fila.append("fecha de Inicio: ").append(consulta.getFechaInicio());
+            contenido.add(fila.toString());
+            fila = new StringBuilder();
+        }
+        if (consulta.tieneFechaFin()) {
+            fila.append("Fecha fin: ").append(consulta.getFechaFin());
+            contenido.add(fila.toString());
+            fila = new StringBuilder();
+        }
+        fila.append("Tipo Computadora,Factura No,nit,vendedor,subtotal,Id computadora,ganancia");
+        contenido.add(fila.toString());
+        for(DetalleCompra detalle: detalles){
+            fila = new StringBuilder();
+            fila.append(tipo.getNombre()).append(",");
+            fila.append(detalle.getCompra().getIdCompra()).append(",");
+            fila.append(detalle.getCompra().getCliente().getNit()).append(",");
+            fila.append(detalle.getCompra().getUsuario().getNombre()).append(",");
+            fila.append(detalle.getSubtotal()).append(",");
+            fila.append(detalle.getComputadora().getIdComputadora()).append(",");
+            fila.append(detalle.getComputadora().getGanancia());
+            contenido.add(fila.toString());
+        }
+        return contenido;
     }
     
 }

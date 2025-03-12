@@ -27,11 +27,13 @@ import java.util.List;
  *
  * @author rafael-cayax
  */
-public class ReporteComprasUsuario extends ConsultaDAO {
+public class ReporteComprasUsuario extends ConsultaDAO implements Exportacion{
     private ReporteMasVentas reporte;
+    private Consulta consulta;
     
     @Override
     public void realizarConsulta(Consulta consulta) throws InvalidDataException {
+        this.consulta = consulta;
         reporte = new ReporteMasVentas();
         String query = "SELECT usuario, COUNT(*) AS totalVentas FROM Compra WHERE estado = 1 ";
         query += consulta.tieneFechaInicio() ? " AND fechaCompra >= ? " : "";
@@ -77,7 +79,7 @@ public class ReporteComprasUsuario extends ConsultaDAO {
                                     while (result3.next()) {
                                         DetalleCompra detalle = new DetalleCompra();
                                         Computadora computadora = new Computadora();
-                                        computadora.setIdComputadora(result3.getInt(2));
+                                        computadora.setIdComputadora(result3.getInt("idComputadora"));
                                         computadora.setPrecioFabricacion(result3.getDouble("precioFabricacion"));
                                         TipoComputadora tipo = new TipoComputadora();
                                         tipo.setNombre(result3.getString("nombre"));
@@ -112,5 +114,44 @@ public class ReporteComprasUsuario extends ConsultaDAO {
     public ReporteMasVentas getReporte() {
         return reporte;
     }
+
+    @Override
+    public List<String> exportarContenido() {
+        List<String> contenido = new ArrayList<>();
+        StringBuilder fila = new StringBuilder();
+        contenido.add("Reporte de usuario con mas ventas");
+        if (consulta.tieneFechaInicio()) {
+            fila.append("fecha de Inicio: ").append(consulta.getFechaInicio());
+            contenido.add(fila.toString());
+            fila = new StringBuilder();
+        }
+        if (consulta.tieneFechaFin()) {
+            fila.append("Fecha fin: ").append(consulta.getFechaFin());
+            contenido.add(fila.toString());
+        }
+        contenido.add("Usuario: "+ reporte.getUsuario().getNombre());
+        contenido.add("Total ventas: "+ reporte.getTotalVentas());
+        contenido.add("compras:");
+        for(Compra compra: reporte.getCompras()){
+            contenido.add("Factura NO." + compra.getIdCompra());
+            contenido.add("Cliente: " + compra.getCliente().getNombre());
+            contenido.add("Nit: " + compra.getCliente().getNit());
+            contenido.add("Direccion: " + compra.getCliente().getDireccion());
+            contenido.add("Fecha compra: " + compra.getFechaCompra());
+            contenido.add("Total: " + compra.getTotal());
+            contenido.add("Id computadora,nombre,subtotal,estado,ganancia");
+            for(DetalleCompra detalle: compra.getDetalles()){
+                fila = new StringBuilder();
+                fila.append(detalle.getComputadora().getIdComputadora()).append(",");
+                fila.append(detalle.getComputadora().getTipo().getNombre()).append(",");
+                fila.append(detalle.getSubtotal()).append(",");
+                fila.append(detalle.getComputadora().getEstado().getDescripcion()).append(",");
+                fila.append(detalle.getComputadora().getGanancia());
+                contenido.add(fila.toString());
+            }
+        }
+        return contenido;
+    }
+
 
 }

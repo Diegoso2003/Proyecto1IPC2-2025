@@ -25,12 +25,14 @@ import java.util.List;
  *
  * @author rafael-cayax
  */
-public class ReporteDevolucion extends ConsultaDAO{
+public class ReporteDevolucion extends ConsultaDAO implements Exportacion{
 
     private List<Devolucion> devoluciones;
+    private Consulta consulta;
     
     @Override
     public void realizarConsulta(Consulta consulta) throws InvalidDataException {
+        this.consulta = consulta;
         devoluciones = new ArrayList<>();
         String query = "SELECT fechaDevolucion, d.idCompra, d.costoVenta, t.nombre as nombreTipo, l.nombre as cliente, f.nit, fechaCompra,"
                 + "ROUND((precioFabricacion / 3),2 ) as perdida, c.idComputadora, idDevolucion, usuario FROM Devolucion d "
@@ -77,6 +79,40 @@ public class ReporteDevolucion extends ConsultaDAO{
 
     public List<Devolucion> getDevoluciones() {
         return devoluciones;
+    }
+
+    @Override
+    public List<String> exportarContenido() {
+        List<String> contenido = new ArrayList<>();
+        StringBuilder fila = new StringBuilder();
+        contenido.add("Reporte de devoluciones");
+        if (consulta.tieneFechaInicio()) {
+            fila.append("fecha de Inicio: ").append(consulta.getFechaInicio());
+            contenido.add(fila.toString());
+            fila = new StringBuilder();
+        }
+        if (consulta.tieneFechaFin()) {
+            fila.append("Fecha fin: ").append(consulta.getFechaFin());
+            contenido.add(fila.toString());
+            fila = new StringBuilder();
+        }
+        fila.append("Cliente,NIT,Fecha Compra,Precio Compra,Factura NO.,Vendedor,ID Comp.,Tipo Comp.,Fecha Devol.,Perdida");
+        contenido.add(fila.toString());
+        for(Devolucion devolucion: devoluciones){
+            fila = new StringBuilder();
+            fila.append(devolucion.getCompra().getCliente().getNombre()).append(",");
+            fila.append(devolucion.getCompra().getCliente().getNit()).append(",");
+            fila.append(devolucion.getCompra().getFechaCompra()).append(",");
+            fila.append(devolucion.getCostoVenta()).append(",");
+            fila.append(devolucion.getCompra().getIdCompra()).append(",");
+            fila.append(devolucion.getCompra().getUsuario().getNombre()).append(",");
+            fila.append(devolucion.getComputadora().getIdComputadora()).append(",");
+            fila.append(devolucion.getComputadora().getTipo().getNombre()).append(",");
+            fila.append(devolucion.getFechaDevolucion()).append(",");
+            fila.append(devolucion.getPerdida());
+            contenido.add(fila.toString());
+        }
+        return contenido;
     }
     
 }

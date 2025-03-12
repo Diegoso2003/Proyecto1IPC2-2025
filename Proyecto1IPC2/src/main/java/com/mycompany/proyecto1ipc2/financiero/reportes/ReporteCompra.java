@@ -26,11 +26,13 @@ import java.util.List;
  *
  * @author rafael-cayax
  */
-public class ReporteCompra extends ConsultaDAO{
+public class ReporteCompra extends ConsultaDAO implements Exportacion{
 
     private List<Compra> compras;
+    private Consulta consulta;
     @Override
     public void realizarConsulta(Consulta consulta) throws InvalidDataException {
+        this.consulta = consulta;
         compras = new ArrayList<>();
         String query = "SELECT * FROM Compra f INNER JOIN Cliente c ON f.nit = c.nit WHERE estado = 1 ";
         query += consulta.tieneFechaInicio() ? "AND fechaCompra >= ? ": "";
@@ -92,5 +94,44 @@ public class ReporteCompra extends ConsultaDAO{
     public List<Compra> getCompras() {
         return compras;
     }
-    
+
+    @Override
+    public List<String> exportarContenido() {
+        List<String> contenido = new ArrayList<>();
+        StringBuilder fila = new StringBuilder();
+        contenido.add("Reporte Compras");
+        if (consulta.tieneFechaInicio()) {
+            fila.append("fecha de Inicio: ").append(consulta.getFechaInicio());
+            contenido.add(fila.toString());
+            fila = new StringBuilder();
+        }
+        if (consulta.tieneFechaFin()) {
+            fila.append("Fecha fin: ").append(consulta.getFechaFin());
+            contenido.add(fila.toString());
+            fila = new StringBuilder();
+        }
+        fila.append("Factura,fecha Compra,vendedor,nit,cliente,direccion del cliente,total compra,id computadora,nombre,precio fabricacion,")
+                .append("subtotal, estado");
+        contenido.add(fila.toString());
+        for(Compra compra: compras){
+            for(DetalleCompra detalle: compra.getDetalles()){
+                fila = new StringBuilder();
+                fila.append(compra.getIdCompra()).append(",");
+                fila.append(compra.getFechaCompra()).append(",");
+                fila.append(compra.getUsuario().getNombre()).append(",");
+                fila.append(compra.getCliente().getNit()).append(",");
+                fila.append(compra.getCliente().getNombre()).append(",");
+                fila.append(compra.getCliente().getDireccion()).append(",");
+                fila.append(compra.getTotal()).append(",");
+                fila.append(detalle.getComputadora().getIdComputadora()).append(",");
+                fila.append(detalle.getComputadora().getTipo().getNombre()).append(",");
+                fila.append(detalle.getComputadora().getPrecioFabricacion()).append(",");
+                fila.append(detalle.getSubtotal()).append(",");
+                fila.append(detalle.getComputadora().getEstado().getDescripcion());
+                contenido.add(fila.toString());
+            }
+        }
+        return contenido;
+    }
+     
 }

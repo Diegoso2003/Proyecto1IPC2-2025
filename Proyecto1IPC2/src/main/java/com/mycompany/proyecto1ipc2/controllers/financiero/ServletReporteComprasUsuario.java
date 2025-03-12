@@ -5,7 +5,6 @@
 package com.mycompany.proyecto1ipc2.controllers.financiero;
 
 import com.mycompany.proyecto1ipc2.Reporte;
-import com.mycompany.proyecto1ipc2.dtos.financiero.ReporteMasVentas;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.financiero.reportes.ReporteComprasUsuario;
 import java.io.IOException;
@@ -15,8 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
 /**
  *
@@ -36,7 +34,27 @@ public class ServletReporteComprasUsuario extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        try {
+            String fileName = "reporte_compras_usuario.csv";
+            
+            response.setContentType("text/plain");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            
+            PrintWriter out = response.getWriter();
+            ReporteComprasUsuario reporte = new ReporteComprasUsuario();
+            Reporte archivo = new Reporte(reporte);
+            archivo.obtenerDatosConsulta(request);
+            List<String> texto = reporte.exportarContenido();
+            for(String fila: texto){
+                out.println(fila);
+            }
+            out.close();
+        } catch (InvalidDataException ex) {
+            request.setAttribute("mensaje", ex.getMessage());
+            request.getRequestDispatcher("/vista_financiera/form_reporte_compras_usuario.jsp"). 
+                    forward(request, response);
+        }
     }
 
     /**

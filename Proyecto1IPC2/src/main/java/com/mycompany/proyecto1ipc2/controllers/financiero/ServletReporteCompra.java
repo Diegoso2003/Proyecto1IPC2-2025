@@ -37,7 +37,27 @@ public class ServletReporteCompra extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        try {
+            String fileName = "reporte_compras.csv";
+            
+            response.setContentType("text/plain");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            response.setHeader("Content-Transfer-Encoding", "binary");
+            
+            PrintWriter out = response.getWriter();
+            ReporteCompra reporte = new ReporteCompra();
+            Reporte archivo = new Reporte(reporte);
+            archivo.obtenerDatosConsulta(request);
+            List<String> texto = reporte.exportarContenido();
+            for(String fila: texto){
+                out.println(fila);
+            }
+            out.close();
+        } catch (InvalidDataException ex) {
+            request.setAttribute("mensaje", ex.getMessage());
+            request.getRequestDispatcher("/vista_financiera/form_reporte_compras.jsp"). 
+                    forward(request, response);
+        }
     }
 
     /**

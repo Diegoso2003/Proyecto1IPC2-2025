@@ -9,6 +9,7 @@ import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *

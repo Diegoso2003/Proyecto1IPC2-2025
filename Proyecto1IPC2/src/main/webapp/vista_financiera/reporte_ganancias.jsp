@@ -20,6 +20,15 @@
         <jsp:include page="/includes/informacion.jsp"/>
         <h5 class="text-center">Reporte de ganancias</h5>
         <jsp:include page="/includes/fechas.jsp"/>
+
+        <form class="mb-5" action="${pageContext.servletContext.contextPath}/controllers/financiero/reporte_ganancias" method="GET">
+            <input type="hidden" name="fechaInicio" value="${fechaInicio}">
+            <input type="hidden" name="fechaFin" value="${fechaFin}">
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary w-25 py-2 m-3">Exportar Reporte</button>
+            </div>
+        </form>
+
         <div class="d-flex justify-content-center m-3">
             <div class="card w-50 m-3 border-info">
                 <div class="card-body">
