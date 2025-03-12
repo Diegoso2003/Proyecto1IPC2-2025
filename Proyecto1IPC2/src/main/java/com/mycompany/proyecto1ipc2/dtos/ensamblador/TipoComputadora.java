@@ -48,4 +48,9 @@ public class TipoComputadora {
         this.indicaciones = indicaciones;
     }
     
+    public boolean esValido(){
+        return nombre != null & !nombre.isBlank() && nombre.length() >= 6 && nombre.length() <= 100 
+                && precio > 0.0;
+    }
+    
 }

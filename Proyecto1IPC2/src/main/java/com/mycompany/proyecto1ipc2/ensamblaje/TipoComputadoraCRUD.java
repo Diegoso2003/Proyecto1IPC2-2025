@@ -22,7 +22,19 @@ public class TipoComputadoraCRUD extends CRUD<TipoComputadora>{
 
     @Override
     protected void obtenerYValidarDatos(HttpServletRequest request) throws InvalidDataException {
-
+        entidad = new TipoComputadora();
+        try {
+            entidad.setNombre(request.getParameter("nombre").trim().replaceAll("\\s+", " "));
+            entidad.setPrecio(Double.parseDouble(request.getParameter("precio")));
+            if (!entidad.esValido()) {
+                throw new InvalidDataException("ingresar datos validos");
+            }
+            if (actu) {
+                entidad.setIdTipo(Integer.parseInt(request.getParameter("id")));
+            }
+        } catch (NullPointerException | NumberFormatException e) {
+            throw new InvalidDataException("ingresar datos validos");
+        }
     }
     
 }

@@ -31,7 +31,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.servletContext.contextPath}/vista_ventas/form_compras_del_dia.jsp" class="nav-link text-white">
+                        <a href="${pageContext.servletContext.contextPath}/controllers/ensamblador/tipo_computadora" class="nav-link text-white">
                             <img src="${pageContext.servletContext.contextPath}/svg/financiera/pc-display-horizontal.svg" width="24" height="24">
                             <br>
                             Gestion Tipos de Computadoras

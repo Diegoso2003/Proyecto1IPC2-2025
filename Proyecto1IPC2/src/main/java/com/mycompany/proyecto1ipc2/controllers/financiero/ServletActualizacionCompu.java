@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.mycompany.proyecto1ipc2.controllers.ensamblador;
+package com.mycompany.proyecto1ipc2.controllers.financiero;
 
+import com.mycompany.proyecto1ipc2.daos.ensamblador.TipoComponenteDAO;
 import com.mycompany.proyecto1ipc2.daos.ensamblador.TipoComputadoraDAO;
 import com.mycompany.proyecto1ipc2.ensamblaje.TipoComputadoraCRUD;
-import com.mycompany.proyecto1ipc2.ensamblaje.TipoComputadoraLista;
 import com.mycompany.proyecto1ipc2.exception.InvalidDataException;
 import com.mycompany.proyecto1ipc2.exception.NotFoundException;
 import java.io.IOException;
@@ -16,15 +16,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author rafael-cayax
  */
-@WebServlet(name = "ServletTipoComputadora", urlPatterns = {"/controllers/ensamblador/tipo_computadora"})
-public class ServletTipoComputadora extends HttpServlet {
+@WebServlet(name = "ServletActualizacionCompu", urlPatterns = {"/controllers/financiero/actualizar_computadora"})
+public class ServletActualizacionCompu extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -37,12 +35,7 @@ public class ServletTipoComputadora extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        TipoComputadoraLista lista = new TipoComputadoraLista();
-        String direccion = lista.obtenerDireccion(request);
-        TipoComputadoraDAO computadora = new TipoComputadoraDAO();
-        request.setAttribute("tiposComputadoras", computadora.obtenerTodo());
-        request.getRequestDispatcher(direccion).
-                forward(request, response);
+
     }
 
     /**
@@ -57,17 +50,21 @@ public class ServletTipoComputadora extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            TipoComputadoraCRUD repositorio = new TipoComputadoraCRUD();
-            repositorio.crearEntidad(request);
-            request.setAttribute("exito", "computadora agregada con exito");
+            TipoComputadoraCRUD tipo = new TipoComputadoraCRUD();
+            tipo.actualizarEntidad(request);
+            request.setAttribute("computadora", tipo.obtenerEntidad(request));
+            TipoComponenteDAO repositorio = new TipoComponenteDAO();
+            request.setAttribute("componentes", repositorio.obtenerTodo());
+            request.setAttribute("exito", "actualizado correctamente");
+            request.getRequestDispatcher("/vista_financiera/gestion_compu.jsp"). 
+                    forward(request, response);
         } catch (InvalidDataException | NotFoundException ex) {
             request.setAttribute("mensaje", ex.getMessage());
-        } finally {
             TipoComputadoraDAO computadora = new TipoComputadoraDAO();
             request.setAttribute("tiposComputadoras", computadora.obtenerTodo());
             request.getRequestDispatcher("/vista_financiera/tipo_computadoras.jsp").
                     forward(request, response);
-        }
+        } 
     }
 
     /**

@@ -99,7 +99,18 @@ public class TipoComputadoraDAO extends BDCRUD<TipoComputadora, Integer>{
 
     @Override
     public void actualizar(TipoComputadora entidad) throws InvalidDataException, NotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String query = "UPDATE TipoComputadora set nombre = ?, costoVenta = ? WHERE idTipo = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setString(1, entidad.getNombre());
+            statement.setDouble(2, entidad.getPrecio());
+            statement.setInt(3, entidad.getIdTipo());
+            if (statement.executeUpdate() <= 0) {
+                throw new NotFoundException("no se encontro a la computadora con id: '" + entidad.getIdTipo() + "'");
+            }
+        } catch (SQLException e) {
+            throw new InvalidDataException("ingresar datos validos");
+        }
     }
 
     @Override
@@ -142,6 +153,35 @@ public class TipoComputadoraDAO extends BDCRUD<TipoComputadora, Integer>{
                         + "en el apartado de gestion de tipos de computadoras");
             }
             throw new InvalidDataException("valores ingresados invalidos");
+        }
+    }
+
+    public void eliminarIndicacion(TipoComputadora compu, TipoComponente tipoC) throws InvalidDataException {
+        String query = "DELETE From Indicacion WHERE idTipoComputadora = ? AND idTipoComponente = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setInt(1, compu.getIdTipo());
+            statement.setInt(2, tipoC.getId());
+            if (statement.executeUpdate() <= 0) {
+                throw new InvalidDataException("no se encontro la indicacion de ensamblaje");
+            }
+        } catch (SQLException e) {
+            throw new InvalidDataException("ingresar valores validos");
+        }
+    }
+
+    public void actualizarIndicacion(TipoComputadora compu, TipoComponente tipoC) throws InvalidDataException, NotFoundException {
+        String query = "UPDATE Indicacion SET cantidad = ? WHERE idTipoComputadora = ? AND idTipoComponente = ?";
+        try (Connection coneccion = Coneccion.getConeccion();
+                PreparedStatement statement = coneccion.prepareStatement(query)){
+            statement.setInt(1, tipoC.getCantidad());
+            statement.setInt(2, compu.getIdTipo());
+            statement.setInt(3, tipoC.getId());
+            if (statement.executeUpdate() <= 0) {
+                throw new NotFoundException("no se encontro la indicacion");
+            }
+        } catch (SQLException e) {
+            throw new InvalidDataException("valores ingresados invalidos" + e);
         }
     }
  

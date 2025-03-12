@@ -56,6 +56,9 @@ public class CargaTipoComputadora extends Instruccion{
         if (tipo.getPrecio() <= 0) {
             throw new InvalidDataException("Costo invalido: " + precio);
         }
+        if (tipo.getNombre().length() > 200) {
+            throw new InvalidDataException("nombre demasiado largo");
+        }
         TipoComputadoraDAO repositorioCompu = new TipoComputadoraDAO();
         repositorioCompu.insertar(tipo);
     }
