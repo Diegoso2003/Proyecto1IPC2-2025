@@ -32,6 +32,9 @@ public class ClienteDAO extends BDCRUD<Cliente, Integer>{
             statement.setString(3, entidad.getDireccion());
             statement.executeUpdate();
         } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                throw new InvalidDataException("el cliente con el nit ingresado ya esta ingresado en el sistema: " + entidad.getNit());
+            }
             throw new InvalidDataException("Ingrese valores validos");
         }
     }
