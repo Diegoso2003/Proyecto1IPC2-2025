@@ -33,15 +33,6 @@ create table Indicacion(
 	constraint fk_idTipoComponente1 foreign key (idTipoComponente) references TipoComponente(idTipoComponente) on delete cascade
 );
 
-create table DetalleEnsamblaje(
-	idComputadora int not null,
-	idTipoComponente int not null,
-	cantidad int not null,
-	constraint pk_detalleEnsamblaje primary key(idComputadora, idTipoComponente),
-	constraint fk_idTipoComputadora foreign key (idComputadora) references Computadora(idComputadora),
-	constraint fk_idTipoComponente2 foreign key (idTipoComponente) references TipoComponente(idTipoComponente) on delete cascade
-);
-
 create table Rol(
 	idRol int auto_increment,
 	nombre varchar(150) unique not null,
@@ -71,6 +62,16 @@ create table Computadora(
 	estado ENUM('VENDIDA','ENSAMBLADA','DEVUELTA') not null,
 	constraint pk_computadora primary key(idComputadora),
 	constraint fk_idTipo2 foreign key (idTipo) references TipoComputadora(idTipo)
+);
+
+
+create table DetalleEnsamblaje(
+	idComputadora int not null,
+	idTipoComponente int not null,
+	cantidad int not null,
+	constraint pk_detalleEnsamblaje primary key(idComputadora, idTipoComponente),
+	constraint fk_idTipoComputadora foreign key (idComputadora) references Computadora(idComputadora),
+	constraint fk_idTipoComponente2 foreign key (idTipoComponente) references TipoComponente(idTipoComponente) on delete cascade
 );
 
 create table Cliente(
