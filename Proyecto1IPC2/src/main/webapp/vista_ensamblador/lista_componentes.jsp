@@ -39,7 +39,6 @@
                 </div>
                 <div class="modal-body">
                     <form class="mb-5" method="POST" action="${pageContext.servletContext.contextPath}/controllers/ensamblador/componente">
-                        <h1 class="h3 mb-3 text-center">Crear Componente</h1>
                         <div class="form-floating mb-3">
                             <select class="form-select" id="validationCustom04" name="tipo">
                                 <c:forEach items="${tipos}" var="tipo">

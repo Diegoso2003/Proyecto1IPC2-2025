@@ -1,0 +1,116 @@
+create schema laComputadoraFeliz;
+
+use laComputadoraFeliz;
+
+create table TipoComponente(
+	idTipoComponente int auto_increment,
+	nombre varchar(150) unique not null,
+	constraint pk_tipoComponente primary key(idTipoComponente)
+);
+
+create table Componente(
+	idComponente int auto_increment,
+	cantidad int not null,
+	costo decimal(10,2) not null,
+	idTipo int not null,
+	constraint pk_componente primary key(idComponente),
+	constraint fk_tipoComponente foreign key(idTipo) references TipoComponente(idTipoComponente)
+);
+
+create table TipoComputadora(
+	idTipo int auto_increment,
+	nombre varchar(100) unique not null,
+	costoVenta decimal(10,2) not null,
+	constraint pk_tipoComputadora primary key(idTipo)
+);
+
+create table Indicacion(
+	idTipoComputadora int not null,
+	idTipoComponente int not null,
+	cantidad int not null,
+	constraint pk_especificacion primary key(idTipoComputadora, idTipoComponente),
+	constraint fk_idTipo1 foreign key (idTipoComputadora) references TipoComputadora(idTipo),
+	constraint fk_idTipoComponente1 foreign key (idTipoComponente) references TipoComponente(idTipoComponente) on delete cascade
+);
+
+create table DetalleEnsamblaje(
+	idComputadora int not null,
+	idTipoComponente int not null,
+	cantidad int not null,
+	constraint pk_detalleEnsamblaje primary key(idComputadora, idTipoComponente),
+	constraint fk_idTipoComputadora foreign key (idComputadora) references Computadora(idComputadora),
+	constraint fk_idTipoComponente2 foreign key (idTipoComponente) references TipoComponente(idTipoComponente) on delete cascade
+);
+
+create table Rol(
+	idRol int auto_increment,
+	nombre varchar(150) unique not null,
+	constraint pk_rol primary key(idRol)
+);
+
+insert into Rol(nombre) values('ENSAMBLADOR'),('VENDEDOR'),('ADMINISTRADOR');
+
+create table Usuario(
+	nombre varchar(200) not null,
+	contraseña varchar(60) not null,
+	estado boolean default 1,
+	rol int not null,
+	constraint pk_Usuario primary key(nombre),
+	constraint fk_rol foreign key (rol) references Rol(idRol)
+);
+
+insert into Usuario(nombre, contraseña, rol) values('Admin456', '$2a$10$V8VR4nTQXhmvs5SSiZUrwOXy5td1K30K.873W/FdnZe4vwuEX5422', 1);
+
+create table Computadora(
+	idComputadora int auto_increment,
+	fechaEnsamblaje date not null,
+	ensamblador varchar(200) not null,
+	precioFabricacion decimal(10,2) not null,
+	precioVenta decimal(10,2) not null, // posible mente no lo use ya que en el detalle de la compra tengo su precio
+	idTipo int not null,
+	estado ENUM('VENDIDA','ENSAMBLADA','DEVUELTA') not null,
+	constraint pk_computadora primary key(idComputadora),
+	constraint fk_idTipo2 foreign key (idTipo) references TipoComputadora(idTipo)
+);
+
+create table Cliente(
+	nit int auto_increment,
+	nombre varchar(200) not null,
+	direccion varchar(250) not null,
+	constraint pk_cliente primary key(nit)
+);
+
+create table Compra(
+	idCompra int auto_increment,
+	fechaCompra date not null,
+	usuario varchar(200) not null,
+	nit int not null,
+	estado boolean not null default 0,
+	constraint pk_compra primary key(idCompra),
+	constraint fk_cliente1 foreign key (nit) references Cliente(nit),
+	constraint fk_usuario2 foreign key (usuario) references Usuario(nombre)
+);
+
+create table DetalleCompra(
+	idCompra int not null,
+	idComputadora int not null,
+	subtotal decimal(10,2) not null,
+	constraint pk_detalleCompra primary key(idCompra, idComputadora),
+	constraint fk_compra1  foreign key (idCompra) references Compra(idCompra) on delete cascade,
+	constraint fk_computadora1 foreign key (idComputadora) references Computadora(idComputadora)
+);
+
+create table Devolucion(
+	idDevolucion int auto_increment,
+	idComputadora int not null,
+	idCompra int not null,
+	costoVenta decimal(10,2) not null,
+	fechaDevolucion date not null,
+	constraint fk_compra2 foreign key (idCompra) references Compra(idCompra),
+	constraint pk_devolucion primary key(idDevolucion),
+	constraint fk_computadora2 foreign key (idComputadora) references Computadora(idComputadora)
+);
+
+
+
+
